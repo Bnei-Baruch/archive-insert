@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+import noop from 'lodash/noop';
 import moment from 'moment';
 import './App.css';
 import 'semantic-ui-css/semantic.min.css';
@@ -38,7 +39,7 @@ class TabContent extends Component {
                 [
                     {
                         menuItem: <Menu.Item key='units'>Units<Label>50</Label></Menu.Item>,
-                        render: () => <Tab.Pane><TabContent1 ctype={this.props.ctype} start_date={this.props.start_date} end_date={this.props.end_date} /></Tab.Pane>,
+                        render: () => <Tab.Pane><TabContent1 ctype={this.props.ctype} onUSelect={this.props.handleUidSelect} start_date={this.props.start_date} end_date={this.props.end_date} /></Tab.Pane>,
                     },
                     {
                         menuItem: <Menu.Item key='files'>Files<Label>50</Label></Menu.Item>,
@@ -109,7 +110,8 @@ class TabContent1 extends Component {
                 this.setState({units: responseJson.data});
             })
             .catch((error) => {
-                console.error("::FetchData::"+error);
+                console.error("::FetchData::");
+                console.error(error);
             });
     }
     componentWillReceiveProps(nextProps) {
@@ -124,7 +126,8 @@ class TabContent1 extends Component {
                     this.setState({units: responseJson.data});
                 })
                 .catch((error) => {
-                    console.error("::FetchData::"+error);
+                    console.error("::FetchData::");
+                    console.error(error);
                     return;
                 });
         }
@@ -132,7 +135,7 @@ class TabContent1 extends Component {
     render() {
         return (
             <div className="tabContent">
-                <TabData1 units={this.state.units}/>
+                <TabData1 units={this.state.units} />
             </div>
         );
     }
@@ -177,12 +180,13 @@ class TabData1 extends Component {
             let name = (unit.i18n.he) ? unit.i18n.he.name : "WTF!?"
             return (
                 <Table.Row key={unit.id}>
-                    <Table.Cell><NestedModal
-                        uid={unit.uid}
-                        name={unit.i18n.he.name}
-                        id={unit.id}
-                        capture_date={unit.properties.capture_date}
-                    />
+                    <Table.Cell>
+                        <NestedModal
+                            uid={unit.uid}
+                            name={unit.i18n.he.name}
+                            id={unit.id}
+                            capture_date={unit.properties.capture_date}
+                        />
                     </Table.Cell>
                     <Table.Cell textAlign='right' className={(unit.i18n.he ? "rtl-dir" : "negative")}>{name}</Table.Cell>
                     <Table.Cell>{unit.properties.capture_date}</Table.Cell>
@@ -207,9 +211,20 @@ class TabData1 extends Component {
 }
 
 class ModalContent extends Component {
+    static propTypes = {
+        metadata: PropTypes.object,
+        onComplete: PropTypes.func,
+        onCancel: PropTypes.func,
+    };
+    static defaultProps = {
+        metadata: {},
+        onComplete: noop,
+        onCancel: noop,
+    };
     constructor(props) {
         super(props);
         this.state = {
+            metadata: { ...props.metadata },
             today_date: moment().format('YYYY-MM-DD'),
             start_date: moment().format('YYYY-MM-DD'),
             end_date: moment().format('YYYY-MM-DD'),
@@ -229,6 +244,15 @@ class ModalContent extends Component {
     }
     handleOutsideRange = () => {
         return false;
+    }
+    handleClose = (e) => {
+        console.log(e);
+        //this.setState({ open: false })
+        this.props.onComplete("WTF!!");
+    }
+    handleUidSelect = (data) => {
+        console.log(data);
+        //this.setState({ open: false })
     }
     render() {
         return (
@@ -269,13 +293,20 @@ class ModalContent extends Component {
                         ctype={this.state.ctype}
                         start_date={this.state.start_date}
                         end_date={this.state.end_date}
+                        onUidSelect={this.handleUidSelect}
                     />
                 </Modal.Content>
                 </Segment>
                 <Segment clearing tertiary color='yellow'>
                 <Modal.Actions>
                     <NestedModal />
-                    <Input className="filename" icon='file' iconPosition='left' focus={true} disabled placeholder={this.props.metadata.filename} />
+                    <Input
+                        className="filename"
+                        icon='file'
+                        iconPosition='left'
+                        focus={true}
+                        disabled
+                        placeholder={ this.props.metadata ? this.props.metadata.filename : "sasdfsdf" } />
                     <Button color='green' onClick={this.handleClose}>Select</Button>
                 </Modal.Actions>
                 </Segment>
@@ -287,22 +318,16 @@ class ModalContent extends Component {
 
 class App extends Component {
   render() {
-      const metadata = {
-          filename: "heb_o_rav_2017-08-04_lesson_zohar-la-am-bereshit-1_n2_p1.doc"
-      };
     return (
-        <Modal size='fullscreen' defaultOpen={true}>
-            <ModalContent metadata={metadata} />
+        <Modal
+            size='fullscreen'
+            defaultOpen={true}
+            onClose={this.handleClose}
+        >
+            <ModalContent {...this.props} />
         </Modal>
     );
   }
 }
-
-var showModal = (options) => {
-    const { metadata, modal } = Object.assign({}, options);
-    console.log("I'm react app! Let's go..");
-    const div = document.createElement('div');
-    ReactDOM.render(<App />, div);
-};
 
 export default App;
