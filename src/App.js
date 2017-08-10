@@ -20,7 +20,7 @@ const language_options = [
     { key: 'en', value: 'en', flag: 'us', text: 'English' },
 ];
 
-const API_BACKEND = 'http://app.mdb.bbdomain.org/rest/files/';
+const API_BACKEND = 'http://app.mdb.bbdomain.org/rest/content_units/';
 // http://app.mdb.bbdomain.org/rest/files/?page_no=1&content_type=LESSON_PART'
 
 const Fetcher = (path) => fetch(`${API_BACKEND}${path}`)
@@ -222,50 +222,41 @@ class DataContent extends Component {
     }
     componentDidMount() {
         console.log("--Did mount--");
-        return fetch('http://app.mdb.bbdomain.org/rest/content_units/?page_no=1&content_type=LESSON_PART&start_date='+this.props.start_date+'&end_date='+this.props.end_date)
-            .then((response) => response.json())
-            .then((responseJson) => {
-                console.log("::FetchData::");
-                console.log(responseJson);
-                this.setState({units: responseJson.data});
-            })
-            .catch((error) => {
-                console.error("::FetchData::");
-                console.error(error);
-            });
+        let path = '?page_no=1&content_type=LESSON_PART&start_date='+this.props.start_date+'&end_date='+this.props.end_date
+        Fetcher(path)
+            .then(data => {
+                this.setState({units: data.data});
+        })
     }
     componentWillReceiveProps(nextProps) {
         console.log("--ReceiveProps--");
         console.log(nextProps);
+        let path = '?page_no=1&content_type='+nextProps.ctype+'&start_date='+nextProps.start_date+'&end_date='+nextProps.end_date
         if (nextProps.ctype !== this.props.ctype || nextProps.end_date !== this.props.end_date) {
-            return fetch('http://app.mdb.bbdomain.org/rest/content_units/?page_no=1&content_type='+nextProps.ctype+'&start_date='+nextProps.start_date+'&end_date='+nextProps.end_date)
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    console.log("::FetchData::");
-                    console.log(responseJson);
-                    this.setState({units: responseJson.data});
+            Fetcher(path)
+                .then(data => {
+                    this.setState({units: data.data});
                 })
-                .catch((error) => {
-                    console.error("::FetchData::");
-                    console.error(error);
-                    return;
-                });
         }
     }
+    handleClick = (data) => {
+        console.log(data);
+        this.props.onUidSelect(data);
+    }
     render() {
-        let uidList = this.state.units.map(function (unit) {
+        let uidList = this.state.units.map((unit) => {
             let name = (unit.i18n.he) ? unit.i18n.he.name : "WTF!?"
             return (
                 <Table.Row key={unit.id}>
                     <Table.Cell>
-                        <NestedModal
+                        <NestedModal {...this.props}
                             uid={unit.uid}
                             name={unit.i18n.he.name}
                             id={unit.id}
                             capture_date={unit.properties.capture_date}
                         />
                     </Table.Cell>
-                    <Table.Cell textAlign='right' className={(unit.i18n.he ? "rtl-dir" : "negative")}>{name}</Table.Cell>
+                    <Table.Cell onClick={() => this.handleClick(unit.uid)} textAlign='right' className={(unit.i18n.he ? "rtl-dir" : "negative")}>{name}</Table.Cell>
                     <Table.Cell>{unit.properties.capture_date}</Table.Cell>
                 </Table.Row>
             );
