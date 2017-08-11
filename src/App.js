@@ -240,14 +240,14 @@ class DataContent extends Component {
         }
     }
     handleClick = (data) => {
-        console.log(data);
+        // console.log(data);
         this.props.onUidSelect(data);
     }
     render() {
         let uidList = this.state.units.map((unit) => {
             let name = (unit.i18n.he) ? unit.i18n.he.name : "WTF!?"
             return (
-                <Table.Row key={unit.id}>
+                <Table.Row key={unit.id} onClick={() => this.handleClick(unit.uid)}>
                     <Table.Cell>
                         <NestedModal {...this.props}
                             uid={unit.uid}
@@ -256,7 +256,7 @@ class DataContent extends Component {
                             capture_date={unit.properties.capture_date}
                         />
                     </Table.Cell>
-                    <Table.Cell onClick={() => this.handleClick(unit.uid)} textAlign='right' className={(unit.i18n.he ? "rtl-dir" : "negative")}>{name}</Table.Cell>
+                    <Table.Cell  textAlign='right' className={(unit.i18n.he ? "rtl-dir" : "negative")}>{name}</Table.Cell>
                     <Table.Cell>{unit.properties.capture_date}</Table.Cell>
                 </Table.Row>
             );
@@ -297,6 +297,7 @@ class ModalContent extends Component {
             start_date: moment().format('YYYY-MM-DD'),
             end_date: moment().format('YYYY-MM-DD'),
             ctype: "LESSON_PART",
+            uid: "Here Go UID",
         };
     }
     handleChange = (e, data) => {
@@ -313,14 +314,13 @@ class ModalContent extends Component {
     handleOutsideRange = () => {
         return false;
     }
-    handleClose = (e) => {
-        console.log(e);
-        //this.setState({ open: false })
-        this.props.onComplete("WTF!!");
+    handleOnComplete = (e) => {
+        console.log("::HandelOnComplete::");
+        this.props.onComplete(this.state.uid);
     }
     handleUidSelect = (data) => {
-        console.log(data);
-        //this.setState({ open: false })
+        console.log("::HandleUidSelect::");
+        this.setState({ uid: data })
     }
     render() {
         return (
@@ -373,9 +373,16 @@ class ModalContent extends Component {
                         icon='file'
                         iconPosition='left'
                         focus={true}
-                        disabled
-                        placeholder={ this.props.metadata ? this.props.metadata.filename : "sasdfsdf" } />
-                    <Button color='green' onClick={this.handleClose}>Select</Button>
+                        // disabled
+                        placeholder="Here Filename go"
+                        value={ this.props.metadata ? this.props.metadata.filename : "sasdfsdf" } />
+                    <Input
+                        className="uid"
+                        value={this.state.uid}
+                        icon='vcard'
+                        iconPosition='left'
+                        focus={false} />
+                    <Button color='green' onClick={this.handleOnComplete}>Select</Button>
                 </Modal.Actions>
                 </Segment>
             </Container>
