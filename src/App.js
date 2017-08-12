@@ -292,7 +292,9 @@ class ModalContent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            metadata: { ...props.metadata },
+            metadata: { ...props.metadata,
+                uid: "",
+            },
             today_date: moment().format('YYYY-MM-DD'),
             start_date: moment().format('YYYY-MM-DD'),
             end_date: moment().format('YYYY-MM-DD'),
@@ -316,16 +318,19 @@ class ModalContent extends Component {
     }
     handleOnComplete = (e) => {
         console.log("::HandelOnComplete::");
-        this.props.onComplete(this.state.uid);
+        console.log(this.state.metadata);
+        this.props.onComplete(this.state.metadata);
     }
     handleUidSelect = (data) => {
         console.log("::HandleUidSelect::");
-        this.setState({ uid: data })
+        let statedata = this.state.metadata;
+        statedata.uid = data;
+        this.setState({ metadata: statedata })
     }
     render() {
         return (
             <Container className="ui fullscreen modal visible transition">
-                <Segment clearing color='red'>
+                <Segment clearing>
                     <Header floated='left' >
                         <Dropdown
                             className="large"
@@ -343,7 +348,7 @@ class ModalContent extends Component {
                             options={language_options} >
                         </Dropdown>
                     </Header>
-                    <Header floated='right' className="large">
+                    <Header floated='right'>
                         <DateRangePicker
                             displayFormat="YYYY-MM-DD"
                             isOutsideRange={this.handleOutsideRange}
@@ -378,11 +383,15 @@ class ModalContent extends Component {
                         value={ this.props.metadata ? this.props.metadata.filename : "sasdfsdf" } />
                     <Input
                         className="uid"
-                        value={this.state.uid}
+                        value={this.state.metadata.uid}
                         icon='vcard'
                         iconPosition='left'
                         focus={false} />
-                    <Button color='green' onClick={this.handleOnComplete}>Select</Button>
+                    <Button
+                        color='green'
+                        disabled={!this.state.metadata.uid}
+                        onClick={this.handleOnComplete} >Select
+                    </Button>
                 </Modal.Actions>
                 </Segment>
             </Container>
@@ -396,6 +405,8 @@ class App extends Component {
     return (
         <Modal
             size='fullscreen'
+            closeOnDimmerClick={false}
+            closeIcon={true}
             defaultOpen={true}
             onClose={this.handleClose}
         >

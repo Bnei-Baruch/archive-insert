@@ -5,10 +5,20 @@ import App from "./App";
 
 export const showModal = (options) => {
     console.log(options);
+
+    const div = document.createElement('div');
+    const unmountModal = () => ReactDOM.unmountComponentAtNode(div);
+
+    const closeWrapper = (x) => {
+        if (onComplete) {
+            onComplete(x);
+        }
+        unmountModal();
+    };
+
     const { metadata, onComplete, onCancel } = Object.assign({}, options);
     console.log(metadata);
-    const div = document.createElement('div');
-    ReactDOM.render(<App metadata={metadata} onComplete={onComplete} />, div);
+    ReactDOM.render(<App metadata={metadata} onComplete={closeWrapper} />, div);
 
 };
 
