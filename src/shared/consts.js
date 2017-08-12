@@ -20,6 +20,14 @@ export const upload_options = [
     { value: 'TRANSLATION', text: 'Translation', icon: 'food' },
 ];
 
+export const mime_list = {
+    "application/msword": "docx",
+    "image/jpeg": "jpg",
+    "audio/mpeg": "mp3",
+    "video/mp4": "mp4",
+    "application/zip": "zip"
+};
+
 export const LANGUAGES = [
   { text: 'עברית', value: 'heb' },
   { text: 'אנגלית', value: 'eng' },

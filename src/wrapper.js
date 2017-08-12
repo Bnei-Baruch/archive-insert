@@ -17,7 +17,7 @@ export const showModal = (options) => {
     };
 
     const { metadata, onComplete, onCancel } = Object.assign({}, options);
-    console.log(metadata);
+
     ReactDOM.render(<App metadata={metadata} onComplete={closeWrapper} />, div);
 
 };

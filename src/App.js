@@ -8,7 +8,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import { Table, Button, Header, Icon, Modal, Label, Menu, Tab, Dropdown, Container, Segment, Input } from 'semantic-ui-react'
 import { DateRangePicker, SingleDatePicker } from 'react-dates';
 
-import {ctype_options, language_options, upload_options} from './shared/consts';
+import {ctype_options, language_options, upload_options, mime_list } from './shared/consts';
 
 const API_BACKEND = 'http://app.mdb.bbdomain.org/rest/content_units/';
 // http://app.mdb.bbdomain.org/rest/files/?page_no=1&content_type=LESSON_PART'
@@ -135,6 +135,7 @@ class ModalContent extends Component {
         super(props);
         this.state = {
             metadata: { ...props.metadata,
+                oldfilename: props.metadata.filename,
                 uid: "",
             },
             today_date: moment().format('YYYY-MM-DD'),
@@ -166,8 +167,8 @@ class ModalContent extends Component {
         console.log("::HandleUidSelect::");
         let statedata = this.state.metadata;
         statedata.uid = data;
-        // TEST: Change name
-        statedata.filename = statedata.filename + ".new";
+        // TODO: Calculate new name here
+        statedata.filename = "NEWFILENAME." + mime_list[statedata.type];
         this.setState({ metadata: statedata })
     }
     render() {
