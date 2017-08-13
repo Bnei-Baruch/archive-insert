@@ -15,9 +15,9 @@ export const language_options = [
 ];
 
 export const upload_options = [
-    { value: 'AKLADOT', text: 'Akldaot', icon: 'student' },
-    { value: 'KITEI-MAKOR', text: 'Kitei-Makor', icon: 'record' },
-    { value: 'TRANSLATION', text: 'Translation', icon: 'food' },
+    { value: 'AKLADOT', text: 'Akldaot', icon: 'file word outline' },
+    { value: 'KITEI-MAKOR', text: 'Kitei-Makor', icon: 'commenting outline' },
+    { value: 'TRANSLATION', text: 'Translation', icon: 'translate' },
 ];
 
 export const mime_list = {

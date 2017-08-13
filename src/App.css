@@ -12,6 +12,10 @@
 }
 
 .large {
+  font-size: 14px;
+}
+
+.ui.selection.dropdown .menu>.item {
   font-size: 18px;
 }
 
