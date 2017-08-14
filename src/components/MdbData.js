@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Modal, Button } from 'semantic-ui-react'
 
-const API_BACKEND = 'http://app.mdb.bbdomain.org/rest/content_units';
+const API_BACKEND = 'https://upload.kli.one/rest/content_units';
 // http://app.mdb.bbdomain.org/rest/files/?page_no=1&content_type=LESSON_PART'
 
 const Fetcher = (path) => fetch(`${API_BACKEND}/${path}`)

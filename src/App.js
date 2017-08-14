@@ -87,7 +87,10 @@ class ModalContent extends Component {
         filedata.upload_type = this.state.upload_type;
         filedata.capture_date = data.properties.film_date;
         // TODO: Calculate new name here
-        filedata.filename = "NEWFILENAME." + mime_list[filedata.type];
+        filedata.filename =
+            filedata.language + '_o_rav_' +
+            filedata.capture_date + '_' +
+            filedata.upload_type + '_desc.' + mime_list[filedata.type];
         this.setState({ metadata: filedata });
     };
 
@@ -141,6 +144,12 @@ class ModalContent extends Component {
                 </Segment>
                 <Segment clearing tertiary color='yellow'>
                 <Modal.Actions>
+                    <Input
+                        className="filename"
+                        icon='file'
+                        iconPosition='left'
+                        focus={true}
+                        value={ this.state.metadata.filename } />
                     <Dropdown
                         error={!this.state.upload_type}
                         placeholder="Upload Type:"
@@ -150,18 +159,12 @@ class ModalContent extends Component {
                         onChange={this.handleUploadFilter}
                         value={this.state.value} >
                     </Dropdown>
-                    <Input
-                        className="filename"
-                        icon='file'
-                        iconPosition='left'
-                        focus={true}
-                        value={ this.state.metadata.filename } />
-                    <Input
-                        className="uid"
-                        value={this.state.metadata.uid}
-                        icon='vcard'
-                        iconPosition='left'
-                        focus={false} />
+                    {/*<Input*/}
+                        {/*className="uid"*/}
+                        {/*value={this.state.metadata.uid}*/}
+                        {/*icon='vcard'*/}
+                        {/*iconPosition='left'*/}
+                        {/*focus={false} />*/}
                     <Button
                         color='green'
                         disabled={!this.state.isValidated}

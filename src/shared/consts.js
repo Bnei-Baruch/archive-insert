@@ -15,9 +15,9 @@ export const language_options = [
 ];
 
 export const upload_options = [
-    { value: 'AKLADOT', text: ' ‏הקלדות', icon: 'file word outline' },
-    { value: 'KITEI-MAKOR', text: 'קיטעי-מקור', icon: 'commenting outline' },
-    { value: 'TRANSLATION', text: 'Translation', icon: 'translate' },
+    { value: 'akladot', text: ' ‏הקלדות', icon: 'file word outline' },
+    { value: 'kitei-makor', text: 'קיטעי-מקור', icon: 'commenting outline' },
+    // { value: 'TRANSLATION', text: 'Translation', icon: 'translate' },
 ];
 
 export const mime_list = {
