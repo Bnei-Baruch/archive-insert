@@ -2,21 +2,21 @@
 export const EMPTY_ARRAY  = Object.freeze([]);
 export const EMPTY_OBJECT = Object.freeze({});
 
-export const ctype_options = [
-    { value: 'LESSON_PART', text: 'Lesson', icon: 'student' },
-    { value: 'VIDEO_PROGRAM_CHAPTER', text: 'Program', icon: 'record' },
-    { value: 'MEAL', text: 'Meals', icon: 'food' },
+export const content_options = [
+    { value: 'LESSON_PART', text: ' ‏שיעור', icon: 'student' },
+    { value: 'VIDEO_PROGRAM_CHAPTER', text: ' ‏תוכנית', icon: 'record' },
+    { value: 'MEAL', text: ' ‏סעודה', icon: 'food' },
 ];
 
 export const language_options = [
-    { key: 'he', value: 'he', flag: 'il', text: 'Hebrew' },
-    { key: 'ru', value: 'ru', flag: 'ru', text: 'Russian' },
-    { key: 'en', value: 'en', flag: 'us', text: 'English' },
+    { key: 'he', value: 'heb', flag: 'il', text: 'Hebrew' },
+    { key: 'ru', value: 'rus', flag: 'ru', text: 'Russian' },
+    { key: 'en', value: 'eng', flag: 'us', text: 'English' },
 ];
 
 export const upload_options = [
-    { value: 'AKLADOT', text: 'Akldaot', icon: 'file word outline' },
-    { value: 'KITEI-MAKOR', text: 'Kitei-Makor', icon: 'commenting outline' },
+    { value: 'AKLADOT', text: ' ‏הקלדות', icon: 'file word outline' },
+    { value: 'KITEI-MAKOR', text: 'קיטעי-מקור', icon: 'commenting outline' },
     { value: 'TRANSLATION', text: 'Translation', icon: 'translate' },
 ];
 

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Table, Modal, Button } from 'semantic-ui-react'
 
-const API_BACKEND = 'http://app.mdb.bbdomain.org/rest/content_units/';
+const API_BACKEND = 'http://app.mdb.bbdomain.org/rest/content_units';
 // http://app.mdb.bbdomain.org/rest/files/?page_no=1&content_type=LESSON_PART'
 
-const Fetcher = (path) => fetch(`${API_BACKEND}${path}`)
+const Fetcher = (path) => fetch(`${API_BACKEND}/${path}`)
     .then((response) => response.json())
     .then((responseJson) => {
         console.log("::FetchData::");
@@ -51,36 +51,38 @@ class MdbData extends Component {
         super(props);
         this.state = {
             units: [],
+            active: null,
         };
     }
     componentDidMount() {
         console.log("--Did mount--");
-        let path = '?page_no=1&content_type=LESSON_PART&start_date='+this.props.start_date+'&end_date='+this.props.end_date
-        Fetcher(path)
-            .then(data => {
-                this.setState({units: data.data});
-            })
+        // let path = '?page_no=1&content_type=LESSON_PART&start_date='+this.props.start_date+'&end_date='+this.props.end_date
+        // Fetcher(path)
+        //     .then(data => {
+        //         this.setState({units: data.data});
+        //     })
     }
     componentWillReceiveProps(nextProps) {
         console.log("--ReceiveProps--");
         console.log(nextProps);
-        let path = '?page_no=1&content_type='+nextProps.ctype+'&start_date='+nextProps.start_date+'&end_date='+nextProps.end_date
-        if (nextProps.ctype !== this.props.ctype || nextProps.end_date !== this.props.end_date) {
+        let path = '?page_no=1&content_type='+nextProps.content_type+'&start_date='+nextProps.start_date+'&end_date='+nextProps.end_date
+        if (nextProps.content_type !== this.props.content_type || nextProps.end_date !== this.props.end_date) {
             Fetcher(path)
                 .then(data => {
                     this.setState({units: data.data});
                 })
         }
     }
-    handleClick = (data) => {
-        // console.log(data);
-        this.props.onUidSelect(data);
+    handleClick = (unit) => {
+        this.props.onUidSelect(unit);
+        this.setState({active: unit.uid});
     }
     render() {
         let uidList = this.state.units.map((unit) => {
-            let name = (unit.i18n.he) ? unit.i18n.he.name : "WTF!?"
+            let name = (unit.i18n.he) ? unit.i18n.he.name : "WTF!?";
+            var active = (this.state.active === unit.uid ? 'active' : '');
             return (
-                <Table.Row key={unit.id} onClick={() => this.handleClick(unit.uid)}>
+                <Table.Row className={active} key={unit.id} onClick={() => this.handleClick(unit)}>
                     <Table.Cell>
                         <NestedModal {...this.props}
                                      uid={unit.uid}

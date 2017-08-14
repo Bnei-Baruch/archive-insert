@@ -3,6 +3,10 @@
   margin-top: 2%!important;
 }
 
+.table {
+  cursor: pointer!important;
+}
+
 .filename {
   width: 500px!important;
 }
