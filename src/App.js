@@ -5,7 +5,7 @@ import moment from 'moment';
 import './App.css';
 import 'semantic-ui-css/semantic.min.css';
 import 'react-dates/lib/css/_datepicker.css';
-import { Button, Header, Icon, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react'
+import { Button, Header, Icon, Modal, Dropdown, Container, Segment, Input, Progress } from 'semantic-ui-react'
 import { DateRangePicker, SingleDatePicker } from 'react-dates';
 
 import {content_options, language_options, upload_options, mime_list } from './shared/consts';
@@ -29,7 +29,7 @@ class ModalContent extends Component {
             unit: {},
             today_date: moment().format('YYYY-MM-DD'),
             start_date: moment().format('YYYY-MM-DD'),
-            end_date: moment().format('YYYY-MM-DD'),
+            end_date: moment().add(340, 'days').format('YYYY-MM-DD'),
             content_type: null,
             language: null,
             upload_type: null,
@@ -66,6 +66,7 @@ class ModalContent extends Component {
 
     handleOnComplete = () => {
         console.log("::HandelOnComplete::");
+        // Object we return from react
         let metadata = this.state.filedata;
         metadata.uid = this.state.unit.uid;
         metadata.content_type = this.state.content_type;

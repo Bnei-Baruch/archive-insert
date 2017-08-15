@@ -7,6 +7,10 @@
   cursor: pointer!important;
 }
 
+.DateInput__input {
+  cursor: pointer!important;
+}
+
 .filename {
   width: 500px!important;
 }
@@ -16,7 +20,7 @@
 }
 
 .large {
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .ui.selection.dropdown .menu>.item {
