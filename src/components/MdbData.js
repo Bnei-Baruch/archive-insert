@@ -107,7 +107,7 @@ class MdbData extends Component {
                     <Table.Cell>
                         <NestedModal {...this.props}
                                      uid={unit.uid}
-                                     name={unit.i18n.he.name}
+                                     name={name}
                                      id={unit.id}
                                      capture_date={unit.properties.capture_date}
                         />
