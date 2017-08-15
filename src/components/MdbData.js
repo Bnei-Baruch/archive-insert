@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Modal, Button } from 'semantic-ui-react'
+import { Table, Modal, Button, Popup, Grid, Header, Icon } from 'semantic-ui-react'
 
 const API_BACKEND = 'https://upload.kli.one/rest/content_units';
 // http://app.mdb.bbdomain.org/rest/files/?page_no=1&content_type=LESSON_PART'
@@ -105,12 +105,21 @@ class MdbData extends Component {
             return (
                 <Table.Row className={active} key={unit.id} onClick={() => this.handleClick(unit)}>
                     <Table.Cell>
-                        <NestedModal {...this.props}
-                                     uid={unit.uid}
-                                     name={name}
-                                     id={unit.id}
-                                     capture_date={unit.properties.capture_date}
-                        />
+                        {/*<NestedModal {...this.props}*/}
+                                     {/*uid={unit.uid}*/}
+                                     {/*name={name}*/}
+                                     {/*id={unit.id}*/}
+                                     {/*capture_date={unit.properties.capture_date}*/}
+                        {/*/>*/}
+                        <Popup
+                            trigger={<Icon link name='help' />}
+                            flowing
+                            position='bottom left'
+                            hoverable >
+                            <AddInfo
+                                id={unit.id}
+                                />
+                        </Popup>
                     </Table.Cell>
                     <Table.Cell  textAlign='right' className={(unit.i18n.he ? "rtl-dir" : "negative")}>{name}</Table.Cell>
                     <Table.Cell>{unit.properties.capture_date}</Table.Cell>
@@ -131,6 +140,39 @@ class MdbData extends Component {
                 </Table.Body>
             </Table>
         );
+    }
+}
+
+class AddInfo extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            files: [],
+        };
+    }
+    componentDidMount() {
+        console.log("--Did mount--");
+        let path = this.props.id + '/files/';
+        Fetcher(path)
+            .then(data => {
+                this.setState({files: data});
+            })
+    }
+    render() {
+        let files = this.state.files.map((file, i) => {
+            if(i > this.state.files.length - 7)
+           return (
+                   <p key={file.id}>{file.name}</p>
+           );
+        });
+        return (
+        <Grid>
+            <Grid.Column textAlign='left'>
+                <Header as='h4'>Files</Header>
+                {files}
+            </Grid.Column>
+        </Grid>
+        )
     }
 }
 
