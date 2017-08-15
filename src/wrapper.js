@@ -16,9 +16,9 @@ export const showModal = (options) => {
         unmountModal();
     };
 
-    const { metadata, onComplete, onCancel } = Object.assign({}, options);
+    const { filedata, onComplete, onCancel } = Object.assign({}, options);
 
-    ReactDOM.render(<App metadata={metadata} onComplete={closeWrapper} />, div);
+    ReactDOM.render(<App filedata={filedata} onComplete={closeWrapper} />, div);
 
 };
 

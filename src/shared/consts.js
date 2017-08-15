@@ -17,7 +17,7 @@ export const language_options = [
 export const upload_options = [
     { value: 'akladot', text: ' ‏הקלדות', icon: 'file word outline' },
     { value: 'kitei-makor', text: 'קיטעי-מקור', icon: 'commenting outline' },
-    // { value: 'TRANSLATION', text: 'Translation', icon: 'translate' },
+    { value: 'sirtutim', text: ' ‏שרטוטים', icon: 'translate' },
 ];
 
 export const mime_list = {

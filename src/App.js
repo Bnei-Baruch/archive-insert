@@ -13,26 +13,20 @@ import MdbData from './components/MdbData';
 
 class ModalContent extends Component {
     static propTypes = {
-        metadata: PropTypes.object,
+        filedata: PropTypes.object,
         onComplete: PropTypes.func,
         onCancel: PropTypes.func,
     };
     static defaultProps = {
-        metadata: {},
+        filedata: {},
         onComplete: noop,
         onCancel: noop,
     };
     constructor(props) {
         super(props);
         this.state = {
-            metadata: { ...props.metadata,
-                uploaded_filename: props.metadata.filename,
-                content_type: null,
-                language: null,
-                upload_type: null,
-                capture_date: null,
-                uid: "",
-            },
+            filedata: { ...props.filedata },
+            unit: {},
             today_date: moment().format('YYYY-MM-DD'),
             start_date: moment().format('YYYY-MM-DD'),
             end_date: moment().format('YYYY-MM-DD'),
@@ -70,28 +64,29 @@ class ModalContent extends Component {
         return false;
     };
 
-    handleOnComplete = (e) => {
+    handleOnComplete = () => {
         console.log("::HandelOnComplete::");
-        console.log(this.state.metadata);
-        this.props.onComplete(this.state.metadata);
+        let metadata = this.state.filedata;
+        metadata.uid = this.state.unit.uid;
+        metadata.content_type = this.state.content_type;
+        metadata.language = this.state.language;
+        metadata.upload_type = this.state.upload_type;
+        metadata.upload_filename = this.state.filedata.filename;
+        metadata.capture_date = this.state.unit.properties.film_date;
+        // Calculate new name here
+        metadata.filename =
+            metadata.language + '_o_rav_' +
+            metadata.capture_date + '_' +
+            metadata.upload_type + '_desc.' + mime_list[metadata.type];
+        console.log(metadata);
+        this.props.onComplete(metadata);
     };
 
     handleUidSelect = (data) => {
         console.log("::HandleUidSelect::");
         console.log(data);
         this.state.content_type && this.state.language && this.state.upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
-        let filedata = this.state.metadata;
-        filedata.uid = data.uid;
-        filedata.content_type = this.state.content_type;
-        filedata.language = this.state.language;
-        filedata.upload_type = this.state.upload_type;
-        filedata.capture_date = data.properties.film_date;
-        // TODO: Calculate new name here
-        filedata.filename =
-            filedata.language + '_o_rav_' +
-            filedata.capture_date + '_' +
-            filedata.upload_type + '_desc.' + mime_list[filedata.type];
-        this.setState({ metadata: filedata });
+        this.setState({ unit: data });
     };
 
     render() {
@@ -145,11 +140,13 @@ class ModalContent extends Component {
                 <Segment clearing tertiary color='yellow'>
                 <Modal.Actions>
                     <Input
+                        disabled
                         className="filename"
                         icon='file'
                         iconPosition='left'
                         focus={true}
-                        value={ this.state.metadata.filename } />
+                        value={ this.state.filedata.filename }
+                    />
                     <Dropdown
                         error={!this.state.upload_type}
                         placeholder="Upload Type:"
@@ -159,12 +156,6 @@ class ModalContent extends Component {
                         onChange={this.handleUploadFilter}
                         value={this.state.value} >
                     </Dropdown>
-                    {/*<Input*/}
-                        {/*className="uid"*/}
-                        {/*value={this.state.metadata.uid}*/}
-                        {/*icon='vcard'*/}
-                        {/*iconPosition='left'*/}
-                        {/*focus={false} />*/}
                     <Button
                         color='green'
                         disabled={!this.state.isValidated}
@@ -182,7 +173,6 @@ class App extends Component {
   render() {
     return (
         <Modal
-            size='fullscreen'
             closeOnDimmerClick={false}
             closeIcon={true}
             defaultOpen={true}

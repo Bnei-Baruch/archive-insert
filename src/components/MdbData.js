@@ -66,7 +66,8 @@ class MdbData extends Component {
         console.log("--ReceiveProps--");
         console.log(nextProps);
         let path = '?page_no=1&content_type='+nextProps.content_type+'&start_date='+nextProps.start_date+'&end_date='+nextProps.end_date
-        if (nextProps.content_type !== this.props.content_type || nextProps.end_date !== this.props.end_date) {
+        // TODO: We must be sure start_date < end_date
+        if (JSON.stringify(this.props) !== JSON.stringify(nextProps)) {
             Fetcher(path)
                 .then(data => {
                     this.setState({units: data.data});
@@ -78,6 +79,7 @@ class MdbData extends Component {
         this.setState({active: unit.uid});
     }
     render() {
+        // console.log("::Render MdbData::")
         let uidList = this.state.units.map((unit) => {
             let name = (unit.i18n.he) ? unit.i18n.he.name : "WTF!?";
             var active = (this.state.active === unit.uid ? 'active' : '');
