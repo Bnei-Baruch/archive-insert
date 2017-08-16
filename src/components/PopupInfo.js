@@ -21,7 +21,7 @@ class PopupInfo extends Component {
 
     render() {
         let files = this.state.files.map((file, i) => {
-            if(i > this.state.files.length - 7)
+            if (file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/))
                 return (
                     <p key={file.id}>{file.name}</p>
                 );
@@ -29,8 +29,7 @@ class PopupInfo extends Component {
         return (
             <Grid>
                 <Grid.Column textAlign='left'>
-                    <Header as='h4'>Files</Header>
-                    {files}
+                    <Header as='h4'>{files}</Header>
                 </Grid.Column>
             </Grid>
         )

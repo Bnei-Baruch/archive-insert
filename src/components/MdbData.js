@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Modal, Button, Popup, Grid, Header, Icon } from 'semantic-ui-react'
 import { Fetcher } from '../shared/consts';
-import PopupInfo from './PopupInfo';
+import NameHelper from './NameHelper';
 
 class MdbData extends Component {
     constructor(props) {
@@ -14,11 +14,8 @@ class MdbData extends Component {
 
     componentWillReceiveProps(nextProps) {
         console.log("--ReceiveProps--");
-        // console.log(nextProps);
-        // console.log(this.props);
         let path = '?page_no=1&content_type='+nextProps.content_type+'&start_date='+nextProps.start_date+'&end_date='+nextProps.end_date
-        // TODO: We must be sure start_date < end_date
-        if (JSON.stringify(this.props) !== JSON.stringify(nextProps) && nextProps.content_type ) {
+        if (JSON.stringify(this.props) !== JSON.stringify(nextProps) && nextProps.content_type && nextProps.language && nextProps.upload_type ) {
             Fetcher(path)
                 .then(data => {
                     this.setState({units: data.data});
@@ -32,25 +29,22 @@ class MdbData extends Component {
     };
 
     render() {
-        // console.log("::Render MdbData::")
         let uidList = this.state.units.map((unit) => {
             let name = (unit.i18n.he) ? unit.i18n.he.name : "Name not found";
             var active = (this.state.active === unit.uid ? 'active' : '');
             return (
                 <Table.Row className={active} key={unit.id} onClick={() => this.handleClick(unit)}>
                     <Table.Cell>
-                        {/*<NestedModal {...this.props}*/}
-                                     {/*uid={unit.uid}*/}
-                                     {/*name={name}*/}
-                                     {/*id={unit.id}*/}
-                                     {/*capture_date={unit.properties.capture_date}*/}
-                        {/*/>*/}
                         <Popup
                             trigger={<Icon link name='help' />}
                             flowing
                             position='bottom left'
                             hoverable >
-                            <PopupInfo id={unit.id} />
+                            <NameHelper id={unit.id}
+                                       language={this.props.language}
+                                       upload_type={this.props.upload_type}
+                                        film_date={unit.properties.film_date}
+                            />
                         </Popup>
                     </Table.Cell>
                     <Table.Cell  textAlign='right' className={(unit.i18n.he ? "rtl-dir" : "negative")}>{name}</Table.Cell>
@@ -61,11 +55,11 @@ class MdbData extends Component {
         return (
             <Table selectable color='grey' key='teal' {...this.props}>
                 <Table.Header>
-                    {/*<Table.Row>*/}
-                        {/*<Table.HeaderCell>ID</Table.HeaderCell>*/}
-                        {/*<Table.HeaderCell textAlign='right'>Name</Table.HeaderCell>*/}
-                        {/*<Table.HeaderCell>Created At</Table.HeaderCell>*/}
-                    {/*</Table.Row>*/}
+                    <Table.Row>
+                        <Table.HeaderCell>Info</Table.HeaderCell>
+                        <Table.HeaderCell textAlign='right'>Content Name</Table.HeaderCell>
+                        <Table.HeaderCell width="2">Date</Table.HeaderCell>
+                    </Table.Row>
                 </Table.Header>
                 <Table.Body>
                     {uidList}

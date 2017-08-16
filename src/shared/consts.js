@@ -5,6 +5,15 @@ export const EMPTY_OBJECT = Object.freeze({});
 const API_BACKEND = 'https://upload.kli.one/rest/content_units';
 // http://app.mdb.bbdomain.org/rest/files/?page_no=1&content_type=LESSON_PART'
 
+export const getName = (metadata) => {
+  console.log(metadata)
+    metadata.filename =
+        metadata.language + '_o_rav_' +
+        metadata.film_date + '_' +
+        metadata.upload_type + '_desc.' + mime_list[metadata.type];
+    return metadata.filename;
+}
+
 export const Fetcher = (path) => fetch(`${API_BACKEND}/${path}`)
     .then((response) => response.json())
     .then((responseJson) => {
@@ -29,7 +38,7 @@ export const language_options = [
 export const upload_options = [
     { value: 'akladot', text: ' ‏הקלדות', icon: 'file word outline' },
     { value: 'kitei-makor', text: 'קיטעי-מקור', icon: 'commenting outline' },
-    { value: 'sirtutim', text: ' ‏שרטוטים', icon: 'translate' },
+    { value: 'sirtutim', text: ' ‏שרטוטים', icon: 'edit' },
 ];
 
 export const mime_list = {

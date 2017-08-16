@@ -8,7 +8,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import { Button, Header, Icon, Modal, Dropdown, Container, Segment, Input, Progress } from 'semantic-ui-react'
 import { DateRangePicker, SingleDatePicker } from 'react-dates';
 
-import {content_options, language_options, upload_options, mime_list } from './shared/consts';
+import {content_options, language_options, upload_options, Fetcher, getName } from './shared/consts';
 import MdbData from './components/MdbData';
 
 class ModalContent extends Component {
@@ -27,6 +27,7 @@ class ModalContent extends Component {
         this.state = {
             filedata: { ...props.filedata },
             unit: {},
+            files: [],
             today_date: moment().format('YYYY-MM-DD'),
             start_date: moment().format('YYYY-MM-DD'),
             end_date: moment().add(340, 'days').format('YYYY-MM-DD'),
@@ -69,6 +70,7 @@ class ModalContent extends Component {
         // Object we return from react
         let metadata = this.state.filedata;
         metadata.uid = this.state.unit.uid;
+        metadata.send_file = this.state.send_file;
         metadata.content_type = this.state.content_type;
         metadata.language = this.state.language;
         metadata.upload_type = this.state.upload_type;
@@ -76,10 +78,7 @@ class ModalContent extends Component {
         metadata.capture_date = this.state.unit.properties.capture_date;
         metadata.film_date = this.state.unit.properties.film_date;
         // Calculate new name here
-        metadata.filename =
-            metadata.language + '_o_rav_' +
-            metadata.capture_date + '_' +
-            metadata.upload_type + '_desc.' + mime_list[metadata.type];
+        metadata.filename = getName(metadata);
         console.log(metadata);
         this.props.onComplete(metadata);
     };
@@ -87,6 +86,13 @@ class ModalContent extends Component {
     handleUidSelect = (data) => {
         console.log("::HandleUidSelect::");
         console.log(data);
+        let path = data.id + '/files/';
+        Fetcher(path)
+            .then(data => {
+                let unit_file = data.filter((file) => file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/));
+                this.setState({files: data, send_file: unit_file[0].name});
+                // file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/)
+            })
         this.state.content_type && this.state.language && this.state.upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
         this.setState({ unit: data });
     };
@@ -135,6 +141,8 @@ class ModalContent extends Component {
                         content_type={this.state.content_type}
                         start_date={this.state.start_date}
                         end_date={this.state.end_date}
+                        language={this.state.language}
+                        upload_type={this.state.upload_type}
                         onUidSelect={this.handleUidSelect}
                     />
                 </Modal.Content>
