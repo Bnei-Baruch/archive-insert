@@ -73,7 +73,8 @@ class ModalContent extends Component {
         metadata.language = this.state.language;
         metadata.upload_type = this.state.upload_type;
         metadata.upload_filename = this.state.filedata.filename;
-        metadata.capture_date = this.state.unit.properties.film_date;
+        metadata.capture_date = this.state.unit.properties.capture_date;
+        metadata.film_date = this.state.unit.properties.film_date;
         // Calculate new name here
         metadata.filename =
             metadata.language + '_o_rav_' +

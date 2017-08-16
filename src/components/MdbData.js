@@ -1,68 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Modal, Button, Popup, Grid, Header, Icon } from 'semantic-ui-react'
-
-const API_BACKEND = 'https://upload.kli.one/rest/content_units';
-// http://app.mdb.bbdomain.org/rest/files/?page_no=1&content_type=LESSON_PART'
-
-const Fetcher = (path) => fetch(`${API_BACKEND}/${path}`)
-    .then((response) => response.json())
-    .then((responseJson) => {
-        console.log("::FetchData::");
-        console.log(responseJson);
-        return responseJson;
-    })
-    .catch(ex => console.log(`get ${path}`, ex));
-
-class NestedModal extends Component {
-    state = {
-        open: false,
-        files: [],
-    }
-
-    open = () => {
-        this.setState({ open: true })
-        let path = this.props.id + '/files/';
-        Fetcher(path)
-            .then(data => {
-                this.setState({files: data});
-            })
-    }
-    close = () => this.setState({ open: false })
-
-    componentDidMount() {
-        // console.log("--Did mount--");
-        // let path = this.props.id + '/files/';
-        // Fetcher(path)
-        //     .then(data => {
-        //         this.setState({files: data.data});
-        //     })
-    }
-
-    render() {
-        const { open } = this.state
-
-        return (
-            <Modal
-                dimmer={true}
-                open={open}
-                onOpen={this.open}
-                onClose={this.close}
-                trigger={<a href='#'>{this.props.id}</a>}
-            >
-                <Modal.Header>{this.props.name}</Modal.Header>
-                <Modal.Content>
-                    <p>{this.props.uid}</p>
-                    <p>{this.props.id}</p>
-                    <p>{this.props.capture_date}</p>
-                </Modal.Content>
-                <Modal.Actions>
-                    {/*<Button icon='check' color='green' content='Select' onClick={this.open} />*/}
-                    <Button color='blue' content='Done' onClick={this.close} />
-                </Modal.Actions>
-            </Modal>
-        )
-    }
-}
+import { Fetcher } from '../shared/consts';
+import PopupInfo from './PopupInfo';
 
 class MdbData extends Component {
     constructor(props) {
@@ -71,15 +10,8 @@ class MdbData extends Component {
             units: [],
             active: null,
         };
-    }
-    componentDidMount() {
-        console.log("--Did mount--");
-        // let path = '?page_no=1&content_type=LESSON_PART&start_date='+this.props.start_date+'&end_date='+this.props.end_date
-        // Fetcher(path)
-        //     .then(data => {
-        //         this.setState({units: data.data});
-        //     })
-    }
+    };
+
     componentWillReceiveProps(nextProps) {
         console.log("--ReceiveProps--");
         // console.log(nextProps);
@@ -92,11 +24,13 @@ class MdbData extends Component {
                     this.setState({units: data.data});
                 })
         }
-    }
+    };
+
     handleClick = (unit) => {
         this.props.onUidSelect(unit);
         this.setState({active: unit.uid});
-    }
+    };
+
     render() {
         // console.log("::Render MdbData::")
         let uidList = this.state.units.map((unit) => {
@@ -116,9 +50,7 @@ class MdbData extends Component {
                             flowing
                             position='bottom left'
                             hoverable >
-                            <AddInfo
-                                id={unit.id}
-                                />
+                            <PopupInfo id={unit.id} />
                         </Popup>
                     </Table.Cell>
                     <Table.Cell  textAlign='right' className={(unit.i18n.he ? "rtl-dir" : "negative")}>{name}</Table.Cell>
@@ -140,39 +72,6 @@ class MdbData extends Component {
                 </Table.Body>
             </Table>
         );
-    }
-}
-
-class AddInfo extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            files: [],
-        };
-    }
-    componentDidMount() {
-        console.log("--Did mount--");
-        let path = this.props.id + '/files/';
-        Fetcher(path)
-            .then(data => {
-                this.setState({files: data});
-            })
-    }
-    render() {
-        let files = this.state.files.map((file, i) => {
-            if(i > this.state.files.length - 7)
-           return (
-                   <p key={file.id}>{file.name}</p>
-           );
-        });
-        return (
-        <Grid>
-            <Grid.Column textAlign='left'>
-                <Header as='h4'>Files</Header>
-                {files}
-            </Grid.Column>
-        </Grid>
-        )
     }
 }
 

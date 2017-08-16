@@ -2,6 +2,18 @@
 export const EMPTY_ARRAY  = Object.freeze([]);
 export const EMPTY_OBJECT = Object.freeze({});
 
+const API_BACKEND = 'https://upload.kli.one/rest/content_units';
+// http://app.mdb.bbdomain.org/rest/files/?page_no=1&content_type=LESSON_PART'
+
+export const Fetcher = (path) => fetch(`${API_BACKEND}/${path}`)
+    .then((response) => response.json())
+    .then((responseJson) => {
+        console.log("::FetchData::");
+        console.log(responseJson);
+        return responseJson;
+    })
+    .catch(ex => console.log(`get ${path}`, ex));
+
 export const content_options = [
     { value: 'LESSON_PART', text: ' ‏שיעור', icon: 'student' },
     { value: 'VIDEO_PROGRAM_CHAPTER', text: ' ‏תוכנית', icon: 'record' },
