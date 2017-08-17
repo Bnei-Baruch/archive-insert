@@ -15,6 +15,14 @@ class MdbData extends Component {
             units: [],
             active: null,
         };
+        console.log("--ConstractorProps--");
+        let path = '?page_no=1&content_type='+this.props.content_type+'&start_date='+this.props.start_date+'&end_date='+this.props.end_date
+        if (this.props.content_type && this.props.language && this.props.upload_type ) {
+            Fetcher(path)
+                .then(data => {
+                    this.setState({units: data.data});
+                })
+        }
     };
 
     componentWillReceiveProps(nextProps) {
@@ -41,7 +49,7 @@ class MdbData extends Component {
                 <Table.Row className={active} key={unit.id} onClick={() => this.handleClick(unit)}>
                     <Table.Cell>
                         <Popup
-                            trigger={<Icon link name='help' />}
+                            trigger={this.props.upload_type === "aricha" ? "" : <Icon link name='help' />}
                             flowing
                             position='bottom left'
                             hoverable >

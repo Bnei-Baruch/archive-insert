@@ -29,11 +29,11 @@ class ModalContent extends Component {
             unit: {},
             files: [],
             today_date: moment().format('YYYY-MM-DD'),
-            start_date: moment().format('YYYY-MM-DD'),
-            end_date: moment().add(340, 'days').format('YYYY-MM-DD'),
-            content_type: null,
-            language: null,
-            upload_type: null,
+            start_date: this.props.filedata.start_date ? this.props.filedata.start_date : moment().format('YYYY-MM-DD'),
+            end_date: this.props.filedata.end_date ? this.props.filedata.end_date : moment().add(340, 'days').format('YYYY-MM-DD'),
+            content_type: this.props.filedata.content_type ? this.props.filedata.content_type : null,
+            language: this.props.filedata.language ? this.props.filedata.language : null,
+            upload_type: this.props.filedata.upload_type ? this.props.filedata.upload_type : null,
             isValidated: false,
         };
     }
@@ -54,11 +54,9 @@ class ModalContent extends Component {
     };
 
     handleDatesChange = ({startDate, endDate }) => {
-        let startdate = (startDate) ? startDate.format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+        let startdate = (startDate) ? startDate.format('YYYY-MM-DD') : this.props.filedata.filename.split(".")[0].split("_")[3];
         let enddate = (endDate) ? endDate.format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-        this.setState({ startDate, endDate });
-        this.setState({start_date: startdate});
-        this.setState({end_date: enddate});
+        this.setState({ startDate, endDate, start_date: startdate, end_date: enddate });
     };
 
     handleOutsideRange = () => {
@@ -78,6 +76,7 @@ class ModalContent extends Component {
         metadata.upload_filename = this.state.filedata.filename;
         metadata.capture_date = this.state.unit.properties.capture_date;
         metadata.film_date = this.state.unit.properties.film_date;
+        metadata.send_id = this.state.send_name.split(".")[0].split("_").pop().slice(0,-1)
         // Calculate new name here
         metadata.filename = getName(metadata);
         console.log(metadata);
@@ -105,6 +104,7 @@ class ModalContent extends Component {
                     <Header floated='left' >
                         <Dropdown
                             error={!this.state.content_type}
+                            defaultValue={this.state.content_type}
                             className="large"
                             placeholder="Content:"
                             selection
@@ -115,6 +115,7 @@ class ModalContent extends Component {
                         </Dropdown>
                         <Dropdown
                             error={!this.state.language}
+                            defaultValue={this.state.language}
                             className="large"
                             placeholder="Language:"
                             selection
@@ -162,6 +163,7 @@ class ModalContent extends Component {
                     />
                     <Dropdown
                         error={!this.state.upload_type}
+                        defaultValue={this.state.upload_type}
                         placeholder="Upload Type:"
                         selection
                         options={upload_options}

@@ -10,17 +10,17 @@ export const getName = (metadata) => {
     switch (metadata.upload_type) {
         case "akladot":
             var language = metadata.language;
-            var original = "o";
-            var lecturer = "rav";
+            var original = language === "heb" ? "o" : "t";
+            var lecturer = metadata.send_name.split("_")[2];
             var date = metadata.film_date;
-            var type = "lesson";
+            var type = metadata.send_name.split("_")[4];
             var desc = metadata.send_name.split("_").slice(5, -1).join("_");
             var ext = mime_list[metadata.mime_type];
             break;
         case "kitei-makor":
             var language = metadata.language;
-            var original = "o";
-            var lecturer = "rav";
+            var original = language === "heb" ? "o" : "t";
+            var lecturer = metadata.send_name.split("_")[2];
             var date = metadata.film_date;
             var type = "kitei-makor";
             var desc = metadata.send_name.split("_").slice(5, -1).join("_");
@@ -28,12 +28,14 @@ export const getName = (metadata) => {
             break;
         case "sirtutim":
             break;
+        case "aricha":
+            break;
         default:
             var language = metadata.language;
-            var original = "o";
-            var lecturer = "rav";
+            var original = language === "heb" ? "o" : "t";
+            var lecturer = metadata.send_name.split("_")[2];
             var date = metadata.film_date;
-            var type = "lesson";
+            var type = metadata.send_name.split("_")[4];
             var desc = metadata.send_name.split("_").slice(5, -1).join("_");
             var ext = mime_list[metadata.mime_type];
     };
@@ -74,6 +76,7 @@ export const upload_options = [
     { value: 'akladot', text: ' ‏הקלדות', icon: 'file word outline' },
     { value: 'kitei-makor', text: 'קיטעי-מקור', icon: 'commenting outline' },
     { value: 'sirtutim', text: ' ‏שרטוטים', icon: 'edit' },
+    { value: 'aricha', text: ' עריכה', icon: 'paint brush' },
 ];
 
 export const mime_list = {
