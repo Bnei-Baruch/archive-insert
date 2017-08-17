@@ -70,10 +70,11 @@ class ModalContent extends Component {
         // Object we return from react
         let metadata = this.state.filedata;
         metadata.uid = this.state.unit.uid;
-        metadata.send_file = this.state.send_file;
+        metadata.send_name = this.state.send_name;
         metadata.content_type = this.state.content_type;
         metadata.language = this.state.language;
         metadata.upload_type = this.state.upload_type;
+        metadata.mime_type = this.state.filedata.type;
         metadata.upload_filename = this.state.filedata.filename;
         metadata.capture_date = this.state.unit.properties.capture_date;
         metadata.film_date = this.state.unit.properties.film_date;
@@ -90,7 +91,7 @@ class ModalContent extends Component {
         Fetcher(path)
             .then(data => {
                 let unit_file = data.filter((file) => file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/));
-                this.setState({files: data, send_file: unit_file[0].name});
+                this.setState({files: data, send_name: unit_file[0].name});
                 // file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/)
             })
         this.state.content_type && this.state.language && this.state.upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
@@ -143,6 +144,8 @@ class ModalContent extends Component {
                         end_date={this.state.end_date}
                         language={this.state.language}
                         upload_type={this.state.upload_type}
+                        uploaded_filename={this.state.filedata.filename}
+                        mime_type={this.state.filedata.type}
                         onUidSelect={this.handleUidSelect}
                     />
                 </Modal.Content>

@@ -4,6 +4,11 @@ import { Fetcher } from '../shared/consts';
 import NameHelper from './NameHelper';
 
 class MdbData extends Component {
+
+    static defaultProps = {
+        uploaded_filename: "",
+    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -40,10 +45,13 @@ class MdbData extends Component {
                             flowing
                             position='bottom left'
                             hoverable >
-                            <NameHelper id={unit.id}
-                                       language={this.props.language}
-                                       upload_type={this.props.upload_type}
-                                        film_date={unit.properties.film_date}
+                            <NameHelper
+                                id={unit.id}
+                                language={this.props.language}
+                                upload_type={this.props.upload_type}
+                                mime_type={this.props.mime_type}
+                                uploaded_filename={this.props.uploaded_filename}
+                                film_date={unit.properties.film_date}
                             />
                         </Popup>
                     </Table.Cell>

@@ -7,11 +7,46 @@ const API_BACKEND = 'https://upload.kli.one/rest/content_units';
 
 export const getName = (metadata) => {
   console.log(metadata)
-    metadata.filename =
-        metadata.language + '_o_rav_' +
-        metadata.film_date + '_' +
-        metadata.upload_type + '_desc.' + mime_list[metadata.type];
-    return metadata.filename;
+    switch (metadata.upload_type) {
+        case "akladot":
+            var language = metadata.language;
+            var original = "o";
+            var lecturer = "rav";
+            var date = metadata.film_date;
+            var type = "lesson";
+            var desc = metadata.send_name.split("_").slice(5, -1).join("_");
+            var ext = mime_list[metadata.mime_type];
+            break;
+        case "kitei-makor":
+            var language = metadata.language;
+            var original = "o";
+            var lecturer = "rav";
+            var date = metadata.film_date;
+            var type = "kitei-makor";
+            var desc = metadata.send_name.split("_").slice(5, -1).join("_");
+            var ext = mime_list[metadata.mime_type];
+            break;
+        case "sirtutim":
+            break;
+        default:
+            var language = metadata.language;
+            var original = "o";
+            var lecturer = "rav";
+            var date = metadata.film_date;
+            var type = "lesson";
+            var desc = metadata.send_name.split("_").slice(5, -1).join("_");
+            var ext = mime_list[metadata.mime_type];
+    };
+
+    let filename =
+        language + '_' +
+        original + '_' +
+        lecturer + '_' +
+        date + '_' +
+        type + '_' +
+        desc + '.' +
+        ext;
+    return filename;
 }
 
 export const Fetcher = (path) => fetch(`${API_BACKEND}/${path}`)

@@ -10,25 +10,25 @@ class NameHelper extends Component {
         };
     };
 
-    componentDidMount() {
+    componentWillMount() {
         console.log("--Did mount--");
         let path = this.props.id + '/files/';
         Fetcher(path)
             .then(data => {
                 let unit_file = data.filter((file) => file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/));
-                this.setState({files: data , send_file: unit_file[0].name});
+                this.setState({name: getName({...this.props, send_name: unit_file[0].name})});
             })
     };
 
     render() {
-        // let unit_file = this.state.files.filter((file) => file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/));
-        // let send_name = unit_file[0];
-        //WTF?!?
-        // console.log(unit_file[0]);
         return (
             <Grid>
                 <Grid.Column textAlign='left'>
-                    <Header as='h4'>{getName({...this.props, send_name: this.state.send_file})}</Header>
+                    <Header
+                        as='h4'
+                        color={ this.props.uploaded_filename === this.state.name ? "" : "red" } >
+                    {this.state.name}
+                    </Header>
                 </Grid.Column>
             </Grid>
         )
