@@ -5,8 +5,8 @@ import moment from 'moment';
 import './App.css';
 import 'semantic-ui-css/semantic.min.css';
 import 'react-dates/lib/css/_datepicker.css';
-import { Button, Header, Icon, Modal, Dropdown, Container, Segment, Input, Progress } from 'semantic-ui-react'
-import { DateRangePicker, SingleDatePicker } from 'react-dates';
+import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react'
+import { DateRangePicker } from 'react-dates';
 
 import {content_options, language_options, upload_options, Fetcher, getName } from './shared/consts';
 import MdbData from './components/MdbData';
@@ -76,7 +76,7 @@ class ModalContent extends Component {
         metadata.upload_filename = this.state.filedata.filename;
         metadata.capture_date = this.state.unit.properties.capture_date;
         metadata.film_date = this.state.unit.properties.film_date;
-        metadata.send_id = this.state.send_name.split(".")[0].split("_").pop().slice(0,-1)
+        metadata.send_id = this.state.send_name.split(".")[0].split("_").pop().slice(0,-1);
         // Calculate new name here
         metadata.filename = getName(metadata);
         console.log(metadata);
@@ -92,7 +92,7 @@ class ModalContent extends Component {
                 let unit_file = data.filter((file) => file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/));
                 this.setState({files: data, send_name: unit_file[0].name});
                 // file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/)
-            })
+            });
         this.state.content_type && this.state.language && this.state.upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
         this.setState({ unit: data });
     };
@@ -162,6 +162,7 @@ class ModalContent extends Component {
                         value={ this.state.filedata.filename }
                     />
                     <Dropdown
+                        upward
                         error={!this.state.upload_type}
                         defaultValue={this.state.upload_type}
                         placeholder="Upload Type:"
@@ -188,6 +189,7 @@ class App extends Component {
   render() {
     return (
         <Modal
+            size="large"
             closeOnDimmerClick={false}
             closeIcon={true}
             defaultOpen={true}

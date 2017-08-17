@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import 'semantic-ui-css/semantic.min.css';
 import App from "./App";
 
-export const showModal = (options) => {
+export const app = (options) => {
     console.log(options);
 
     const div = document.createElement('div');
@@ -22,5 +22,4 @@ export const showModal = (options) => {
 
 };
 
-// module.exports = showModal;
 

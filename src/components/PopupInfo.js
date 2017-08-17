@@ -20,7 +20,7 @@ class PopupInfo extends Component {
     };
 
     render() {
-        let files = this.state.files.map((file, i) => {
+        let files = this.state.files.map((file) => {
             if (file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/))
                 return (
                     <p key={file.id}>{file.name}</p>

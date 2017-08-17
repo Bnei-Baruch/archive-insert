@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Modal, Button, Popup, Grid, Header, Icon } from 'semantic-ui-react'
+import { Table, Popup, Icon } from 'semantic-ui-react'
 import { Fetcher } from '../shared/consts';
 import NameHelper from './NameHelper';
 
@@ -16,7 +16,7 @@ class MdbData extends Component {
             active: null,
         };
         console.log("--ConstractorProps--");
-        let path = '?page_no=1&content_type='+this.props.content_type+'&start_date='+this.props.start_date+'&end_date='+this.props.end_date
+        let path = '?page_no=1&content_type='+this.props.content_type+'&start_date='+this.props.start_date+'&end_date='+this.props.end_date;
         if (this.props.content_type && this.props.language && this.props.upload_type ) {
             Fetcher(path)
                 .then(data => {
@@ -27,7 +27,7 @@ class MdbData extends Component {
 
     componentWillReceiveProps(nextProps) {
         console.log("--ReceiveProps--");
-        let path = '?page_no=1&content_type='+nextProps.content_type+'&start_date='+nextProps.start_date+'&end_date='+nextProps.end_date
+        let path = '?page_no=1&content_type='+nextProps.content_type+'&start_date='+nextProps.start_date+'&end_date='+nextProps.end_date;
         if (JSON.stringify(this.props) !== JSON.stringify(nextProps) && nextProps.content_type && nextProps.language && nextProps.upload_type ) {
             Fetcher(path)
                 .then(data => {
@@ -44,7 +44,7 @@ class MdbData extends Component {
     render() {
         let uidList = this.state.units.map((unit) => {
             let name = (unit.i18n.he) ? unit.i18n.he.name : "Name not found";
-            var active = (this.state.active === unit.uid ? 'active' : '');
+            let active = (this.state.active === unit.uid ? 'active' : '');
             return (
                 <Table.Row className={active} key={unit.id} onClick={() => this.handleClick(unit)}>
                     <Table.Cell>

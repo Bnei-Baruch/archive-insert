@@ -1,6 +1,7 @@
 .ui.modal {
   top: 2%!important;
   margin-top: 2%!important;
+  width: 1000px!important;
 }
 
 .table {
@@ -12,7 +13,7 @@
 }
 
 .filename {
-  width: 500px!important;
+  width: 600px!important;
 }
 
 .uid {

@@ -73,10 +73,10 @@ export const language_options = [
 ];
 
 export const upload_options = [
-    { value: 'akladot', text: ' ‏הקלדות', icon: 'file word outline' },
-    { value: 'kitei-makor', text: 'קיטעי-מקור', icon: 'commenting outline' },
-    { value: 'sirtutim', text: ' ‏שרטוטים', icon: 'edit' },
     { value: 'aricha', text: ' עריכה', icon: 'paint brush' },
+    { value: 'sirtutim', text: ' ‏שרטוטים', icon: 'edit' },
+    { value: 'kitei-makor', text: 'קיטעי-מקור', icon: 'commenting outline' },
+    { value: 'akladot', text: ' ‏הקלדות', icon: 'file word outline' },
 ];
 
 export const mime_list = {
