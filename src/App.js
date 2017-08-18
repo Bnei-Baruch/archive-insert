@@ -8,7 +8,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react'
 import { DateRangePicker } from 'react-dates';
 
-import {content_options, language_options, upload_options, Fetcher, getName } from './shared/consts';
+import {content_options, language_options, upload_options, Fetcher, getName, MDB_LANGUAGES } from './shared/consts';
 import MdbData from './components/MdbData';
 
 class ModalContent extends Component {
@@ -76,6 +76,7 @@ class ModalContent extends Component {
         metadata.upload_filename = this.state.filedata.filename;
         metadata.capture_date = this.state.unit.properties.capture_date;
         metadata.film_date = this.state.unit.properties.film_date;
+        metadata.original_language = MDB_LANGUAGES[this.state.unit.properties.original_language];
         metadata.send_id = this.state.send_name.split(".")[0].split("_").pop().slice(0,-1);
         // Calculate new name here
         metadata.filename = getName(metadata);
@@ -91,7 +92,6 @@ class ModalContent extends Component {
             .then(data => {
                 let unit_file = data.filter((file) => file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/));
                 this.setState({files: data, send_name: unit_file[0].name});
-                // file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/)
             });
         this.state.content_type && this.state.language && this.state.upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
         this.setState({ unit: data });

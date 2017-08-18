@@ -3,14 +3,14 @@ export const EMPTY_ARRAY  = Object.freeze([]);
 export const EMPTY_OBJECT = Object.freeze({});
 
 const API_BACKEND = 'https://upload.kli.one/rest/content_units';
-// http://app.mdb.bbdomain.org/rest/files/?page_no=1&content_type=LESSON_PART'
+// const API_BACKEND = 'http://app.mdb.bbdomain.org/rest/content_units';
 
 export const getName = (metadata) => {
   console.log(metadata)
     switch (metadata.upload_type) {
         case "akladot":
             var language = metadata.language;
-            var original = language === "heb" ? "o" : "t";
+            var original = language === metadata.original_language ? "o" : "t";
             var lecturer = metadata.send_name.split("_")[2];
             var date = metadata.film_date;
             var type = metadata.send_name.split("_")[4];
@@ -19,7 +19,7 @@ export const getName = (metadata) => {
             break;
         case "kitei-makor":
             var language = metadata.language;
-            var original = language === "heb" ? "o" : "t";
+            var original = language === metadata.original_language ? "o" : "t";
             var lecturer = metadata.send_name.split("_")[2];
             var date = metadata.film_date;
             var type = "kitei-makor";
@@ -32,7 +32,7 @@ export const getName = (metadata) => {
             break;
         default:
             var language = metadata.language;
-            var original = language === "heb" ? "o" : "t";
+            var original = language === metadata.original_language ? "o" : "t";
             var lecturer = metadata.send_name.split("_")[2];
             var date = metadata.film_date;
             var type = metadata.send_name.split("_")[4];

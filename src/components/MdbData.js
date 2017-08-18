@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Popup, Icon } from 'semantic-ui-react'
-import { Fetcher } from '../shared/consts';
+import { Fetcher, MDB_LANGUAGES } from '../shared/consts';
 import NameHelper from './NameHelper';
 
 class MdbData extends Component {
@@ -60,6 +60,7 @@ class MdbData extends Component {
                                 mime_type={this.props.mime_type}
                                 uploaded_filename={this.props.uploaded_filename}
                                 film_date={unit.properties.film_date}
+                                original_language={MDB_LANGUAGES[unit.properties.original_language]}
                             />
                         </Popup>
                     </Table.Cell>
