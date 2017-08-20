@@ -6,7 +6,7 @@ import './App.css';
 import 'semantic-ui-css/semantic.min.css';
 import 'react-dates/lib/css/_datepicker.css';
 import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react'
-import { DateRangePicker } from 'react-dates';
+import { DateRangePicker, SingleDatePicker, isInclusivelyBeforeDay } from 'react-dates';
 
 import {content_options, language_options, upload_options, Fetcher, getName, MDB_LANGUAGES } from './shared/consts';
 import MdbData from './components/MdbData';
@@ -59,8 +59,10 @@ class ModalContent extends Component {
         this.setState({ startDate, endDate, start_date: startdate, end_date: enddate });
     };
 
-    handleOutsideRange = () => {
-        return false;
+    handleDateChange = (date) => {
+        let startdate = (date) ? date.format('YYYY-MM-DD') : this.props.filedata.filename.split(".")[0].split("_")[3];
+        let enddate = (date) ? date.format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+        this.setState({ date, start_date: startdate, end_date: enddate });
     };
 
     handleOnComplete = () => {
@@ -98,6 +100,35 @@ class ModalContent extends Component {
     };
 
     render() {
+        // const BAD_DATES = [moment(), moment().add(1, 'days')];
+        // const isDayBlocked = day => BAD_DATES.filter(d => d.isSame(day, 'day')).length > 0;
+        let single_date = (
+            <SingleDatePicker
+                showDefaultInputIcon
+                displayFormat="YYYY-MM-DD"
+                // isDayBlocked={isDayBlocked}
+                isOutsideRange={day => !isInclusivelyBeforeDay(day, moment())}
+                numberOfMonths={1}
+                date={this.state.date}
+                onDateChange={this.handleDateChange}
+                focused={this.state.focused}
+                onFocusChange={({ focused }) => this.setState({ focused })}
+            />
+        );
+
+        let range_date = (
+            <DateRangePicker
+                displayFormat="YYYY-MM-DD"
+                // isDayBlocked={isDayBlocked}
+                isOutsideRange={day => !isInclusivelyBeforeDay(day, moment())}
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                onDatesChange={this.handleDatesChange}
+                focusedInput={this.state.focusedInput}
+                onFocusChange={focusedInput => this.setState({ focusedInput })}
+            />
+        );
+
         return (
             <Container className="ui fullscreen modal visible transition">
                 <Segment clearing>
@@ -126,15 +157,7 @@ class ModalContent extends Component {
                         </Dropdown>
                     </Header>
                     <Header floated='right'>
-                        <DateRangePicker
-                            displayFormat="YYYY-MM-DD"
-                            isOutsideRange={this.handleOutsideRange}
-                            startDate={this.state.startDate}
-                            endDate={this.state.endDate}
-                            onDatesChange={this.handleDatesChange}
-                            focusedInput={this.state.focusedInput}
-                            onFocusChange={focusedInput => this.setState({ focusedInput })}
-                        />
+                        {this.state.upload_type === "aricha" ? range_date : single_date}
                     </Header>
                 </Segment>
                 <Segment clearing secondary color='blue'>
