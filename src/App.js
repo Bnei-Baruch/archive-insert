@@ -105,6 +105,7 @@ class ModalContent extends Component {
         let single_date = (
             <SingleDatePicker
                 showDefaultInputIcon
+                hideKeyboardShortcutsPanel
                 displayFormat="YYYY-MM-DD"
                 // isDayBlocked={isDayBlocked}
                 isOutsideRange={day => !isInclusivelyBeforeDay(day, moment())}
@@ -119,6 +120,7 @@ class ModalContent extends Component {
         let range_date = (
             <DateRangePicker
                 displayFormat="YYYY-MM-DD"
+                hideKeyboardShortcutsPanel
                 // isDayBlocked={isDayBlocked}
                 isOutsideRange={day => !isInclusivelyBeforeDay(day, moment())}
                 startDate={this.state.startDate}

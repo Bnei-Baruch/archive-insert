@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Popup, Icon } from 'semantic-ui-react'
-import { Fetcher, MDB_LANGUAGES } from '../shared/consts';
+import { Fetcher, toHms, MDB_LANGUAGES } from '../shared/consts';
 import NameHelper from './NameHelper';
 
 class MdbData extends Component {
@@ -64,6 +64,7 @@ class MdbData extends Component {
                             />
                         </Popup>
                     </Table.Cell>
+                    <Table.Cell>{toHms(unit.properties.duration)}</Table.Cell>
                     <Table.Cell  textAlign='right' className={(unit.i18n.he ? "rtl-dir" : "negative")}>{name}</Table.Cell>
                     <Table.Cell>{unit.properties.capture_date}</Table.Cell>
                 </Table.Row>
@@ -74,6 +75,7 @@ class MdbData extends Component {
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell>Info</Table.HeaderCell>
+                        <Table.HeaderCell>Duration</Table.HeaderCell>
                         <Table.HeaderCell textAlign='right'>Content Name</Table.HeaderCell>
                         <Table.HeaderCell width="2">Date</Table.HeaderCell>
                     </Table.Row>

@@ -5,6 +5,17 @@ export const EMPTY_OBJECT = Object.freeze({});
 const API_BACKEND = 'https://upload.kli.one/rest/content_units';
 // const API_BACKEND = 'http://app.mdb.bbdomain.org/rest/content_units';
 
+export const toHms = (time) => {
+    let totalSec = time ;
+    let hours = parseInt( totalSec / 3600 ) % 24;
+    let minutes = parseInt( totalSec / 60 ) % 60;
+    let seconds = (totalSec % 60).toFixed(2);
+    if (seconds < 0) seconds = 0;
+
+    let result = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds  < 10 ? "0" + seconds : seconds);
+    return result;
+}
+
 export const getName = (metadata) => {
   console.log(metadata)
     switch (metadata.upload_type) {
