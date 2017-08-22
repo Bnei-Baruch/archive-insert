@@ -16,7 +16,7 @@ class MdbData extends Component {
             active: null,
         };
         console.log("--ConstractorProps--");
-        let path = '?page_no=1&content_type='+this.props.content_type+'&start_date='+this.props.start_date+'&end_date='+this.props.end_date;
+        let path = `?page_no=1&content_type=${this.props.content_type}&start_date=${this.props.start_date}&end_date=${this.props.end_date}`
         if (this.props.content_type && this.props.language && this.props.upload_type ) {
             fetchUnits(path, (data) => this.setState({units: data.data}))
         }
@@ -24,7 +24,7 @@ class MdbData extends Component {
 
     componentWillReceiveProps(nextProps) {
         console.log("--ReceiveProps--");
-        let path = '?page_no=1&content_type='+nextProps.content_type+'&start_date='+nextProps.start_date+'&end_date='+nextProps.end_date;
+        let path = `?page_no=1&content_type=${nextProps.content_type}&start_date=${nextProps.start_date}&end_date=${nextProps.end_date}`
         if (JSON.stringify(this.props) !== JSON.stringify(nextProps) && nextProps.content_type && nextProps.language && nextProps.upload_type ) {
             if(nextProps.content_type === "LESSON_PART") {
                 fetchUnits(path, (data) => fetchCollections(data, (units) => this.setState({units: units.data})))
@@ -74,11 +74,11 @@ class MdbData extends Component {
             <Table selectable color='grey' key='teal' {...this.props}>
                 <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell>Info</Table.HeaderCell>
-                        <Table.HeaderCell>Duration</Table.HeaderCell>
-                        <Table.HeaderCell>Number</Table.HeaderCell>
+                        <Table.HeaderCell width={1}>Info</Table.HeaderCell>
+                        <Table.HeaderCell width={2}>Duration</Table.HeaderCell>
+                        <Table.HeaderCell width={3}>Number</Table.HeaderCell>
                         <Table.HeaderCell textAlign='right'>Content Name</Table.HeaderCell>
-                        <Table.HeaderCell width="2">Date</Table.HeaderCell>
+                        <Table.HeaderCell width={2}>Date</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
