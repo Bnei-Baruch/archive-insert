@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Popup, Icon } from 'semantic-ui-react'
-import { Fetcher, toHms, MDB_LANGUAGES } from '../shared/consts';
+import { fetcher, fetchUnits, fetchCollections, toHms, MDB_LANGUAGES } from '../shared/consts';
 import NameHelper from './NameHelper';
 
 class MdbData extends Component {
@@ -18,10 +18,7 @@ class MdbData extends Component {
         console.log("--ConstractorProps--");
         let path = '?page_no=1&content_type='+this.props.content_type+'&start_date='+this.props.start_date+'&end_date='+this.props.end_date;
         if (this.props.content_type && this.props.language && this.props.upload_type ) {
-            Fetcher(path)
-                .then(data => {
-                    this.setState({units: data.data});
-                })
+            fetchUnits(path, (data) => this.setState({units: data.data}))
         }
     };
 
@@ -29,10 +26,11 @@ class MdbData extends Component {
         console.log("--ReceiveProps--");
         let path = '?page_no=1&content_type='+nextProps.content_type+'&start_date='+nextProps.start_date+'&end_date='+nextProps.end_date;
         if (JSON.stringify(this.props) !== JSON.stringify(nextProps) && nextProps.content_type && nextProps.language && nextProps.upload_type ) {
-            Fetcher(path)
-                .then(data => {
-                    this.setState({units: data.data});
-                })
+            if(nextProps.content_type === "LESSON_PART") {
+                fetchUnits(path, (data) => fetchCollections(data, (units) => this.setState({units: units.data})))
+            } else {
+                fetchUnits(path, (data) => this.setState({units: data.data}))
+            }
         }
     };
 
@@ -42,6 +40,7 @@ class MdbData extends Component {
     };
 
     render() {
+        console.log("::MdbData Render::")
         let uidList = this.state.units.map((unit) => {
             let name = (unit.i18n.he) ? unit.i18n.he.name : "Name not found";
             let active = (this.state.active === unit.uid ? 'active' : '');
@@ -65,6 +64,7 @@ class MdbData extends Component {
                         </Popup>
                     </Table.Cell>
                     <Table.Cell>{toHms(unit.properties.duration)}</Table.Cell>
+                    <Table.Cell>{'(שיעור: ' +unit.number + ' חלק: ' +unit.part + ')'}</Table.Cell>
                     <Table.Cell  textAlign='right' className={(unit.i18n.he ? "rtl-dir" : "negative")}>{name}</Table.Cell>
                     <Table.Cell>{unit.properties.capture_date}</Table.Cell>
                 </Table.Row>
@@ -76,6 +76,7 @@ class MdbData extends Component {
                     <Table.Row>
                         <Table.HeaderCell>Info</Table.HeaderCell>
                         <Table.HeaderCell>Duration</Table.HeaderCell>
+                        <Table.HeaderCell>Number</Table.HeaderCell>
                         <Table.HeaderCell textAlign='right'>Content Name</Table.HeaderCell>
                         <Table.HeaderCell width="2">Date</Table.HeaderCell>
                     </Table.Row>

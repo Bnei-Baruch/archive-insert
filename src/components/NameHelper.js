@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getName, Fetcher } from '../shared/consts';
+import { fetcher, getName } from '../shared/consts';
 import { Grid, Header } from 'semantic-ui-react'
 
 class NameHelper extends Component {
@@ -13,8 +13,7 @@ class NameHelper extends Component {
     componentWillMount() {
         console.log("--Did mount--");
         let path = this.props.id + '/files/';
-        Fetcher(path)
-            .then(data => {
+        fetcher(path,(data) => {
                 let unit_file = data.filter((file) => file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/));
                 this.setState({name: getName({...this.props, send_name: unit_file[0].name})});
             })

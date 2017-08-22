@@ -62,14 +62,32 @@ export const getName = (metadata) => {
     return filename;
 }
 
-export const Fetcher = (path) => fetch(`${API_BACKEND}/${path}`)
-    .then((response) => response.json())
-    .then((responseJson) => {
-        console.log("::FetchData::");
-        console.log(responseJson);
-        return responseJson;
+export const fetcher = (path, cb) => fetch(`${API_BACKEND}/${path}`)
+    .then((response) => {
+        if (response.ok) {
+            console.log("::FetchDataWithCB::");
+            return response.json().then(data => cb(data));
+        }
     })
     .catch(ex => console.log(`get ${path}`, ex));
+
+export const fetchUnits = (path,cb) => fetcher(path, cb);
+
+export const fetchCollections = (data,col) => {
+    const count = [];
+    data.data.forEach((u,i) => {
+        let path = u.id+'/collections/';
+        fetcher(path,cb => {
+                u["number"] = cb[0].collection.properties.number;
+                u["part"] = cb[0].name;
+                count.push(u);
+                if(data.total == count.length) {
+                    col(data)
+                }
+            }
+        )
+    })
+}
 
 export const content_options = [
     { value: 'LESSON_PART', text: ' ‏שיעור', icon: 'student' },

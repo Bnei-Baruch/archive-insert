@@ -8,7 +8,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react'
 import { DateRangePicker, SingleDatePicker, isInclusivelyBeforeDay } from 'react-dates';
 
-import {content_options, language_options, upload_options, Fetcher, getName, MDB_LANGUAGES } from './shared/consts';
+import {fetcher, content_options, language_options, upload_options, getName, MDB_LANGUAGES } from './shared/consts';
 import MdbData from './components/MdbData';
 
 class ModalContent extends Component {
@@ -90,8 +90,7 @@ class ModalContent extends Component {
         console.log("::HandleUidSelect::");
         console.log(data);
         let path = data.id + '/files/';
-        Fetcher(path)
-            .then(data => {
+        fetcher(path, (data) => {
                 let unit_file = data.filter((file) => file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/));
                 this.setState({files: data, send_name: unit_file[0].name});
             });
