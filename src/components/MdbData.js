@@ -64,7 +64,7 @@ class MdbData extends Component {
                         </Popup>
                     </Table.Cell>
                     <Table.Cell>{toHms(unit.properties.duration)}</Table.Cell>
-                    <Table.Cell>{'(שיעור: ' +unit.number + ' חלק: ' +unit.part + ')'}</Table.Cell>
+                    <Table.Cell>{this.props.content_type === "LESSON_PART" ?  '(שיעור: ' +unit.number + ' חלק: ' +unit.part + ')' : ""}</Table.Cell>
                     <Table.Cell  textAlign='right' className={(unit.i18n.he ? "rtl-dir" : "negative")}>{name}</Table.Cell>
                     <Table.Cell>{unit.properties.capture_date}</Table.Cell>
                 </Table.Row>
