@@ -13,7 +13,7 @@ export const toHms = (time) => {
     if (seconds < 0) seconds = 0;
 
     let result = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds  < 10 ? "0" + seconds : seconds);
-    return result;
+    return result.split(".")[0];
 }
 
 export const getName = (metadata) => {
@@ -76,11 +76,12 @@ export const fetchUnits = (path,cb) => fetcher(path, cb);
 export const fetchCollections = (data,col) => {
     const count = [];
     data.data.forEach((u,i) => {
-        let path = u.id+'/collections/';
+        let path = `${u.id}/collections/`;
         fetcher(path,cb => {
                 u["number"] = cb[0].collection.properties.number;
                 u["part"] = cb[0].name;
                 count.push(u);
+                // TODO: this must be change
                 if(data.total == count.length) {
                     col(data)
                 }

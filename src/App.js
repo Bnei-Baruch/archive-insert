@@ -91,6 +91,7 @@ class ModalContent extends Component {
         console.log(data);
         let path = data.id + '/files/';
         fetcher(path, (data) => {
+                // TODO: make sure we get last trimmed
                 let unit_file = data.filter((file) => file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/));
                 this.setState({files: data, send_name: unit_file[0].name});
             });
