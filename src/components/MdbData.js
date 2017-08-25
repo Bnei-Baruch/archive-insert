@@ -24,8 +24,9 @@ class MdbData extends Component {
 
     componentWillReceiveProps(nextProps) {
         console.log("--ReceiveProps--");
-        let path = `?page_no=1&content_type=${nextProps.content_type}&start_date=${nextProps.start_date}&end_date=${nextProps.end_date}`
         if (JSON.stringify(this.props) !== JSON.stringify(nextProps) && nextProps.content_type && nextProps.language && nextProps.upload_type ) {
+            // Yeah it's look long :)
+            let path = nextProps.content_type.match(/^(FULL_LESSON|VIRTUAL_LESSON)$/) ? `?page_no=1&content_type=${nextProps.content_type}&published=true` : `?page_no=1&content_type=${nextProps.content_type}&start_date=${nextProps.start_date}&end_date=${nextProps.end_date}`
             if(nextProps.content_type === "LESSON_PART") {
                 fetchUnits(path, (data) => fetchCollections(data, (units) => this.setState({units: units.data})))
             } else {

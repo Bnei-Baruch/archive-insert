@@ -92,6 +92,8 @@ export const fetchCollections = (data,col) => {
 
 export const content_options = [
     { value: 'LESSON_PART', text: ' ‏שיעור', icon: 'student' },
+    { value: 'FULL_LESSON', text: ' ‏כנס', icon: 'users' },
+    { value: 'VIRTUAL_LESSON', text: ' ‏וובינר', icon: 'conversation' },
     { value: 'VIDEO_PROGRAM_CHAPTER', text: ' ‏תוכנית', icon: 'record' },
     { value: 'MEAL', text: ' ‏סעודה', icon: 'food' },
 ];
