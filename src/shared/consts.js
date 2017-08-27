@@ -95,6 +95,7 @@ export const content_options = [
     { value: 'FULL_LESSON', text: ' ‏כנס', icon: 'users' },
     { value: 'VIRTUAL_LESSON', text: ' ‏וובינר', icon: 'conversation' },
     { value: 'VIDEO_PROGRAM_CHAPTER', text: ' ‏תוכנית', icon: 'record' },
+    { value: 'CLIP', text: ' ‏קליפ', icon: 'film' },
     { value: 'MEAL', text: ' ‏סעודה', icon: 'food' },
 ];
 

@@ -79,7 +79,7 @@ class ModalContent extends Component {
         metadata.capture_date = this.state.unit.properties.capture_date;
         metadata.film_date = this.state.unit.properties.film_date;
         metadata.original_language = MDB_LANGUAGES[this.state.unit.properties.original_language];
-        metadata.send_id = this.state.send_name.split(".")[0].split("_").pop().slice(0,-1);
+        metadata.send_id = this.state.send_name ? this.state.send_name.split(".")[0].split("_").pop().slice(0,-1) : null;
         // Calculate new name here
         metadata.filename = getName(metadata);
         console.log(metadata);

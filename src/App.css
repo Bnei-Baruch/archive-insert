@@ -24,6 +24,10 @@
   font-size: 18px;
 }
 
+.ui.selection.dropdown .menu {
+  max-height: 350px!important;
+}
+
 .ui.selection.dropdown .menu>.item {
   font-size: 18px;
 }
