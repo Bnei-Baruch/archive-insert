@@ -4,6 +4,7 @@ export const EMPTY_OBJECT = Object.freeze({});
 
 const API_BACKEND = 'https://upload.kli.one/rest/content_units';
 // const API_BACKEND = 'http://app.mdb.bbdomain.org/rest/content_units';
+// http://app.mdb.bbdomain.org/rest/content_units/33573/persons/ uid: "abcdefgh" ; rav
 
 export const toHms = (time) => {
     let totalSec = time ;

@@ -70,7 +70,7 @@ class ModalContent extends Component {
         // Object we return from react
         let metadata = this.state.filedata;
         metadata.uid = this.state.unit.uid;
-        metadata.send_name = this.state.send_name;
+        metadata.send_name = this.state.send_name ? this.state.send_name : null;
         metadata.content_type = this.state.content_type;
         metadata.language = this.state.language;
         metadata.upload_type = this.state.upload_type;
@@ -78,7 +78,7 @@ class ModalContent extends Component {
         metadata.upload_filename = this.state.filedata.filename;
         metadata.capture_date = this.state.unit.properties.capture_date;
         metadata.film_date = this.state.unit.properties.film_date;
-        metadata.original_language = MDB_LANGUAGES[this.state.unit.properties.original_language];
+        metadata.insert_type = "1" ;
         metadata.send_id = this.state.send_name ? this.state.send_name.split(".")[0].split("_").pop().slice(0,-1) : null;
         // Calculate new name here
         metadata.filename = getName(metadata);
@@ -93,7 +93,8 @@ class ModalContent extends Component {
         fetcher(path, (data) => {
                 // TODO: make sure we get last trimmed
                 let unit_file = data.filter((file) => file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/));
-                this.setState({files: data, send_name: unit_file[0].name});
+                console.log("Try to get trim source:",unit_file);
+                this.setState({files: data, send_name: unit_file ? unit_file[0].name : null});
             });
         this.state.content_type && this.state.language && this.state.upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
         this.setState({ unit: data });
