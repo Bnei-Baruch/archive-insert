@@ -152,7 +152,7 @@ class ModalContent extends Component {
                 icon='barcode'
                 placeholder="UID"
                 iconPosition='left'
-                value={ this.state.unit.uid }
+                value={this.state.input_uid}
                 onChange={this.handleUidInput}
             />
         );
