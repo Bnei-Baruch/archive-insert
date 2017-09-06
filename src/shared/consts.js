@@ -22,21 +22,21 @@ export const getName = (metadata) => {
     switch (metadata.upload_type) {
         case "akladot":
             var language = metadata.language;
-            var original = language === metadata.original_language ? "o" : "t";
-            var lecturer = metadata.send_name.split("_")[2];
-            var date = metadata.film_date;
-            var type = metadata.send_name.split("_")[4];
-            var desc = metadata.send_name.split("_").slice(5, -1).join("_");
-            var ext = mime_list[metadata.mime_type];
+            var original = language === metadata.line.original_language ? "o" : "t";
+            var lecturer = metadata.line.send_name.split("_")[2];
+            var date = metadata.line.film_date;
+            var type = metadata.line.send_name.split("_")[4];
+            var desc = metadata.line.send_name.split("_").slice(5, -1).join("_");
+            var ext = mime_list[metadata.line.mime_type];
             break;
         case "kitei-makor":
             var language = metadata.language;
-            var original = language === metadata.original_language ? "o" : "t";
-            var lecturer = metadata.send_name.split("_")[2];
-            var date = metadata.film_date;
+            var original = language === metadata.line.original_language ? "o" : "t";
+            var lecturer = metadata.line.send_name.split("_")[2];
+            var date = metadata.line.film_date;
             var type = "kitei-makor";
-            var desc = metadata.send_name.split("_").slice(5, -1).join("_");
-            var ext = mime_list[metadata.mime_type];
+            var desc = metadata.line.send_name.split("_").slice(5, -1).join("_");
+            var ext = mime_list[metadata.line.mime_type];
             break;
         case "sirtutim":
             break;
@@ -44,12 +44,12 @@ export const getName = (metadata) => {
             break;
         default:
             var language = metadata.language;
-            var original = language === metadata.original_language ? "o" : "t";
-            var lecturer = metadata.send_name.split("_")[2];
-            var date = metadata.film_date;
-            var type = metadata.send_name.split("_")[4];
-            var desc = metadata.send_name.split("_").slice(5, -1).join("_");
-            var ext = mime_list[metadata.mime_type];
+            var original = language === metadata.line.original_language ? "o" : "t";
+            var lecturer = metadata.line.send_name.split("_")[2];
+            var date = metadata.line.film_date;
+            var type = metadata.line.send_name.split("_")[4];
+            var desc = metadata.line.send_name.split("_").slice(5, -1).join("_");
+            var ext = mime_list[metadata.line.mime_type];
     };
 
     let filename =

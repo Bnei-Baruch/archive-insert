@@ -35,6 +35,7 @@ class ModalContent extends Component {
             language: this.props.filedata.language ? this.props.filedata.language : null,
             upload_type: this.props.filedata.upload_type ? this.props.filedata.upload_type : null,
             isValidated: false,
+            input_uid: null,
         };
     }
 
@@ -68,22 +69,33 @@ class ModalContent extends Component {
     handleOnComplete = () => {
         console.log("::HandelOnComplete::");
         // Object we return from react
-        let metadata = this.state.filedata;
-        metadata.uid = this.state.unit.uid;
-        metadata.send_name = this.state.send_name ? this.state.send_name : null;
-        metadata.content_type = this.state.content_type;
-        metadata.language = this.state.language;
+        let metadata = {};
         metadata.upload_type = this.state.upload_type;
-        metadata.mime_type = this.state.filedata.type;
-        metadata.upload_filename = this.state.filedata.filename;
-        metadata.capture_date = this.state.unit.properties.capture_date;
-        metadata.film_date = this.state.unit.properties.film_date;
-        metadata.insert_type = "1" ;
+        metadata.language = this.state.language;
+        metadata.insert_type = "1";
+        metadata.sha1 = this.state.filedata.sha1;
+        metadata.size = this.state.filedata.size;
         metadata.send_id = this.state.send_name ? this.state.send_name.split(".")[0].split("_").pop().slice(0,-1) : null;
+        metadata["line"] = {};
+        metadata.line.uid = this.state.unit.uid;
+        metadata.line.send_name = this.state.send_name ? this.state.send_name : null;
+        metadata.line.content_type = this.state.content_type;
+        metadata.line.mime_type = this.state.filedata.type;
+        metadata.line.upload_filename = this.state.filedata.filename;
+        metadata.line.url = this.state.filedata.url;
+        metadata.line.capture_date = this.state.unit.properties.capture_date;
+        metadata.line.film_date = this.state.unit.properties.film_date;
+        metadata.line.original_language = MDB_LANGUAGES[this.state.unit.properties.original_language];
         // Calculate new name here
         metadata.filename = getName(metadata);
         console.log(metadata);
         this.props.onComplete(metadata);
+    };
+
+    handleUidInput = (e, data) => {
+        console.log("Input changed:", data.value);
+        //this.handleUidSelect(data.value);
+        this.setState({input_uid: data.value});
     };
 
     handleUidSelect = (data) => {
@@ -132,6 +144,19 @@ class ModalContent extends Component {
             />
         );
 
+        let input_uid = (
+            <Input
+                error={false}
+                className="input_uid"
+                size="mini"
+                icon='barcode'
+                placeholder="UID"
+                iconPosition='left'
+                value={ this.state.unit.uid }
+                onChange={this.handleUidInput}
+            />
+        );
+
         return (
             <Container className="ui fullscreen modal visible transition">
                 <Segment clearing>
@@ -158,6 +183,7 @@ class ModalContent extends Component {
                             onChange={this.handleLanguageFilter}
                             value={this.state.value} >
                         </Dropdown>
+                        {this.state.upload_type === "akladot" ? input_uid : ""}
                     </Header>
                     <Header floated='right'>
                         {this.state.upload_type === "aricha" ? range_date : single_date}
@@ -173,6 +199,7 @@ class ModalContent extends Component {
                         upload_type={this.state.upload_type}
                         uploaded_filename={this.state.filedata.filename}
                         mime_type={this.state.filedata.type}
+                        input_uid={this.state.input_uid}
                         onUidSelect={this.handleUidSelect}
                     />
                 </Modal.Content>

@@ -27,8 +27,11 @@ class MdbData extends Component {
         if (JSON.stringify(this.props) !== JSON.stringify(nextProps) && nextProps.content_type && nextProps.language && nextProps.upload_type ) {
             // Yeah it's look long :)
             let path = nextProps.content_type.match(/^(FULL_LESSON|VIRTUAL_LESSON)$/) ? `?page_no=1&content_type=${nextProps.content_type}&published=true` : `?page_no=1&content_type=${nextProps.content_type}&start_date=${nextProps.start_date}&end_date=${nextProps.end_date}`
-            if(nextProps.content_type === "LESSON_PART") {
+            if(nextProps.content_type === "LESSON_PART" && !nextProps.input_uid) {
                 fetchUnits(path, (data) => fetchCollections(data, (units) => this.setState({units: units.data})))
+            } else if(nextProps.input_uid) {
+                console.log("Got new input UDI");
+                fetchUnits(path, (data) => fetchCollections(data, (units) => this.setState({units: units.data.filter((unit) => unit.uid == nextProps.input_uid) })))
             } else {
                 fetchUnits(path, (data) => this.setState({units: data.data}))
             }

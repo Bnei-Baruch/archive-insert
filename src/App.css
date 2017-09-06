@@ -20,6 +20,13 @@
   width: 130px!important;
 }
 
+.input_uid {
+  margin-top: -3px!important;
+  width: 160px!important;
+  font-size: 19px!important;
+  display: inline-flex!important;
+}
+
 .large {
   font-size: 18px;
 }
