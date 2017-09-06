@@ -94,8 +94,7 @@ class ModalContent extends Component {
 
     handleUidInput = (e, data) => {
         console.log("Input changed:", data.value);
-        //this.handleUidSelect(data.value);
-        this.setState({input_uid: data.value});
+        this.setState({input_uid: data.value, isValidated: false});
     };
 
     handleUidSelect = (data) => {
