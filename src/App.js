@@ -34,8 +34,8 @@ class ModalContent extends Component {
             content_type: this.props.filedata.content_type ? this.props.filedata.content_type : null,
             language: this.props.filedata.language ? this.props.filedata.language : null,
             upload_type: this.props.filedata.upload_type ? this.props.filedata.upload_type : null,
+            input_uid: this.props.filedata.input_uid ? this.props.filedata.input_uid : null,
             isValidated: false,
-            input_uid: null,
         };
     }
 
