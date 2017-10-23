@@ -92,6 +92,11 @@ class ModalContent extends Component {
         this.props.onComplete(metadata);
     };
 
+    handleOnClose = () => {
+        console.log("::HandelOnCancel::");
+        this.props.onCancel();
+    };
+
     handleUidInput = (e, data) => {
         console.log("Input changed:", data.value);
         this.setState({input_uid: data.value, isValidated: false});
@@ -238,16 +243,20 @@ class ModalContent extends Component {
 
 
 class App extends Component {
+    handleOnClose = () => {
+        console.log("::HandelOnCancel::");
+        //this.props.onCancel();
+    };
   render() {
     return (
-        <Modal
+        <Modal { ...this.props }
             size="large"
             closeOnDimmerClick={false}
             closeIcon={true}
             defaultOpen={true}
-            onClose={this.handleClose}
+            onClose={this.handleOnClose}
         >
-            <ModalContent {...this.props} />
+            <ModalContent { ...this.props } />
         </Modal>
     );
   }

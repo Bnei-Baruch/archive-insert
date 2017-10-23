@@ -9,16 +9,23 @@ export const app = (options) => {
     const div = document.createElement('div');
     const unmountModal = () => ReactDOM.unmountComponentAtNode(div);
 
-    const closeWrapper = (x) => {
+    const onCompleteWrapper = (x) => {
         if (onComplete) {
             onComplete(x);
         }
         unmountModal();
     };
 
+    const onCancelWrapper = (x) => {
+        if (onCancel) {
+            onCancel(x);
+        }
+        unmountModal();
+    };
+
     const { filedata, onComplete, onCancel } = Object.assign({}, options);
 
-    ReactDOM.render(<App filedata={filedata} onComplete={closeWrapper} />, div);
+    ReactDOM.render(<App filedata={filedata} onComplete={onCompleteWrapper} onCancel={onCancelWrapper} />, div);
 
 };
 
