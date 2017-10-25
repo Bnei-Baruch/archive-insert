@@ -187,7 +187,7 @@ class ModalContent extends Component {
                             onChange={this.handleLanguageFilter}
                             value={this.state.value} >
                         </Dropdown>
-                        {this.state.upload_type === "akladot" ? input_uid : ""}
+                        {input_uid}
                     </Header>
                     <Header floated='right'>
                         {this.state.upload_type === "aricha" ? range_date : single_date}
