@@ -34,7 +34,7 @@ export const getName = (metadata) => {
             var original = language === metadata.line.original_language ? "o" : "t";
             var lecturer = metadata.line.send_name.split("_")[2];
             var date = metadata.line.film_date;
-            var type = "tamlil";
+            var type = metadata.line.send_name.split("_")[4];
             var desc = metadata.line.send_name.split("_").slice(5, -1).join("_");
             var ext = (metadata.line.mime_type === "application/msword") ? metadata.line.upload_filename.split(".")[1] : mime_list[metadata.line.mime_type];
             break;
@@ -109,10 +109,67 @@ export const content_options = [
     { value: 'MEAL', text: ' ‏סעודה', icon: 'food' },
 ];
 
+export const MDB_LANGUAGES = {
+    en: 'eng',
+    he: 'heb',
+    ru: 'rus',
+    es: 'spa',
+    it: 'ita',
+    de: 'ger',
+    nl: 'dut',
+    fr: 'fre',
+    pt: 'por',
+    tr: 'trk',
+    pl: 'pol',
+    ar: 'arb',
+    hu: 'hun',
+    fi: 'fin',
+    lt: 'lit',
+    ja: 'jpn',
+    bg: 'bul',
+    ka: 'geo',
+    no: 'nor',
+    sv: 'swe',
+    hr: 'hrv',
+    zh: 'chn',
+    fa: 'far',
+    ro: 'ron',
+    hi: 'hin',
+    mk: 'mkd',
+    sl: 'slv',
+    lv: 'lav',
+    sk: 'slk',
+    cs: 'cze',
+    ua: 'ukr',
+    zz: 'mlt',
+    xx: 'unk',
+};
+
 export const language_options = [
     { key: 'he', value: 'heb', flag: 'il', text: 'Hebrew' },
     { key: 'ru', value: 'rus', flag: 'ru', text: 'Russian' },
     { key: 'en', value: 'eng', flag: 'us', text: 'English' },
+    { key: 'es', value: 'spa', flag: 'es', text: 'Spanish' },
+    { key: 'fr', value: 'fre', flag: 'fr', text: 'French' },
+    { key: 'it', value: 'ita', flag: 'it', text: 'Italian' },
+    { key: 'de', value: 'ger', flag: 'de', text: 'German' },
+    { key: 'tr', value: 'trk', flag: 'tr', text: 'Turkish' },
+    { key: 'pt', value: 'por', flag: 'pt', text: 'Portuguese' },
+    { key: 'bg', value: 'bul', flag: 'bg', text: 'Bulgarian' },
+    { key: 'ka', value: 'geo', flag: 'ge', text: 'Georgian' },
+    { key: 'ro', value: 'ron', flag: 'ro', text: 'Romanian' },
+    { key: 'hu', value: 'hun', flag: 'hu', text: 'Hungarian' },
+    { key: 'sv', value: 'swe', flag: 'se', text: 'Swedish' },
+    { key: 'lt', value: 'lit', flag: 'lt', text: 'Lithuanian' },
+    { key: 'hr', value: 'hrv', flag: 'hr', text: 'Croatian' },
+    { key: 'ja', value: 'jpn', flag: 'jp', text: 'Japanese' },
+    { key: 'sl', value: 'slv', flag: 'si', text: 'Slovenian' },
+    { key: 'pl', value: 'pol', flag: 'pl', text: 'Polish' },
+    { key: 'no', value: 'nor', flag: 'no', text: 'Norwegian' },
+    { key: 'lv', value: 'lav', flag: 'lv', text: 'Latvian' },
+    { key: 'ua', value: 'ukr', flag: 'ua', text: 'Ukrainian' },
+    { key: 'nl', value: 'dut', flag: 'nl', text: 'Dutch' },
+    { key: 'cn', value: 'chn', flag: 'cn', text: 'Chinese' },
     { key: 'zz', value: 'mlt', text: 'Multi', icon: 'world' },
 ];
 
@@ -165,42 +222,6 @@ export const LANGUAGES = [
   { text: 'סלובקית', value: 'slk' },
   { text: 'צ\'כית', value: 'cze' },
 ];
-
-export const MDB_LANGUAGES = {
-  en: 'eng',
-  he: 'heb',
-  ru: 'rus',
-  es: 'spa',
-  it: 'ita',
-  de: 'ger',
-  nl: 'dut',
-  fr: 'fre',
-  pt: 'por',
-  tr: 'trk',
-  pl: 'pol',
-  ar: 'arb',
-  hu: 'hun',
-  fi: 'fin',
-  lt: 'lit',
-  ja: 'jpn',
-  bg: 'bul',
-  ka: 'geo',
-  no: 'nor',
-  sv: 'swe',
-  hr: 'hrv',
-  zh: 'chn',
-  fa: 'far',
-  ro: 'ron',
-  hi: 'hin',
-  mk: 'mkd',
-  sl: 'slv',
-  lv: 'lav',
-  sk: 'slk',
-  cs: 'cze',
-  ua: 'ukr',
-  zz: 'mlt',
-  xx: 'unk',
-};
 
 export const LECTURERS = [
   { text: 'רב', value: 'rav' },
