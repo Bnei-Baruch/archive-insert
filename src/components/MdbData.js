@@ -26,7 +26,7 @@ class MdbData extends Component {
         console.log("--ReceiveProps--");
         if (JSON.stringify(this.props) !== JSON.stringify(nextProps) && nextProps.content_type && nextProps.language && nextProps.upload_type ) {
             // Yeah it's look long :)
-            let path = nextProps.content_type.match(/^(FULL_LESSON|VIRTUAL_LESSON)$/) ? `?&page_size=1000&content_type=${nextProps.content_type}` : `?&page_size=1000&content_type=${nextProps.content_type}&start_date=${nextProps.start_date}&end_date=${nextProps.end_date}`
+            let path = nextProps.content_type.match(/^(FULL_LESSON)$/) ? `?&page_size=1000&content_type=${nextProps.content_type}` : `?&page_size=1000&content_type=${nextProps.content_type}&start_date=${nextProps.start_date}&end_date=${nextProps.end_date}`
             if(nextProps.content_type === "LESSON_PART" && !nextProps.input_uid) {
                 fetchUnits(path, (data) => fetchCollections(data, (units) => this.setState({units: units.data})))
             } else if(nextProps.input_uid) {
@@ -69,7 +69,7 @@ class MdbData extends Component {
                         </Popup>
                     </Table.Cell>
                     <Table.Cell>{toHms(unit.properties.duration)}</Table.Cell>
-                    <Table.Cell>{this.props.content_type === "LESSON_PART" ?  '(שיעור: ' +unit.number + ' חלק: ' +unit.part + ')' : ""}</Table.Cell>
+                    <Table.Cell>{unit.number !== undefined ?  '(שיעור: ' +unit.number + ' חלק: ' +unit.part + ')' : ""}</Table.Cell>
                     <Table.Cell  textAlign='right' className={(unit.i18n.he ? "rtl-dir" : "negative")}>{name}</Table.Cell>
                     <Table.Cell>{unit.properties.capture_date}</Table.Cell>
                 </Table.Row>
