@@ -11,12 +11,15 @@ class NameHelper extends Component {
     };
 
     componentWillMount() {
-        console.log("--Did mount--");
+        console.log("--NameHelper Did mount--");
         let path = this.props.id + '/files/';
-        fetcher(path,(data) => {
-                let unit_file = data.filter((file) => file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/));
-                this.setState({name: getName({...this.props, send_name: unit_file[0].name})});
-            })
+        fetcher(path, (data) => {
+            // TODO: make sure we get last trimmed
+            let unit_file = data.filter((file) => file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/));
+            console.log("Try to get trim source:",unit_file);
+            this.setState({files: data, send_name: unit_file ? unit_file[0].name : null});
+            // this.setState({name: getName({...this.props, send_name: unit_file[0].name})});
+        });
     };
 
     render() {
@@ -26,7 +29,7 @@ class NameHelper extends Component {
                     <Header
                         as='h4'
                         color={ this.props.uploaded_filename === this.state.name ? "" : "red" } >
-                    {this.state.name}
+                    {this.state.send_name}
                     </Header>
                 </Grid.Column>
             </Grid>

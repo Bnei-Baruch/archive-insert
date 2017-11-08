@@ -62,6 +62,7 @@ class MdbData extends Component {
                                 upload_type={this.props.upload_type}
                                 mime_type={this.props.mime_type}
                                 uploaded_filename={this.props.uploaded_filename}
+                                send_name={this.props.send_name}
                                 film_date={unit.properties.film_date}
                                 original_language={MDB_LANGUAGES[unit.properties.original_language]}
                             />
