@@ -53,6 +53,15 @@ export const getName = (metadata) => {
             break;
         case "aricha":
             break;
+        case "dibuv":
+            var language = metadata.language;
+            var original = language === metadata.line.original_language ? "o" : "t";
+            var lecturer = metadata.line.send_name.split("_")[2];
+            var date = metadata.line.capture_date || metadata.line.film_date;
+            var type = metadata.line.send_name.split("_")[4];
+            var desc = metadata.line.send_name.split("_").slice(5, -1).join("_");
+            var ext = mime_list[metadata.line.mime_type];
+            break;
         default:
             var language = metadata.language;
             var original = language === metadata.line.original_language ? "o" : "t";
@@ -176,6 +185,7 @@ export const language_options = [
 ];
 
 export const upload_options = [
+    { value: 'dibuv', text: 'דיבוב', icon: 'translate' },
     { value: 'aricha', text: ' עריכה', icon: 'paint brush' },
     { value: 'sirtutim', text: ' ‏שרטוטים', icon: 'edit' },
     { value: 'kitei-makor', text: 'קיטעי-מקור', icon: 'commenting outline' },
