@@ -8,7 +8,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react'
 import { DateRangePicker, SingleDatePicker, isInclusivelyBeforeDay } from 'react-dates';
 
-import {fetcher, content_options, language_options, upload_options, getName, MDB_LANGUAGES } from './shared/consts';
+import {fetcher, insertName, content_options, language_options, upload_options, getName, MDB_LANGUAGES } from './shared/consts';
 import MdbData from './components/MdbData';
 
 class ModalContent extends Component {
@@ -111,8 +111,38 @@ class ModalContent extends Component {
                 let unit_file = data.filter((file) => file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/));
                 console.log("Try to get trim source:",unit_file);
                 this.setState({files: data, send_name: unit_file ? unit_file[0].name : null});
+                let metadata = {};
+                metadata.upload_type = this.state.upload_type;
+                metadata.language = this.state.language;
+                metadata.insert_type = "1";
+                metadata.sha1 = this.state.filedata.sha1;
+                metadata.size = this.state.filedata.size;
+                metadata.send_id = this.state.send_name ? this.state.send_name.split(".")[0].split("_").pop().slice(0,-1) : null;
+                metadata["line"] = {};
+                metadata.line.uid = this.state.unit.uid;
+                metadata.line.send_name = this.state.send_name ? this.state.send_name : null;
+                metadata.line.content_type = this.state.content_type;
+                metadata.line.mime_type = this.state.filedata.type;
+                metadata.line.upload_filename = this.state.filedata.filename;
+                metadata.line.url = this.state.filedata.url;
+                metadata.line.capture_date = this.state.unit.properties.capture_date;
+                metadata.line.film_date = this.state.unit.properties.film_date;
+                metadata.line.original_language = MDB_LANGUAGES[this.state.unit.properties.original_language];
+                // Calculate new name here
+                metadata.filename = getName(metadata);
+                console.log(metadata);
+                insertName(metadata.filename, (data) => {
+                    console.log(data);
+                    if(data.length > 0) {
+                        console.log("File with name: "+metadata.filename+" - already exist!");
+                        alert("File with name: "+metadata.filename+" - already exist!");
+                        this.setState({ isValidated: false });
+                    } else {
+                        this.state.content_type && this.state.language && this.state.upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
+                    }
+                });
             });
-        this.state.content_type && this.state.language && this.state.upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
+        //this.state.content_type && this.state.language && this.state.upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
         this.setState({ unit: data });
     };
 

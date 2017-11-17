@@ -18,6 +18,7 @@ export const toHms = (time) => {
 }
 
 export const getName = (metadata) => {
+    // We can't do here ajax request right now!
   console.log(metadata)
     switch (metadata.upload_type) {
         case "akladot":
@@ -91,6 +92,15 @@ export const fetcher = (path, cb) => fetch(`${API_BACKEND}/${path}`)
         }
     })
     .catch(ex => console.log(`get ${path}`, ex));
+
+export const insertName = (filename, cb) => fetch(`https://upload.kli.one/insert/find?key=insert_name&value=${filename}`)
+    .then((response) => {
+        if (response.ok) {
+            console.log("::FetchInsertName::");
+            return response.json().then(data => cb(data));
+        }
+    })
+    .catch(ex => console.log(`get ${filename}`, ex));
 
 export const fetchUnits = (path,cb) => fetcher(path, cb);
 
