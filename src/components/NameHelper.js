@@ -17,8 +17,11 @@ class NameHelper extends Component {
             // TODO: make sure we get last trimmed
             let unit_file = data.filter((file) => file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/));
             console.log("Try to get trim source:",unit_file);
-            this.setState({files: data, send_name: unit_file ? unit_file[0].name : null});
-            // this.setState({name: getName({...this.props, send_name: unit_file[0].name})});
+            this.setState({
+                files: data,
+                send_name: unit_file ? unit_file[0].name : null,
+                file_name: unit_file ? unit_file[0].name.split("_").slice(0, -1).join("_") : null
+            });
         });
     };
 
@@ -29,7 +32,7 @@ class NameHelper extends Component {
                     <Header
                         as='h4'
                         color={ this.props.uploaded_filename === this.state.name ? "" : "red" } >
-                    {this.state.send_name}
+                    {this.state.file_name}
                     </Header>
                 </Grid.Column>
             </Grid>
