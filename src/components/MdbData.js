@@ -30,7 +30,7 @@ class MdbData extends Component {
             if(nextProps.content_type === "LESSON_PART" && !nextProps.input_uid) {
                 fetchUnits(path, (data) => fetchCollections(data, (units) => this.setState({units: units.data})))
             } else if(nextProps.input_uid) {
-                console.log("Got new input UDI");
+                console.log("Got new input UID");
                 fetchUnits(path, (data) => fetchCollections(data, (units) => this.setState({units: units.data.filter((unit) => unit.uid == nextProps.input_uid) })))
             } else {
                 fetchUnits(path, (data) => this.setState({units: data.data}))

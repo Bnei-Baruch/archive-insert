@@ -133,9 +133,13 @@ class ModalContent extends Component {
                 console.log(metadata);
                 insertName(metadata.filename, (data) => {
                     console.log(data);
-                    if(data.length > 0) {
+                    if(data.length > 0 && this.props.url === "upload.kli.one") {
                         console.log("File with name: "+metadata.filename+" - already exist!");
                         alert("File with name: "+metadata.filename+" - already exist!");
+                        this.setState({ isValidated: false });
+                    } else if(data.length == 0 && this.props.url === "update.kli.one") {
+                        console.log("File with name: "+metadata.filename+" - does NOT exist! In current mode the operation must be update only");
+                        alert("File with name: "+metadata.filename+" - does NOT exist! In current mode the operation must be update only");
                         this.setState({ isValidated: false });
                     } else {
                         this.state.content_type && this.state.language && this.state.upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
@@ -191,9 +195,12 @@ class ModalContent extends Component {
             />
         );
 
+        let update_style = (<style>{'.ui.segment { background-color: #F8E0E0; }'}</style>);
+
         return (
             <Container className="ui fullscreen modal visible transition">
                 <Segment clearing>
+                    {this.props.url === "update.kli.one" ? update_style : ""}
                     <Header floated='left' >
                         <Dropdown
                             error={!this.state.content_type}
@@ -286,7 +293,7 @@ class App extends Component {
             defaultOpen={true}
             onClose={this.handleOnClose}
         >
-            <ModalContent { ...this.props } />
+            <ModalContent url={window.location.host} { ...this.props } />
         </Modal>
     );
   }
