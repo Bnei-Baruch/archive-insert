@@ -72,7 +72,7 @@ class ModalContent extends Component {
         let metadata = {};
         metadata.upload_type = this.state.upload_type;
         metadata.language = this.state.language;
-        metadata.insert_type = "1";
+        metadata.insert_type = this.props.url === "upload.kli.one" ? "1" : "2";
         metadata.sha1 = this.state.filedata.sha1;
         metadata.size = this.state.filedata.size;
         metadata.send_id = this.state.send_name ? this.state.send_name.split(".")[0].split("_").pop().slice(0,-1) : null;
@@ -114,7 +114,7 @@ class ModalContent extends Component {
                 let metadata = {};
                 metadata.upload_type = this.state.upload_type;
                 metadata.language = this.state.language;
-                metadata.insert_type = "1";
+                metadata.insert_type = this.props.url === "upload.kli.one" ? "1" : "2";
                 metadata.sha1 = this.state.filedata.sha1;
                 metadata.size = this.state.filedata.size;
                 metadata.send_id = this.state.send_name ? this.state.send_name.split(".")[0].split("_").pop().slice(0,-1) : null;
