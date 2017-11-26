@@ -105,17 +105,14 @@ export const insertName = (filename, cb) => fetch(`https://upload.kli.one/insert
 export const fetchUnits = (path,cb) => fetcher(path, cb);
 
 export const fetchCollections = (data,col) => {
-    const count = [];
     data.data.forEach((u,i) => {
         let path = `${u.id}/collections/`;
         fetcher(path,cb => {
-                u["number"] = cb[0].collection.properties.number;
-                u["part"] = cb[0].name;
-                count.push(u);
-                // TODO: this must be change
-                if(data.total == count.length) {
-                    col(data)
-                }
+                if(cb.length === 0)
+                    return;
+                u["number"] = cb[0].collection.properties.number || "?";
+                u["part"] = cb[0].name || "?";
+                col(data)
             }
         )
     })
