@@ -125,6 +125,8 @@ export const content_options = [
     { value: 'VIDEO_PROGRAM_CHAPTER', text: ' ‏תוכנית', icon: 'record' },
     { value: 'CLIP', text: ' ‏קליפ', icon: 'film' },
     { value: 'MEAL', text: ' ‏סעודה', icon: 'food' },
+    { value: 'ARTICLE', text: 'מאמרים ', icon: 'newspaper' },
+    { value: 'PUBLICATION', text: 'פירסומים ', icon: 'announcement' },
 ];
 
 export const MDB_LANGUAGES = {
@@ -192,6 +194,8 @@ export const language_options = [
 ];
 
 export const upload_options = [
+    { value: 'article', text: 'מאמרים ', icon: 'newspaper' },
+    { value: 'publication', text: 'פירסומים ', icon: 'announcement' },
     { value: 'dibuv', text: 'דיבוב', icon: 'translate' },
     { value: 'aricha', text: ' עריכה', icon: 'paint brush' },
     { value: 'sirtutim', text: ' ‏שרטוטים', icon: 'edit' },
