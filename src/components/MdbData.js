@@ -52,7 +52,7 @@ class MdbData extends Component {
                 <Table.Row className={active} key={unit.id} onClick={() => this.handleClick(unit)}>
                     <Table.Cell>
                         <Popup
-                            trigger={this.props.upload_type === "aricha" ? "" : <Icon link name='help' />}
+                            trigger={this.props.upload_type.match(/^(aricha|article|publication)$/) ? "" : <Icon link name='help' />}
                             flowing
                             position='bottom left'
                             hoverable >
@@ -68,7 +68,7 @@ class MdbData extends Component {
                             />
                         </Popup>
                     </Table.Cell>
-                    <Table.Cell>{toHms(unit.properties.duration)}</Table.Cell>
+                    <Table.Cell>{this.props.upload_type.match(/^(article|publication)$/) ? "" : toHms(unit.properties.duration)}</Table.Cell>
                     <Table.Cell>{unit.number !== undefined ?  '(שיעור: ' +unit.number + ' חלק: ' +unit.part + ')' : ""}</Table.Cell>
                     <Table.Cell  textAlign='right' className={(unit.i18n.he ? "rtl-dir" : "negative")}>{name}</Table.Cell>
                     <Table.Cell>{unit.properties.capture_date}</Table.Cell>

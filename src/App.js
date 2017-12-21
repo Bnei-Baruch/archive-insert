@@ -33,7 +33,7 @@ class ModalContent extends Component {
             end_date: this.props.filedata.end_date ? this.props.filedata.end_date : moment().add(340, 'days').format('YYYY-MM-DD'),
             content_type: this.props.filedata.content_type ? this.props.filedata.content_type : null,
             language: this.props.filedata.language ? this.props.filedata.language : null,
-            upload_type: this.props.filedata.upload_type ? this.props.filedata.upload_type : null,
+            upload_type: this.props.filedata.upload_type ? this.props.filedata.upload_type : "",
             input_uid: this.props.filedata.input_uid ? this.props.filedata.input_uid : null,
             isValidated: false,
         };
@@ -224,10 +224,10 @@ class ModalContent extends Component {
                             onChange={this.handleLanguageFilter}
                             value={this.state.value} >
                         </Dropdown>
-                        {this.state.upload_type !== "aricha" ? input_uid : ""}
+                        {!this.state.upload_type.match(/^(aricha|article|publication)$/) ? input_uid : ""}
                     </Header>
                     <Header floated='right'>
-                        {this.state.upload_type === "aricha" ? range_date : single_date}
+                        {this.state.upload_type.match(/^(aricha|article|publication)$/) ? range_date : single_date}
                     </Header>
                 </Segment>
                 <Segment clearing secondary color='blue'>
