@@ -108,7 +108,9 @@ class ModalContent extends Component {
         let path = data.id + '/files/';
         fetcher(path, (data) => {
                 // TODO: make sure we get last trimmed
-                let unit_file = data.filter((file) => file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/));
+                let units = data.filter((file) => (file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/)));
+                // Filter trimmed without send
+                let unit_file = units.filter(capd => capd.properties.capture_date);
                 console.log("Try to get trim source:",unit_file);
                 this.setState({files: data, send_name: unit_file ? unit_file[0].name : null});
                 let metadata = {};

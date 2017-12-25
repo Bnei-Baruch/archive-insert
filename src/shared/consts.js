@@ -126,7 +126,7 @@ export const content_options = [
     { value: 'CLIP', text: ' ‏קליפ', icon: 'film' },
     { value: 'MEAL', text: ' ‏סעודה', icon: 'food' },
     { value: 'ARTICLE', text: 'מאמרים ', icon: 'newspaper' },
-    { value: 'PUBLICATION', text: 'פירסומים ', icon: 'announcement' },
+    //{ value: 'PUBLICATION', text: 'פירסומים ', icon: 'announcement' },
 ];
 
 export const MDB_LANGUAGES = {
