@@ -8,7 +8,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react'
 import { DateRangePicker, SingleDatePicker, isInclusivelyBeforeDay } from 'react-dates';
 
-import {fetcher, insertName, content_options, language_options, upload_options, getName, MDB_LANGUAGES } from './shared/consts';
+import {fetcher, fetchPersons, insertName, content_options, language_options, upload_options, getName, MDB_LANGUAGES } from './shared/consts';
 import MdbData from './components/MdbData';
 
 class ModalContent extends Component {
@@ -86,7 +86,8 @@ class ModalContent extends Component {
         metadata.line.capture_date = this.state.unit.properties.capture_date;
         metadata.line.film_date = this.state.unit.properties.film_date;
         metadata.line.original_language = MDB_LANGUAGES[this.state.unit.properties.original_language];
-        // Calculate new name here
+        metadata.line.lecturer = this.state.lecturer;
+            // Calculate new name here
         metadata.filename = getName(metadata);
         console.log(metadata);
         this.props.onComplete(metadata);
@@ -130,6 +131,16 @@ class ModalContent extends Component {
                 metadata.line.capture_date = this.state.unit.properties.capture_date;
                 metadata.line.film_date = this.state.unit.properties.film_date;
                 metadata.line.original_language = MDB_LANGUAGES[this.state.unit.properties.original_language];
+                fetchPersons(this.state.unit.id, (data) => {
+                    console.log(data);
+                    if(data.length > 0 && data[0].role_id === 1) {
+                        metadata.line.lecturer = "rav";
+                        this.setState({lecturer: "rav"});
+                    } else {
+                        metadata.line.lecturer = "norav";
+                        this.setState({lecturer: "norav"});
+                    }
+                });
                 // Calculate new name here
                 metadata.filename = getName(metadata);
                 console.log(metadata);

@@ -93,6 +93,15 @@ export const fetcher = (path, cb) => fetch(`${API_BACKEND}/${path}`)
     })
     .catch(ex => console.log(`get ${path}`, ex));
 
+export const fetchPersons = (id, cb) => fetch(`${API_BACKEND}/${id}/persons/`)
+    .then((response) => {
+        if (response.ok) {
+            console.log("::FetchPersonsName::");
+            return response.json().then(data => cb(data));
+        }
+    })
+    .catch(ex => console.log(`get ${id}`, ex));
+
 export const insertName = (filename, cb) => fetch(`https://upload.kli.one/insert/find?key=insert_name&value=${filename}`)
     .then((response) => {
         if (response.ok) {

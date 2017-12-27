@@ -81,7 +81,7 @@ class MdbData extends Component {
                     <Table.Row>
                         <Table.HeaderCell width={1}>Info</Table.HeaderCell>
                         <Table.HeaderCell width={2}>Duration</Table.HeaderCell>
-                        <Table.HeaderCell width={3}>Number</Table.HeaderCell>
+                        <Table.HeaderCell width={3}></Table.HeaderCell>
                         <Table.HeaderCell textAlign='right'>Content Name</Table.HeaderCell>
                         <Table.HeaderCell width={2}>Date</Table.HeaderCell>
                     </Table.Row>
