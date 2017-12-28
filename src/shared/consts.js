@@ -24,7 +24,7 @@ export const getName = (metadata) => {
         case "akladot":
             var language = metadata.language;
             var original = language === metadata.line.original_language ? "o" : "t";
-            var lecturer = metadata.line.send_name.split("_")[2];
+            var lecturer = metadata.line.lecturer;
             var date = metadata.line.capture_date || metadata.line.film_date;
             var type = "akladot";
             var desc = metadata.line.send_name.split("_").slice(5, -1).join("_");
@@ -33,7 +33,7 @@ export const getName = (metadata) => {
         case "tamlil":
             var language = metadata.language;
             var original = language === metadata.line.original_language ? "o" : "t";
-            var lecturer = metadata.line.send_name.split("_")[2];
+            var lecturer = metadata.line.lecturer;
             var date = metadata.line.capture_date || metadata.line.film_date;
             var type = metadata.line.send_name.split("_")[4];
             var desc = metadata.line.send_name.split("_").slice(5, -1).join("_");
@@ -42,7 +42,7 @@ export const getName = (metadata) => {
         case "kitei-makor":
             var language = metadata.language;
             var original = language === metadata.line.original_language ? "o" : "t";
-            var lecturer = metadata.line.send_name.split("_")[2];
+            var lecturer = metadata.line.lecturer;
             var date = metadata.line.capture_date || metadata.line.film_date;
             var type = metadata.line.send_name.split("_")[4];
             var type = type.replace(/lesson/, "kitei-makor");
@@ -57,7 +57,7 @@ export const getName = (metadata) => {
         case "dibuv":
             var language = metadata.language;
             var original = language === metadata.line.original_language ? "o" : "t";
-            var lecturer = metadata.line.send_name.split("_")[2];
+            var lecturer = metadata.line.lecturer;
             var date = metadata.line.capture_date || metadata.line.film_date;
             var type = metadata.line.send_name.split("_")[4];
             var desc = metadata.line.send_name.split("_").slice(5, -1).join("_");
@@ -66,7 +66,7 @@ export const getName = (metadata) => {
         default:
             var language = metadata.language;
             var original = language === metadata.line.original_language ? "o" : "t";
-            var lecturer = metadata.line.send_name.split("_")[2];
+            var lecturer = metadata.line.lecturer;
             var date = metadata.line.capture_date || metadata.line.film_date;
             var type = metadata.line.send_name.split("_")[4];
             var desc = metadata.line.send_name.split("_").slice(5, -1).join("_");

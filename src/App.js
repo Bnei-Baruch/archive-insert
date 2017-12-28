@@ -142,23 +142,23 @@ class ModalContent extends Component {
                         metadata.line.lecturer = "norav";
                         this.setState({lecturer: "norav"});
                     }
-                });
-                // Calculate new name here
-                metadata.filename = getName(metadata);
-                console.log(metadata);
-                insertName(metadata.filename, (data) => {
-                    console.log(data);
-                    if(data.length > 0 && this.props.url === "upload.kli.one") {
-                        console.log("File with name: "+metadata.filename+" - already exist!");
-                        alert("File with name: "+metadata.filename+" - already exist!");
-                        this.setState({ isValidated: false });
-                    } else if(data.length == 0 && this.props.url === "update.kli.one") {
-                        console.log("File with name: "+metadata.filename+" - does NOT exist! In current mode the operation must be update only");
-                        alert("File with name: "+metadata.filename+" - does NOT exist! In current mode the operation must be update only");
-                        this.setState({ isValidated: false });
-                    } else {
-                        this.state.content_type && this.state.language && this.state.upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
-                    }
+                    // Calculate new name here
+                    metadata.filename = getName(metadata);
+                    console.log(metadata);
+                    insertName(metadata.filename, (data) => {
+                        console.log(data);
+                        if(data.length > 0 && this.props.url === "upload.kli.one") {
+                            console.log("File with name: "+metadata.filename+" - already exist!");
+                            alert("File with name: "+metadata.filename+" - already exist!");
+                            this.setState({ isValidated: false });
+                        } else if(data.length == 0 && this.props.url === "update.kli.one") {
+                            console.log("File with name: "+metadata.filename+" - does NOT exist! In current mode the operation must be update only");
+                            alert("File with name: "+metadata.filename+" - does NOT exist! In current mode the operation must be update only");
+                            this.setState({ isValidated: false });
+                        } else {
+                            this.state.content_type && this.state.language && this.state.upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
+                        }
+                    });
                 });
             });
         //this.state.content_type && this.state.language && this.state.upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
