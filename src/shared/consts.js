@@ -84,7 +84,7 @@ export const getName = (metadata) => {
     return filename;
 }
 
-export const fetcher = (path, cb) => fetch(`${API_BACKEND}/${path}`)
+export const fetchUnits = (path, cb) => fetch(`${API_BACKEND}/${path}`)
     .then((response) => {
         if (response.ok) {
             console.log("::FetchDataWithCB::");
@@ -111,12 +111,13 @@ export const insertName = (filename, cb) => fetch(`https://upload.kli.one/insert
     })
     .catch(ex => console.log(`get ${filename}`, ex));
 
-export const fetchUnits = (path,cb) => fetcher(path, cb);
+//export const fetchUnits = (path,cb) => fetcher(path, cb);
 
 export const fetchCollections = (data,col) => {
+    console.log("::FetchCollection::");
     data.data.forEach((u,i) => {
         let path = `${u.id}/collections/`;
-        fetcher(path,cb => {
+        fetchUnits(path,cb => {
                 if(cb.length === 0)
                     return;
                 u["number"] = cb[0].collection.properties.number || "?";

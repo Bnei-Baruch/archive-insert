@@ -16,10 +16,10 @@ class MdbData extends Component {
             active: null,
         };
         console.log("--ConstractorProps--");
-        let path = `?page_no=1&content_type=${this.props.content_type}&start_date=${this.props.start_date}&end_date=${this.props.end_date}`
-        if (this.props.content_type && this.props.language && this.props.upload_type ) {
-            fetchUnits(path, (data) => this.setState({units: data.data}))
-        }
+        //let path = `?page_no=1&content_type=${this.props.content_type}&start_date=${this.props.start_date}&end_date=${this.props.end_date}`
+        //if (this.props.content_type && this.props.language && this.props.upload_type ) {
+        //    fetchUnits(path, (data) => this.setState({units: data.data}))
+        //}
     };
 
     componentWillReceiveProps(nextProps) {
@@ -31,7 +31,9 @@ class MdbData extends Component {
                 fetchUnits(path, (data) => fetchCollections(data, (units) => this.setState({units: units.data})))
             } else if(nextProps.input_uid) {
                 console.log("Got new input UID");
-                fetchUnits(path, (data) => fetchCollections(data, (units) => this.setState({units: units.data.filter((unit) => unit.uid == nextProps.input_uid) })))
+                let unit_uid = this.state.units.filter((unit) => unit.uid == nextProps.input_uid);
+                this.setState({units: unit_uid });
+                //fetchUnits(path, (data) => fetchCollections(data, (units) => this.setState({units: units.data.filter((unit) => unit.uid == nextProps.input_uid) })))
             } else {
                 fetchUnits(path, (data) => this.setState({units: data.data}))
             }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { fetcher, getName } from '../shared/consts';
+import { fetchUnits, getName } from '../shared/consts';
 import { Grid, Header } from 'semantic-ui-react'
 
 class NameHelper extends Component {
@@ -13,7 +13,7 @@ class NameHelper extends Component {
     componentWillMount() {
         console.log("--NameHelper Did mount--");
         let path = this.props.id + '/files/';
-        fetcher(path, (data) => {
+        fetchUnits(path, (data) => {
             // TODO: make sure we get last trimmed
             let unit_file = data.filter((file) => file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/));
             console.log("Try to get trim source:",unit_file);

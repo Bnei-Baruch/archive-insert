@@ -8,7 +8,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react'
 import { DateRangePicker, SingleDatePicker, isInclusivelyBeforeDay } from 'react-dates';
 
-import {fetcher, fetchPersons, insertName, content_options, language_options, upload_options, getName, MDB_LANGUAGES } from './shared/consts';
+import {fetchUnits, fetchPersons, insertName, content_options, language_options, upload_options, getName, MDB_LANGUAGES } from './shared/consts';
 import MdbData from './components/MdbData';
 
 class ModalContent extends Component {
@@ -41,7 +41,7 @@ class ModalContent extends Component {
 
     handleContentFilter = (e, data) => {
         console.log(data.value);
-        this.setState({content_type: data.value});
+        this.setState({content_type: data.value, input_uid: ""});
     };
 
     handleLanguageFilter = (e, data) => {
@@ -57,13 +57,15 @@ class ModalContent extends Component {
     handleDatesChange = ({startDate, endDate }) => {
         let startdate = (startDate) ? startDate.format('YYYY-MM-DD') : this.props.filedata.filename.split(".")[0].split("_")[3];
         let enddate = (endDate) ? endDate.format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-        this.setState({ startDate, endDate, start_date: startdate, end_date: enddate });
+        this.setState({ startDate, endDate, start_date: startdate, end_date: enddate, input_uid: ""});
     };
 
     handleDateChange = (date) => {
+        if(date === null)
+            return
         let startdate = (date) ? date.format('YYYY-MM-DD') : this.props.filedata.filename.split(".")[0].split("_")[3];
         let enddate = (date) ? date.format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-        this.setState({ date, start_date: startdate, end_date: enddate });
+        this.setState({ date, start_date: startdate, end_date: enddate, input_uid: ""});
     };
 
     handleOnComplete = () => {
@@ -107,7 +109,7 @@ class ModalContent extends Component {
         console.log("::HandleUidSelect::");
         console.log(data);
         let path = data.id + '/files/';
-        fetcher(path, (data) => {
+        fetchUnits(path, (data) => {
                 // TODO: make sure we get last trimmed
                 let units = data.filter((file) => (file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/)));
                 // Filter trimmed without send
