@@ -2,7 +2,7 @@
 export const EMPTY_ARRAY  = Object.freeze([]);
 export const EMPTY_OBJECT = Object.freeze({});
 
-const API_BACKEND = 'https://upload.kli.one/rest/content_units';
+const API_BACKEND = 'https://upload.kli.one/rest';
 // const API_BACKEND = 'http://app.mdb.bbdomain.org/rest/content_units';
 // http://app.mdb.bbdomain.org/rest/content_units/33573/persons/ uid: "abcdefgh" ; rav
 
@@ -84,7 +84,22 @@ export const getName = (metadata) => {
     return filename;
 }
 
-export const fetchUnits = (path, cb) => fetch(`${API_BACKEND}/${path}`)
+const Fetcher = (path, cb) => fetch(`${API_BACKEND}/${path}`)
+    .then((response) => {
+        if (response.ok) {
+            return response.json().then(data => cb(data));
+        }
+        throw new Error('Network response was not ok.');
+    })
+    .catch(ex => console.log(`get ${path}`, ex));
+
+export const fetchSources = cb => Fetcher('sources/', cb);
+
+export const fetchTags = cb => Fetcher('tags/', cb);
+
+export const fetchPublishers = cb => Fetcher('publishers/', cb);
+
+export const fetchUnits = (path, cb) => fetch(`${API_BACKEND}/content_units/${path}`)
     .then((response) => {
         if (response.ok) {
             console.log("::FetchDataWithCB::");
@@ -93,7 +108,7 @@ export const fetchUnits = (path, cb) => fetch(`${API_BACKEND}/${path}`)
     })
     .catch(ex => console.log(`get ${path}`, ex));
 
-export const fetchPersons = (id, cb) => fetch(`${API_BACKEND}/${id}/persons/`)
+export const fetchPersons = (id, cb) => fetch(`${API_BACKEND}/content_units/${id}/persons/`)
     .then((response) => {
         if (response.ok) {
             console.log("::FetchPersonsName::");
@@ -137,6 +152,11 @@ export const content_options = [
     { value: 'MEAL', text: ' ‏סעודה', icon: 'food' },
     { value: 'ARTICLE', text: 'מאמרים ', icon: 'newspaper' },
     //{ value: 'PUBLICATION', text: 'פירסומים ', icon: 'announcement' },
+];
+
+export const article_options = [
+    { value: 'ARTICLE', text: 'מאמרים ', icon: 'newspaper' },
+    { value: 'PUBLICATION', text: 'פירסומים ', icon: 'announcement' },
 ];
 
 export const MDB_LANGUAGES = {
@@ -204,8 +224,8 @@ export const language_options = [
 ];
 
 export const upload_options = [
-    { value: 'article', text: 'מאמרים ', icon: 'newspaper' },
-    { value: 'publication', text: 'פירסומים ', icon: 'announcement' },
+    //{ value: 'article', text: 'מאמרים ', icon: 'newspaper' },
+    //{ value: 'publication', text: 'פירסומים ', icon: 'announcement', disabled: true },
     { value: 'dibuv', text: 'דיבוב', icon: 'translate' },
     { value: 'aricha', text: ' עריכה', icon: 'paint brush' },
     { value: 'sirtutim', text: ' ‏שרטוטים', icon: 'edit' },

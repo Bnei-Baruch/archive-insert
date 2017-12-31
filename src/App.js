@@ -5,10 +5,10 @@ import moment from 'moment';
 import './App.css';
 import 'semantic-ui-css/semantic.min.css';
 import 'react-dates/lib/css/_datepicker.css';
-import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react'
+import { Button, Header, Modal, Dropdown, Menu, Container, Segment, Input } from 'semantic-ui-react'
 import { DateRangePicker, SingleDatePicker, isInclusivelyBeforeDay } from 'react-dates';
 
-import {fetchUnits, fetchPersons, insertName, content_options, language_options, upload_options, getName, MDB_LANGUAGES } from './shared/consts';
+import {fetchSources, fetchTags, fetchPublishers, fetchUnits, fetchPersons, insertName, content_options, language_options, upload_options, article_options, getName, MDB_LANGUAGES} from './shared/consts';
 import MdbData from './components/MdbData';
 
 class ModalContent extends Component {
@@ -28,6 +28,11 @@ class ModalContent extends Component {
             filedata: { ...props.filedata },
             unit: {},
             files: [],
+            store: {
+                sources: [],
+                tags: [],
+                publishers: [],
+            },
             today_date: moment().format('YYYY-MM-DD'),
             start_date: this.props.filedata.start_date ? this.props.filedata.start_date : moment().format('YYYY-MM-DD'),
             end_date: this.props.filedata.end_date ? this.props.filedata.end_date : moment().add(340, 'days').format('YYYY-MM-DD'),
@@ -39,9 +44,15 @@ class ModalContent extends Component {
         };
     }
 
+    componentDidMount() {
+        fetchSources(sources => this.setState({ store: { ...this.state.store, sources } }));
+        fetchTags(tags => this.setState({ store: { ...this.state.store, tags } }));
+        fetchPublishers(publishers => this.setState({ store: { ...this.state.store, publishers } }));
+    }
+
     handleContentFilter = (e, data) => {
         console.log(data.value);
-        this.setState({content_type: data.value, input_uid: ""});
+        this.setState({content_type: data.value, input_uid: "", upload_type: ""});
     };
 
     handleLanguageFilter = (e, data) => {
@@ -135,7 +146,7 @@ class ModalContent extends Component {
                 metadata.line.original_language = MDB_LANGUAGES[this.state.unit.properties.original_language];
                 fetchPersons(this.state.unit.id, (data) => {
                     console.log(data);
-                    if(data.length > 0 && data[0].role_id === 1) {
+                    if(data.length > 0 && data[0].person.uid === "abcdefgh") {
                         metadata.line.lecturer = "rav";
                         this.setState({lecturer: "rav"});
                     } else {
@@ -166,6 +177,7 @@ class ModalContent extends Component {
     };
 
     render() {
+        const { store } = this.state;
         // const BAD_DATES = [moment(), moment().add(1, 'days')];
         // const isDayBlocked = day => BAD_DATES.filter(d => d.isSame(day, 'day')).length > 0;
         let single_date = (
@@ -276,7 +288,7 @@ class ModalContent extends Component {
                         defaultValue={this.state.upload_type}
                         placeholder="Upload Type:"
                         selection
-                        options={upload_options}
+                        options={this.state.content_type === "ARTICLE" ? article_options : upload_options}
                         upload_type={this.state.upload_type}
                         onChange={this.handleUploadFilter}
                         value={this.state.value} >

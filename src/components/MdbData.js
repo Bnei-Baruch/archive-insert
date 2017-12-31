@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Popup, Icon } from 'semantic-ui-react'
-import { fetcher, fetchUnits, fetchCollections, toHms, MDB_LANGUAGES } from '../shared/consts';
+import { fetchUnits, fetchCollections, toHms, MDB_LANGUAGES } from '../shared/consts';
 import NameHelper from './NameHelper';
 
 class MdbData extends Component {
