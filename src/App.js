@@ -5,11 +5,12 @@ import moment from 'moment';
 import './App.css';
 import 'semantic-ui-css/semantic.min.css';
 import 'react-dates/lib/css/_datepicker.css';
-import { Button, Header, Modal, Dropdown, Menu, Container, Segment, Input } from 'semantic-ui-react'
+import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react'
 import { DateRangePicker, SingleDatePicker, isInclusivelyBeforeDay } from 'react-dates';
 
 import {fetchSources, fetchTags, fetchPublishers, fetchUnits, fetchPersons, insertName, content_options, language_options, upload_options, article_options, getName, MDB_LANGUAGES} from './shared/consts';
 import MdbData from './components/MdbData';
+import NestedModal from './components/NestedModal';
 
 class ModalContent extends Component {
     static propTypes = {
@@ -47,7 +48,7 @@ class ModalContent extends Component {
     componentDidMount() {
         fetchSources(sources => this.setState({ store: { ...this.state.store, sources } }));
         fetchTags(tags => this.setState({ store: { ...this.state.store, tags } }));
-        fetchPublishers(publishers => this.setState({ store: { ...this.state.store, publishers } }));
+        fetchPublishers(publishers => this.setState({ store: { ...this.state.store, publishers: publishers.data } }));
     }
 
     handleContentFilter = (e, data) => {
@@ -118,10 +119,10 @@ class ModalContent extends Component {
 
     handleUidSelect = (data) => {
         console.log("::HandleUidSelect::");
+        //TODO: Filter publication uid
         console.log(data);
         let path = data.id + '/files/';
         fetchUnits(path, (data) => {
-                // TODO: make sure we get last trimmed
                 let units = data.filter((file) => (file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/)));
                 // Filter trimmed without send
                 let unit_file = units.filter(capd => capd.properties.capture_date);
@@ -178,6 +179,7 @@ class ModalContent extends Component {
 
     render() {
         const { store } = this.state;
+
         // const BAD_DATES = [moment(), moment().add(1, 'days')];
         // const isDayBlocked = day => BAD_DATES.filter(d => d.isSame(day, 'day')).length > 0;
         let single_date = (
@@ -293,6 +295,11 @@ class ModalContent extends Component {
                         onChange={this.handleUploadFilter}
                         value={this.state.value} >
                     </Dropdown>
+                    <NestedModal
+                        upload_type={this.state.upload_type}
+                        store={this.state.store}
+                        onUidSelect={this.handleUidSelect}
+                    />
                     <Button
                         color='green'
                         disabled={!this.state.isValidated}

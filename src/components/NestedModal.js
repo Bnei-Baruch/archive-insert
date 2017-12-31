@@ -1,21 +1,14 @@
 import React, { Component } from 'react';
-import { Fetcher } from '../shared/consts';
-import { Modal, Button } from 'semantic-ui-react'
+//import {Fetcher, MDB_LANGUAGES, toHms} from '../shared/consts';
+import { Modal, Button, Table } from 'semantic-ui-react'
 
 class NestedModal extends Component {
     state = {
         open: false,
-        files: [],
+        active: null,
     };
 
-    open = () => {
-        this.setState({ open: true })
-        let path = this.props.id + '/files/';
-        Fetcher(path)
-            .then(data => {
-                this.setState({files: data});
-            })
-    };
+    open = () => this.setState({ open: true })
 
     close = () => this.setState({ open: false })
 
@@ -28,25 +21,56 @@ class NestedModal extends Component {
         //     })
     };
 
-    render() {
-        const { open } = this.state
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props) !== JSON.stringify(nextProps)) {
+            if(nextProps.upload_type === "PUBLICATION") {
+                this.open();
+            };
+        }
+    };
 
+    handleClick = (pub) => {
+        this.props.onUidSelect(pub);
+        this.setState({active: pub.uid});
+        this.setState({ open: false });
+    };
+
+    render() {
+        const { open } = this.state;
+        let pub_list = this.props.store.publishers.map((pub) => {
+            let name = (pub.i18n.he) ? pub.i18n.he.name : "Name not found";
+            let active = (this.state.active === pub.uid ? 'active' : '');
+            return (
+                <Table.Row className={active} key={pub.id} onClick={() => this.handleClick(pub)}>
+                    <Table.Cell textAlign='right'
+                                className={(pub.i18n.he ? "rtl-dir" : "negative")}>{name}</Table.Cell>
+                </Table.Row>
+            );
+        });
+        console.log("::NestedModal Render::")
         return (
             <Modal
+                {...this.props}
+                size="tiny"
                 dimmer={true}
                 open={open}
                 onOpen={this.open}
                 onClose={this.close}
-                trigger={<a href='#'>{this.props.id}</a>}
             >
-                <Modal.Header>{this.props.name}</Modal.Header>
-                <Modal.Content>
-                    <p>{this.props.uid}</p>
-                    <p>{this.props.id}</p>
-                    <p>{this.props.capture_date}</p>
+                <Modal.Header>Publishers</Modal.Header>
+                <Modal.Content className="tabContent">
+                    <Table selectable color='grey' key='teal' {...this.props}>
+                        <Table.Header>
+                            <Table.Row>
+                                <Table.HeaderCell></Table.HeaderCell>
+                            </Table.Row>
+                        </Table.Header>
+                        <Table.Body>
+                            {pub_list}
+                        </Table.Body>
+                    </Table>
                 </Modal.Content>
                 <Modal.Actions>
-                    {/*<Button icon='check' color='green' content='Select' onClick={this.open} />*/}
                     <Button color='blue' content='Done' onClick={this.close} />
                 </Modal.Actions>
             </Modal>

@@ -84,7 +84,7 @@ export const getName = (metadata) => {
     return filename;
 }
 
-const Fetcher = (path, cb) => fetch(`${API_BACKEND}/${path}`)
+export const Fetcher = (path, cb) => fetch(`${API_BACKEND}/${path}`)
     .then((response) => {
         if (response.ok) {
             return response.json().then(data => cb(data));
