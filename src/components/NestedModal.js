@@ -29,11 +29,14 @@ class NestedModal extends Component {
         }
     };
 
-    handleClick = (pub) => {
-        this.props.onUidSelect(pub);
-        this.setState({active: pub.uid});
-        this.setState({ open: false });
+    rawClick = (pub) => {
+        this.setState({active: pub.uid, publisher: pub});
     };
+
+    selectPublisher  = () => {
+        this.props.onUidSelect(this.state.publisher.pattern, "publisher");
+        this.setState({ open: false });
+    }
 
     render() {
         const { open } = this.state;
@@ -41,7 +44,7 @@ class NestedModal extends Component {
             let name = (pub.i18n.he) ? pub.i18n.he.name : "Name not found";
             let active = (this.state.active === pub.uid ? 'active' : '');
             return (
-                <Table.Row className={active} key={pub.id} onClick={() => this.handleClick(pub)}>
+                <Table.Row className={active} key={pub.id} onClick={() => this.rawClick(pub)}>
                     <Table.Cell textAlign='right'
                                 className={(pub.i18n.he ? "rtl-dir" : "negative")}>{name}</Table.Cell>
                 </Table.Row>
@@ -59,7 +62,7 @@ class NestedModal extends Component {
             >
                 <Modal.Header>Publishers</Modal.Header>
                 <Modal.Content className="tabContent">
-                    <Table selectable color='grey' key='teal' {...this.props}>
+                    <Table selectable compact='very' color='grey' key='teal' {...this.props}>
                         <Table.Header>
                             <Table.Row>
                                 <Table.HeaderCell></Table.HeaderCell>
@@ -71,7 +74,7 @@ class NestedModal extends Component {
                     </Table>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button color='blue' content='Done' onClick={this.close} />
+                    <Button color='blue' content='Select' onClick={this.selectPublisher} />
                 </Modal.Actions>
             </Modal>
         )

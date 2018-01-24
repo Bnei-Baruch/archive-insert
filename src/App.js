@@ -117,10 +117,14 @@ class ModalContent extends Component {
         this.setState({input_uid: data.value, isValidated: false});
     };
 
-    handleUidSelect = (data) => {
+    handleUidSelect = (data, state) => {
         console.log("::HandleUidSelect::");
         //TODO: Filter publication uid
         console.log(data);
+        if(state === "publisher") {
+            this.setState({publisher: data});
+            return
+        }
         let path = data.id + '/files/';
         fetchUnits(path, (data) => {
                 let units = data.filter((file) => (file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/)));
@@ -227,7 +231,7 @@ class ModalContent extends Component {
         let update_style = (<style>{'.ui.segment { background-color: #F8E0E0; }'}</style>);
 
         return (
-            <Container className="ui fullscreen modal visible transition">
+            <Container className="ui modal fullscreen visible transition">
                 <Segment clearing>
                     {this.props.url === "update.kli.one" ? update_style : ""}
                     <Header floated='left' >
