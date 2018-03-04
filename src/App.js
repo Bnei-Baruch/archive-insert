@@ -131,7 +131,15 @@ class ModalContent extends Component {
                 // Filter trimmed without send
                 let unit_file = units.filter(capd => capd.properties.capture_date);
                 console.log("Try to get trim source:",unit_file);
-                this.setState({files: data, send_name: unit_file ? unit_file[0].name : null});
+                if(unit_file.length == 0) {
+                    console.log("No trim source found, taking first file:",data[0]);
+                    let unit_sendname = data[0].name.split(".")[0];
+                    let unit_sendext = data[0].name.split(".")[1];
+                    let unit_name = unit_sendname + "_" + data[0].uid + "." + unit_sendext;
+                    this.setState({files: data, send_name: unit_name});
+                } else {
+                    this.setState({files: data, send_name: unit_file[0].name});
+                }
                 let metadata = {};
                 metadata.upload_type = this.state.upload_type;
                 metadata.language = this.state.language;

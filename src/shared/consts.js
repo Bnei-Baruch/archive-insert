@@ -48,7 +48,7 @@ export const getName = (metadata) => {
             var type = type.replace(/lesson/, "kitei-makor");
             var desc = metadata.line.send_name.split("_").slice(5, -1).join("_");
             var desc = desc.replace(/lesson/, "kitei-makor");
-            var ext = (metadata.line.mime_type === "application/msword") ? metadata.line.upload_filename.split(".")[1] : mime_list[metadata.line.mime_type];
+            var ext = mime_list[metadata.line.mime_type];
             break;
         case "sirtutim":
             break;
