@@ -131,12 +131,14 @@ class ModalContent extends Component {
                 // Filter trimmed without send
                 let unit_file = units.filter(capd => capd.properties.capture_date);
                 console.log("Try to get trim source:",unit_file);
-                if(unit_file.length == 0) {
+                if(unit_file.length == 0 && this.state.upload_type !== "aricha") {
                     console.log("No trim source found, taking first file:",data[0]);
                     let unit_sendname = data[0].name.split(".")[0];
                     let unit_sendext = data[0].name.split(".")[1];
                     let unit_name = unit_sendname + "_" + data[0].uid + "." + unit_sendext;
                     this.setState({files: data, send_name: unit_name});
+                } else if(unit_file.length == 0 && this.state.upload_type === "aricha") {
+                    this.setState({files: data, send_name: this.state.filedata.filename});
                 } else {
                     this.setState({files: data, send_name: unit_file[0].name});
                 }
@@ -202,7 +204,7 @@ class ModalContent extends Component {
                 // isDayBlocked={isDayBlocked}
                 isOutsideRange={day => !isInclusivelyBeforeDay(day, moment())}
                 numberOfMonths={1}
-                date={this.state.date}
+                date={moment(this.state.date)}
                 onDateChange={this.handleDateChange}
                 focused={this.state.focused}
                 onFocusChange={({ focused }) => this.setState({ focused })}
@@ -215,8 +217,8 @@ class ModalContent extends Component {
                 hideKeyboardShortcutsPanel
                 // isDayBlocked={isDayBlocked}
                 isOutsideRange={day => !isInclusivelyBeforeDay(day, moment())}
-                startDate={this.state.startDate}
-                endDate={this.state.endDate}
+                startDate={moment(this.state.start_date)}
+                endDate={moment(this.state.end_date)}
                 onDatesChange={this.handleDatesChange}
                 focusedInput={this.state.focusedInput}
                 onFocusChange={focusedInput => this.setState({ focusedInput })}
