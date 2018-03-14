@@ -8,7 +8,36 @@ import 'react-dates/lib/css/_datepicker.css';
 import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react'
 import { DateRangePicker, SingleDatePicker, isInclusivelyBeforeDay } from 'react-dates';
 
-import {fetchSources, fetchTags, fetchPublishers, fetchUnits, fetchPersons, insertName, content_options, language_options, upload_options, article_options, getName, MDB_LANGUAGES} from './shared/consts';
+import {
+    fetchSources,
+    fetchTags,
+    fetchPublishers,
+    fetchUnits,
+    fetchPersons,
+    insertName,
+    content_options,
+    language_options,
+    upload_options,
+    article_options,
+    getName,
+    MDB_LANGUAGES,
+    CT_LESSON_PART,
+    CT_LECTURE,
+    CT_CHILDREN_LESSON_PART,
+    CT_WOMEN_LESSON_PART,
+    CT_VIRTUAL_LESSON,
+    CT_FRIENDS_GATHERING,
+    CT_MEAL,
+    CT_VIDEO_PROGRAM_CHAPTER,
+    CT_FULL_LESSON,
+    CT_TEXT,
+    CT_UNKNOWN,
+    CT_EVENT_PART,
+    CT_CLIP,
+    CT_TRAINING,
+    CT_KITEI_MAKOR,
+    CONTENT_TYPE_BY_ID
+} from './shared/consts';
 import MdbData from './components/MdbData';
 import NestedModal from './components/NestedModal';
 
@@ -93,7 +122,7 @@ class ModalContent extends Component {
         metadata["line"] = {};
         metadata.line.uid = this.state.unit.uid;
         metadata.line.send_name = this.state.send_name ? this.state.send_name : null;
-        metadata.line.content_type = this.state.content_type;
+        metadata.line.content_type = CONTENT_TYPE_BY_ID[this.state.unit.type_id];
         metadata.line.mime_type = this.state.filedata.type;
         metadata.line.upload_filename = this.state.filedata.filename;
         metadata.line.url = this.state.filedata.url;
@@ -152,7 +181,7 @@ class ModalContent extends Component {
                 metadata["line"] = {};
                 metadata.line.uid = this.state.unit.uid;
                 metadata.line.send_name = this.state.send_name ? this.state.send_name : null;
-                metadata.line.content_type = this.state.content_type;
+                metadata.line.content_type = CONTENT_TYPE_BY_ID[this.state.unit.type_id];
                 metadata.line.mime_type = this.state.filedata.type;
                 metadata.line.upload_filename = this.state.filedata.filename;
                 metadata.line.url = this.state.filedata.url;

@@ -26,7 +26,13 @@ class MdbData extends Component {
         console.log("--ReceiveProps--");
         if (JSON.stringify(this.props) !== JSON.stringify(nextProps) && nextProps.content_type && nextProps.language && nextProps.upload_type ) {
             // Yeah it's look long :)
-            let path = nextProps.content_type.match(/^(LESSON_PART)$/) ? `?&page_size=1000&content_type=FULL_LESSON&content_type=WOMEN_LESSON&content_type=${nextProps.content_type}&start_date=${nextProps.start_date}&end_date=${nextProps.end_date}` : `?&page_size=1000&content_type=${nextProps.content_type}&start_date=${nextProps.start_date}&end_date=${nextProps.end_date}`
+            if(nextProps.content_type === "LESSON_PART") {
+                var path = `?&page_size=1000&content_type=FULL_LESSON&content_type=WOMEN_LESSON&content_type=${nextProps.content_type}&start_date=${nextProps.start_date}&end_date=${nextProps.end_date}`
+            } else if (nextProps.content_type === "OTHER") {
+                var path = `?&page_size=1000&content_type=FRIENDS_GATHERING&content_type=EVENT_PART&content_type=LECTURE&start_date=${nextProps.start_date}&end_date=${nextProps.end_date}`
+            } else {
+                var path = `?&page_size=1000&content_type=${nextProps.content_type}&start_date=${nextProps.start_date}&end_date=${nextProps.end_date}`
+            }
             if(nextProps.content_type === "LESSON_PART" && !nextProps.input_uid) {
                 fetchUnits(path, (data) => fetchCollections(data, (units) => this.setState({units: units.data})))
             } else if(nextProps.input_uid) {

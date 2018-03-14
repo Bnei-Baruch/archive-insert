@@ -51,6 +51,13 @@ export const getName = (metadata) => {
             var ext = mime_list[metadata.line.mime_type];
             break;
         case "sirtutim":
+            var language = metadata.language;
+            var original = language === metadata.line.original_language ? "o" : "t";
+            var lecturer = metadata.line.lecturer;
+            var date = metadata.line.capture_date || metadata.line.film_date;
+            var type = metadata.line.send_name.split("_")[4];
+            var desc = metadata.line.send_name.split("_").slice(5, -1).join("_");
+            var ext = mime_list[metadata.line.mime_type];
             break;
         case "aricha":
             break;
@@ -145,11 +152,12 @@ export const fetchCollections = (data,col) => {
 
 export const content_options = [
     { value: 'LESSON_PART', text: ' ‏שיעור', icon: 'student' },
-    { value: 'FRIENDS_GATHERING', text: ' ‏חברים', icon: 'users' },
+    //{ value: 'FRIENDS_GATHERING', text: ' ‏חברים', icon: 'users' },
     { value: 'VIRTUAL_LESSON', text: ' ‏וובינר', icon: 'conversation' },
     { value: 'VIDEO_PROGRAM_CHAPTER', text: ' ‏תוכנית', icon: 'record' },
     { value: 'CLIP', text: ' ‏קליפ', icon: 'film' },
     { value: 'MEAL', text: ' ‏סעודה', icon: 'food' },
+    { value: 'OTHER', text: ' ‏אחר', icon: 'unordered list' },
     { value: 'ARTICLE', text: 'מאמרים ', icon: 'newspaper' },
     //{ value: 'PUBLICATION', text: 'פירסומים ', icon: 'announcement' },
 ];
