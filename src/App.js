@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
+import DatePicker from 'react-datepicker';
 import PropTypes from 'prop-types';
 import noop from 'lodash/noop';
 import moment from 'moment';
-import './App.css';
+import 'react-datepicker/dist/react-datepicker.css';
 import 'semantic-ui-css/semantic.min.css';
-import 'react-dates/lib/css/_datepicker.css';
+//import 'react-dates/lib/css/_datepicker.css';
+import './App.css';
 import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react'
-import { DateRangePicker, SingleDatePicker, isInclusivelyBeforeDay } from 'react-dates';
+//import { DateRangePicker, SingleDatePicker, isInclusivelyBeforeDay } from 'react-dates';
 
 import {
     fetchSources,
@@ -63,6 +65,7 @@ class ModalContent extends Component {
                 tags: [],
                 publishers: [],
             },
+            startDate: moment(),
             today_date: moment().format('YYYY-MM-DD'),
             start_date: this.props.filedata.start_date ? this.props.filedata.start_date : moment().format('YYYY-MM-DD'),
             end_date: this.props.filedata.end_date ? this.props.filedata.end_date : moment().add(340, 'days').format('YYYY-MM-DD'),
@@ -72,6 +75,7 @@ class ModalContent extends Component {
             input_uid: this.props.filedata.input_uid ? this.props.filedata.input_uid : null,
             isValidated: false,
         };
+        this.handleDateChange = this.handleDateChange.bind(this);
     }
 
     componentDidMount() {
@@ -95,19 +99,14 @@ class ModalContent extends Component {
         this.setState({upload_type: data.value});
     };
 
-    handleDatesChange = ({startDate, endDate }) => {
-        let startdate = (startDate) ? startDate.format('YYYY-MM-DD') : this.props.filedata.filename.split(".")[0].split("_")[3];
-        let enddate = (endDate) ? endDate.format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-        this.setState({ startDate, endDate, start_date: startdate, end_date: enddate, input_uid: ""});
-    };
-
-    handleDateChange = (date) => {
-        if(date === null)
-            return
+    handleDateChange(date) {
         let startdate = (date) ? date.format('YYYY-MM-DD') : this.props.filedata.filename.split(".")[0].split("_")[3];
         let enddate = (date) ? date.format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-        this.setState({ date, start_date: startdate, end_date: enddate, input_uid: ""});
-    };
+        this.setState({
+            startDate: date,
+            start_date: startdate, end_date: enddate
+        });
+    }
 
     handleOnComplete = () => {
         console.log("::HandelOnComplete::");
@@ -223,36 +222,18 @@ class ModalContent extends Component {
     render() {
         const { store } = this.state;
 
-        // const BAD_DATES = [moment(), moment().add(1, 'days')];
-        // const isDayBlocked = day => BAD_DATES.filter(d => d.isSame(day, 'day')).length > 0;
-        let single_date = (
-            <SingleDatePicker
-                showDefaultInputIcon
-                hideKeyboardShortcutsPanel
-                displayFormat="YYYY-MM-DD"
-                // isDayBlocked={isDayBlocked}
-                isOutsideRange={day => !isInclusivelyBeforeDay(day, moment())}
-                numberOfMonths={1}
-                date={moment(this.state.date)}
-                onDateChange={this.handleDateChange}
-                focused={this.state.focused}
-                onFocusChange={({ focused }) => this.setState({ focused })}
+        let start_date = (
+            <DatePicker
+                className="datepickercs"
+                locale="il"
+                dateFormat="YYYY-MM-DD"
+                maxDate={moment()}
+                selected={this.state.startDate}
+                onChange={this.handleDateChange}
+                //excludeDates={[moment(), moment().add(-1, "mounth")]}
+                //highlightDates={[moment().add(7, "days")]}
             />
-        );
-
-        let range_date = (
-            <DateRangePicker
-                displayFormat="YYYY-MM-DD"
-                hideKeyboardShortcutsPanel
-                // isDayBlocked={isDayBlocked}
-                isOutsideRange={day => !isInclusivelyBeforeDay(day, moment())}
-                startDate={moment(this.state.start_date)}
-                endDate={moment(this.state.end_date)}
-                onDatesChange={this.handleDatesChange}
-                focusedInput={this.state.focusedInput}
-                onFocusChange={focusedInput => this.setState({ focusedInput })}
-            />
-        );
+        )
 
         let input_uid = (
             <Input
@@ -296,11 +277,11 @@ class ModalContent extends Component {
                             onChange={this.handleLanguageFilter}
                             value={this.state.value} >
                         </Dropdown>
-                        {!this.state.upload_type.match(/^(aricha|article|publication)$/) ? input_uid : ""}
                     </Header>
                     <Header floated='right'>
-                        {this.state.upload_type.match(/^(aricha|article|publication)$/) ? range_date : single_date}
+                        {!this.state.upload_type.match(/^(aricha|article|publication)$/) ? input_uid : ""}
                     </Header>
+                        {this.state.upload_type.match(/^(aricha|article|publication)$/) ? start_date : start_date}
                 </Segment>
                 <Segment clearing secondary color='blue'>
                 <Modal.Content className="tabContent">
