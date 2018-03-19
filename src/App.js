@@ -251,7 +251,7 @@ class ModalContent extends Component {
         let update_style = (<style>{'.ui.segment { background-color: #F8E0E0; }'}</style>);
 
         return (
-            <Container>
+            <Container className="ui modal fullscreen visible transition">
                 <Segment clearing>
                     {this.props.url === "update.kli.one" ? update_style : ""}
                     <Header floated='left' >
