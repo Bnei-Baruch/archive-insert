@@ -1,10 +1,15 @@
-.ui.modal {
-  top: 2%!important;
-  margin-top: 2%!important;
+.ui.container {
+    top: 2%!important;
+    margin-top: 5%!important;
+    margin-left: 0%!important;
+    width: 925px!important;
 }
 
-.ui.fullscreen.modal {
-    width: 100% !important;
+.ui.modal {
+    top: 2%!important;
+    margin-top: 5%!important;
+    margin-left: 5%!important;
+    width: 925px!important;
 }
 
 .table {
