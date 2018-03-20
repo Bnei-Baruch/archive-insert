@@ -225,8 +225,8 @@ class ModalContent extends Component {
                 maxDate={moment()}
                 selected={this.state.startDate}
                 onChange={this.handleDateChange}
-                //excludeDates={[moment(), moment().add(-1, "mounth")]}
-                //highlightDates={[moment().add(7, "days")]}
+                //excludeDates={[moment(), moment().add(1, "months")]}
+                //highlightDates={moment().add(-1, "months")}
             />
         )
 
