@@ -163,8 +163,8 @@ export const content_options = [
 ];
 
 export const article_options = [
-    { value: 'ARTICLE', text: 'מאמרים ', icon: 'newspaper' },
-    { value: 'PUBLICATION', text: 'פירסומים ', icon: 'announcement' },
+    { value: 'article', text: 'מאמרים ', icon: 'newspaper' },
+    { value: 'publication', text: 'פירסומים ', icon: 'announcement' },
 ];
 
 export const MDB_LANGUAGES = {

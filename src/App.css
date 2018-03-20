@@ -1,6 +1,6 @@
 .ui.container {
     top: 2%!important;
-    margin-top: 5%!important;
+    margin-top: 2%!important;
     margin-left: 5%!important;
     width: 1000px!important;
 }
@@ -8,7 +8,7 @@
 .ui.modal {
     position: absolute;
     top: 2%!important;
-    margin-top: 5%!important;
+    margin-top: 2%!important;
     margin-left: 5%!important;
     width: 1000px!important;
     left: 0%!important;
@@ -68,7 +68,7 @@
 }
 
 .react-datepicker {
-    font-size: 1em;
+    font-size: 1.5em;
 }
 .react-datepicker__header {
     padding-top: 0.8em;

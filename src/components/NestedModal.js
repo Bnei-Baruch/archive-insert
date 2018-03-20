@@ -23,7 +23,7 @@ class NestedModal extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props) !== JSON.stringify(nextProps)) {
-            if(nextProps.upload_type === "PUBLICATION") {
+            if(nextProps.upload_type === "publication") {
                 this.open();
             };
         }

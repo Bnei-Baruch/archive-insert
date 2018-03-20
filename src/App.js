@@ -5,10 +5,8 @@ import noop from 'lodash/noop';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'semantic-ui-css/semantic.min.css';
-//import 'react-dates/lib/css/_datepicker.css';
 import './App.css';
 import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react'
-//import { DateRangePicker, SingleDatePicker, isInclusivelyBeforeDay } from 'react-dates';
 
 import {
     fetchSources,
@@ -46,6 +44,7 @@ import NestedModal from './components/NestedModal';
 class ModalContent extends Component {
     static propTypes = {
         filedata: PropTypes.object,
+        metadata: PropTypes.object,
         onComplete: PropTypes.func,
         onCancel: PropTypes.func,
     };
@@ -58,6 +57,11 @@ class ModalContent extends Component {
         super(props);
         this.state = {
             filedata: { ...props.filedata },
+            metadata: { sha1: props.filedata.sha1,
+                        size: props.filedata.size,
+                        line: { upload_filename: props.filedata.filename,
+                                mime_type: props.filedata.type,
+                                url: props.filedata.url }},
             unit: {},
             files: [],
             store: {
@@ -111,20 +115,14 @@ class ModalContent extends Component {
     handleOnComplete = () => {
         console.log("::HandelOnComplete::");
         // Object we return from react
-        let metadata = {};
+        let metadata = this.state.metadata;
         metadata.upload_type = this.state.upload_type;
         metadata.language = this.state.language;
         metadata.insert_type = this.props.url === "upload.kli.one" ? "1" : "2";
-        metadata.sha1 = this.state.filedata.sha1;
-        metadata.size = this.state.filedata.size;
         metadata.send_id = this.state.send_name ? this.state.send_name.split(".")[0].split("_").pop().slice(0,-1) : null;
-        metadata["line"] = {};
         metadata.line.uid = this.state.unit.uid;
         metadata.line.send_name = this.state.send_name ? this.state.send_name : null;
         metadata.line.content_type = CONTENT_TYPE_BY_ID[this.state.unit.type_id];
-        metadata.line.mime_type = this.state.filedata.type;
-        metadata.line.upload_filename = this.state.filedata.filename;
-        metadata.line.url = this.state.filedata.url;
         metadata.line.capture_date = this.state.unit.properties.capture_date;
         metadata.line.film_date = this.state.unit.properties.film_date;
         metadata.line.original_language = MDB_LANGUAGES[this.state.unit.properties.original_language];
@@ -150,7 +148,7 @@ class ModalContent extends Component {
         //TODO: Filter publication uid
         console.log(data);
         if(state === "publisher") {
-            this.setState({publisher: data});
+            this.setState({metadata: { ...this.state.metadata, publisher: data }});
             return
         }
         let path = data.id + '/files/';
@@ -170,20 +168,14 @@ class ModalContent extends Component {
                 } else {
                     this.setState({files: data, send_name: unit_file[0].name});
                 }
-                let metadata = {};
+                let metadata = this.state.metadata;
                 metadata.upload_type = this.state.upload_type;
                 metadata.language = this.state.language;
                 metadata.insert_type = this.props.url === "upload.kli.one" ? "1" : "2";
-                metadata.sha1 = this.state.filedata.sha1;
-                metadata.size = this.state.filedata.size;
                 metadata.send_id = this.state.send_name ? this.state.send_name.split(".")[0].split("_").pop().slice(0,-1) : null;
-                metadata["line"] = {};
                 metadata.line.uid = this.state.unit.uid;
                 metadata.line.send_name = this.state.send_name ? this.state.send_name : null;
                 metadata.line.content_type = CONTENT_TYPE_BY_ID[this.state.unit.type_id];
-                metadata.line.mime_type = this.state.filedata.type;
-                metadata.line.upload_filename = this.state.filedata.filename;
-                metadata.line.url = this.state.filedata.url;
                 metadata.line.capture_date = this.state.unit.properties.capture_date;
                 metadata.line.film_date = this.state.unit.properties.film_date;
                 metadata.line.original_language = MDB_LANGUAGES[this.state.unit.properties.original_language];
@@ -227,6 +219,9 @@ class ModalContent extends Component {
                 className="datepickercs"
                 locale="il"
                 dateFormat="YYYY-MM-DD"
+                showYearDropdown
+                showMonthDropdown
+                scrollableYearDropdown
                 maxDate={moment()}
                 selected={this.state.startDate}
                 onChange={this.handleDateChange}
