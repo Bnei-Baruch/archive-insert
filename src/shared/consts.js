@@ -246,7 +246,9 @@ export const mime_list = {
     "application/msword": "doc",
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
     "image/jpeg": "jpg",
+    "image/png": "png",
     "audio/mpeg": "mp3",
+    "audio/mp3": "mp3",
     "video/mp4": "mp4",
     "application/zip": "zip"
 };
