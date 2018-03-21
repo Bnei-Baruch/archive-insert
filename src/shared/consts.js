@@ -28,7 +28,7 @@ export const getName = (metadata) => {
             var date = metadata.line.capture_date || metadata.line.film_date;
             var type = "akladot";
             var desc = metadata.line.send_name.split("_").slice(5, -1).join("_");
-            var ext = (metadata.line.mime_type === "application/msword") ? metadata.line.upload_filename.split(".")[1] : mime_list[metadata.line.mime_type];
+            var ext = mime_list[metadata.line.mime_type];
             break;
         case "tamlil":
             var language = metadata.language;
@@ -37,7 +37,7 @@ export const getName = (metadata) => {
             var date = metadata.line.capture_date || metadata.line.film_date;
             var type = metadata.line.send_name.split("_")[4];
             var desc = metadata.line.send_name.split("_").slice(5, -1).join("_");
-            var ext = (metadata.line.mime_type === "application/msword") ? metadata.line.upload_filename.split(".")[1] : mime_list[metadata.line.mime_type];
+            var ext = mime_list[metadata.line.mime_type];
             break;
         case "kitei-makor":
             var language = metadata.language;
@@ -243,7 +243,8 @@ export const upload_options = [
 ];
 
 export const mime_list = {
-    "application/msword": "docx",
+    "application/msword": "doc",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
     "image/jpeg": "jpg",
     "audio/mpeg": "mp3",
     "video/mp4": "mp4",

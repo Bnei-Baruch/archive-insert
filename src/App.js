@@ -3,6 +3,8 @@ import DatePicker from 'react-datepicker';
 import PropTypes from 'prop-types';
 import noop from 'lodash/noop';
 import moment from 'moment';
+import ru from 'moment/locale/ru';
+import he from 'moment/locale/he';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
@@ -217,7 +219,7 @@ class ModalContent extends Component {
         let start_date = (
             <DatePicker
                 className="datepickercs"
-                locale="il"
+                locale="en"
                 dateFormat="YYYY-MM-DD"
                 showYearDropdown
                 showMonthDropdown
