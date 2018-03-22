@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Fetcher } from '../shared/consts';
+import { Fetcher } from '../shared/tools';
 import { Grid, Header } from 'semantic-ui-react'
 
 class PopupInfo extends Component {

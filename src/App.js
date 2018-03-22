@@ -17,11 +17,14 @@ import {
     fetchUnits,
     fetchPersons,
     insertName,
+    getName
+} from './shared/tools';
+
+import {
     content_options,
     language_options,
     upload_options,
     article_options,
-    getName,
     MDB_LANGUAGES,
     CT_LESSON_PART,
     CT_LECTURE,
@@ -40,6 +43,7 @@ import {
     CT_KITEI_MAKOR,
     CONTENT_TYPE_BY_ID
 } from './shared/consts';
+
 import MdbData from './components/MdbData';
 import NestedModal from './components/NestedModal';
 

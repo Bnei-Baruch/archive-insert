@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { fetchUnits, getName } from '../shared/consts';
+import { fetchUnits, getName } from '../shared/tools';
 import { Grid, Header } from 'semantic-ui-react'
 
 class NameHelper extends Component {
