@@ -9,16 +9,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react'
-
-import {
-    fetchSources,
-    fetchTags,
-    fetchPublishers,
-    fetchUnits,
-    fetchPersons,
-    insertName,
-    getName
-} from './shared/tools';
+import { fetchSources, fetchTags, fetchPublishers, fetchUnits, fetchPersons, insertName, getName } from './shared/tools';
 
 import {
     content_options,
@@ -63,11 +54,11 @@ class ModalContent extends Component {
         super(props);
         this.state = {
             filedata: { ...props.filedata },
-            metadata: { sha1: props.filedata.sha1,
-                        size: props.filedata.size,
-                        line: { upload_filename: props.filedata.filename,
-                                mime_type: props.filedata.type,
-                                url: props.filedata.url }},
+            metadata: {
+                sha1: props.filedata.sha1,
+                size: props.filedata.size,
+                line: { upload_filename: props.filedata.filename, mime_type: props.filedata.type, url: props.filedata.url },
+                    },
             unit: {},
             files: [],
             store: {
