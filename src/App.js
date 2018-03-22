@@ -79,6 +79,14 @@ class ModalContent extends Component {
         this.handleDateChange = this.handleDateChange.bind(this);
     }
 
+    componentWillUpdate(nextProps, nextState) {
+        //console.log("-- App ReceiveProps--", nextState);
+        let next = [nextState.content_type, nextState.language, nextState.upload_type, nextState.start_date]
+        let prev = [this.state.content_type, this.state.language, this.state.upload_type, this.state.start_date]
+        if (JSON.stringify(prev) !== JSON.stringify(next))
+            this.setState({ isValidated: false });
+    }
+
     componentDidMount() {
         fetchSources(sources => this.setState({ store: { ...this.state.store, sources } }));
         fetchTags(tags => this.setState({ store: { ...this.state.store, tags } }));
