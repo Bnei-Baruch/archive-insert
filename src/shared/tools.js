@@ -86,7 +86,6 @@ export const getName = (metadata) => {
             var lecturer = "rav";
             var date = metadata.line.capture_date || metadata.line.film_date;
             var type = "art";
-            var desc = metadata.line.send_name.split("_").slice(5, -1).join("_");
             var desc = metadata.line.uid;
             var ext = mime_list[metadata.line.mime_type];
             break;
