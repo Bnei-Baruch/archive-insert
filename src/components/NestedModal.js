@@ -54,8 +54,12 @@ class NestedModal extends Component {
         return (
             <Modal
                 {...this.props}
+                className="nestedmodal"
                 size="tiny"
                 dimmer={true}
+                closeIcon={false}
+                closeOnDimmerClick={false}
+                defaultOpen={true}
                 open={open}
                 onOpen={this.open}
                 onClose={this.close}
@@ -74,7 +78,7 @@ class NestedModal extends Component {
                     </Table>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button color='blue' content='Select' onClick={this.selectPublisher} />
+                    <Button color='blue' content='Select' disabled={!this.state.active} onClick={this.selectPublisher} />
                 </Modal.Actions>
             </Modal>
         )
