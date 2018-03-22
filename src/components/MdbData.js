@@ -53,7 +53,7 @@ class MdbData extends Component {
     };
 
     render() {
-        console.log("::MdbData Render::")
+        console.log("--MdbData Render--")
         let uidList = this.state.units.map((unit) => {
             let name = (unit.i18n.he) ? unit.i18n.he.name : "Name not found";
             let active = (this.state.active === unit.uid ? 'active' : '');

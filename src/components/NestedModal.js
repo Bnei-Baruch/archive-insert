@@ -50,7 +50,7 @@ class NestedModal extends Component {
                 </Table.Row>
             );
         });
-        console.log("::NestedModal Render::")
+        console.log("--NestedModal Render--")
         return (
             <Modal
                 {...this.props}

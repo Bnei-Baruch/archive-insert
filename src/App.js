@@ -94,17 +94,17 @@ class ModalContent extends Component {
     }
 
     handleContentFilter = (e, data) => {
-        console.log(data.value);
+        console.log("-Content type: "+ data.value);
         this.setState({content_type: data.value, input_uid: "", upload_type: ""});
     };
 
     handleLanguageFilter = (e, data) => {
-        console.log(data.value);
+        console.log("-Language: "+ data.value);
         this.setState({language: data.value});
     };
 
     handleUploadFilter = (e, data) => {
-        console.log(data.value);
+        console.log("-Upload type: "+ data.value);
         this.setState({upload_type: data.value});
     };
 
@@ -118,40 +118,26 @@ class ModalContent extends Component {
     }
 
     handleOnComplete = () => {
-        console.log("::HandelOnComplete::");
+        console.log("--HandelOnComplete--");
         // Object we return from react
-        let metadata = this.state.metadata;
-        metadata.upload_type = this.state.upload_type;
-        metadata.language = this.state.language;
-        metadata.insert_type = this.props.url === "upload.kli.one" ? "1" : "2";
-        metadata.send_id = this.state.send_name ? this.state.send_name.split(".")[0].split("_").pop().slice(0,-1) : null;
-        metadata.line.uid = this.state.unit.uid;
-        metadata.line.send_name = this.state.send_name ? this.state.send_name : null;
-        metadata.line.content_type = CONTENT_TYPE_BY_ID[this.state.unit.type_id];
-        metadata.line.capture_date = this.state.unit.properties.capture_date;
-        metadata.line.film_date = this.state.unit.properties.film_date;
-        metadata.line.original_language = MDB_LANGUAGES[this.state.unit.properties.original_language];
-        metadata.line.lecturer = this.state.lecturer;
-            // Calculate new name here
-        metadata.filename = getName(metadata);
-        console.log(metadata);
-        this.props.onComplete(metadata);
+        console.log("::We returnt this metadata: ", this.state.metadata);
+        this.props.onComplete(this.state.metadata);
     };
 
     handleOnClose = () => {
-        console.log("::HandelOnCancel::");
+        console.log("--HandelOnCancel--");
         this.props.onCancel();
     };
 
     handleUidInput = (e, data) => {
-        console.log("Input changed:", data.value);
+        console.log(":: Input changed: ", data.value);
         this.setState({input_uid: data.value, isValidated: false});
     };
 
     handleUidSelect = (data, state) => {
-        console.log("::HandleUidSelect::");
+        console.log("--HandleUidSelect--");
         //TODO: Filter publication uid
-        console.log(data);
+        console.log(":: Got UNIT: ", data);
         if(state === "publisher") {
             this.setState({metadata: { ...this.state.metadata, publisher: data }});
             return
@@ -161,7 +147,7 @@ class ModalContent extends Component {
                 let units = data.filter((file) => (file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/)));
                 // Filter trimmed without send
                 let unit_file = units.filter(capd => capd.properties.capture_date);
-                console.log("Try to get trim source:",unit_file);
+                console.log(":: Try to get trim source: ", unit_file);
                 if(unit_file.length == 0 && this.state.upload_type !== "aricha") {
                     console.log("No trim source found, taking first file:",data[0]);
                     let unit_sendname = data[0].name.split(".")[0];
@@ -185,7 +171,7 @@ class ModalContent extends Component {
                 metadata.line.film_date = this.state.unit.properties.film_date;
                 metadata.line.original_language = MDB_LANGUAGES[this.state.unit.properties.original_language];
                 fetchPersons(this.state.unit.id, (data) => {
-                    console.log(data);
+                    console.log(":: Got Persons: ",data);
                     if(data.length > 0 && data[0].person.uid === "abcdefgh") {
                         metadata.line.lecturer = "rav";
                         this.setState({lecturer: "rav"});
@@ -195,19 +181,21 @@ class ModalContent extends Component {
                     }
                     // Calculate new name here
                     metadata.filename = getName(metadata);
-                    console.log(metadata);
+                    console.log(":: Metadata: ",metadata);
+                    // Check if name already exist
                     insertName(metadata.filename, (data) => {
-                        console.log(data);
+                        console.log(":: Got WFObject",data);
                         if(data.length > 0 && this.props.url === "upload.kli.one") {
-                            console.log("File with name: "+metadata.filename+" - already exist!");
+                            console.log(":: File with name: "+metadata.filename+" - already exist!");
                             alert("File with name: "+metadata.filename+" - already exist!");
                             this.setState({ isValidated: false });
                         } else if(data.length == 0 && this.props.url === "update.kli.one") {
-                            console.log("File with name: "+metadata.filename+" - does NOT exist! In current mode the operation must be update only");
+                            console.log(":: File with name: "+metadata.filename+" - does NOT exist! In current mode the operation must be update only");
                             alert("File with name: "+metadata.filename+" - does NOT exist! In current mode the operation must be update only");
                             this.setState({ isValidated: false });
                         } else {
                             this.state.content_type && this.state.language && this.state.upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
+                            this.setState({metadata: { ...this.state.metadata }});
                         }
                     });
                 });

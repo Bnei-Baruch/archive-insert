@@ -16,8 +16,6 @@ export const toHms = (time) => {
 }
 
 export const getName = (metadata) => {
-    // We can't do here ajax request right now!
-  console.log(metadata)
     switch (metadata.upload_type) {
         case "akladot":
             var language = metadata.language;
@@ -129,7 +127,7 @@ export const fetchPublishers = cb => Fetcher('publishers/', cb);
 export const fetchUnits = (path, cb) => fetch(`${API_BACKEND}/content_units/${path}`)
     .then((response) => {
         if (response.ok) {
-            console.log("::FetchDataWithCB::");
+            console.log("--FetchDataWithCB--");
             return response.json().then(data => cb(data));
         }
     })
@@ -138,7 +136,7 @@ export const fetchUnits = (path, cb) => fetch(`${API_BACKEND}/content_units/${pa
 export const fetchPersons = (id, cb) => fetch(`${API_BACKEND}/content_units/${id}/persons/`)
     .then((response) => {
         if (response.ok) {
-            console.log("::FetchPersonsName::");
+            console.log("--FetchPersonsName--");
             return response.json().then(data => cb(data));
         }
     })
@@ -147,7 +145,7 @@ export const fetchPersons = (id, cb) => fetch(`${API_BACKEND}/content_units/${id
 export const insertName = (filename, cb) => fetch(`https://upload.kli.one/insert/find?key=insert_name&value=${filename}`)
     .then((response) => {
         if (response.ok) {
-            console.log("::FetchInsertName::");
+            console.log("--FetchInsertName--");
             return response.json().then(data => cb(data));
         }
     })
@@ -156,7 +154,7 @@ export const insertName = (filename, cb) => fetch(`https://upload.kli.one/insert
 //export const fetchUnits = (path,cb) => fetcher(path, cb);
 
 export const fetchCollections = (data,col) => {
-    console.log("::FetchCollection::");
+    console.log("--FetchCollection--");
     data.data.forEach((u,i) => {
         let path = `${u.id}/collections/`;
         fetchUnits(path,cb => {
