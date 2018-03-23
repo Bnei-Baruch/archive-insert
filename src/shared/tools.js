@@ -18,95 +18,55 @@ export const toHms = (time) => {
 export const getName = (metadata) => {
     switch (metadata.upload_type) {
         case "akladot":
-            var language = metadata.language;
-            var original = language === metadata.line.original_language ? "o" : "t";
             var lecturer = metadata.line.lecturer;
-            var date = metadata.line.capture_date || metadata.line.film_date;
             var type = "akladot";
             var desc = metadata.line.send_name.split("_").slice(5, -1).join("_");
-            var ext = mime_list[metadata.line.mime_type];
             break;
         case "tamlil":
-            var language = metadata.language;
-            var original = language === metadata.line.original_language ? "o" : "t";
             var lecturer = metadata.line.lecturer;
-            var date = metadata.line.capture_date || metadata.line.film_date;
-            var type = metadata.line.send_name.split("_")[4];
+            var type = CONTENT_TYPES_MAPPINGS[metadata.line.content_type].pattern;
             var desc = metadata.line.send_name.split("_").slice(5, -1).join("_");
-            var ext = mime_list[metadata.line.mime_type];
             break;
         case "kitei-makor":
-            var language = metadata.language;
-            var original = language === metadata.line.original_language ? "o" : "t";
             var lecturer = metadata.line.lecturer;
-            var date = metadata.line.capture_date || metadata.line.film_date;
-            var type = metadata.line.send_name.split("_")[4];
-            var type = type.replace(/lesson/, "kitei-makor");
+            var type = "kitei-makor";
             var desc = metadata.line.send_name.split("_").slice(5, -1).join("_");
-            var desc = desc.replace(/lesson/, "kitei-makor");
-            var ext = mime_list[metadata.line.mime_type];
             break;
         case "sirtutim":
-            var language = metadata.language;
-            var original = language === metadata.line.original_language ? "o" : "t";
             var lecturer = metadata.line.lecturer;
-            var date = metadata.line.capture_date || metadata.line.film_date;
-            var type = metadata.line.send_name.split("_")[4];
+            var type = CONTENT_TYPES_MAPPINGS[metadata.line.content_type].pattern;
             var desc = metadata.line.send_name.split("_").slice(5, -1).join("_");
-            var ext = mime_list[metadata.line.mime_type];
             break;
         case "aricha":
             break;
         case "dibuv":
-            var language = metadata.language;
-            var original = language === metadata.line.original_language ? "o" : "t";
             var lecturer = metadata.line.lecturer;
-            var date = metadata.line.capture_date || metadata.line.film_date;
-            //var type = metadata.line.send_name.split("_")[4];
             var type = CONTENT_TYPES_MAPPINGS[metadata.line.content_type].pattern;
             var desc = metadata.line.send_name.split("_").slice(5, -1).join("_");
-            var ext = mime_list[metadata.line.mime_type];
             break;
         case "publication":
-            var language = metadata.language;
-            var original = language === metadata.line.original_language ? "o" : "t";
-            //var lecturer = metadata.line.lecturer;
             var lecturer = "rav";
-            var date = metadata.line.capture_date || metadata.line.film_date;
             var type = "publication";
             var desc = metadata.publisher + '_' + metadata.line.uid;
-            var ext = mime_list[metadata.line.mime_type];
             break;
         case "article":
-            var language = metadata.language;
-            var original = language === metadata.line.original_language ? "o" : "t";
-            //var lecturer = metadata.line.lecturer;
             var lecturer = "rav";
-            var date = metadata.line.capture_date || metadata.line.film_date;
             var type = "art";
             var desc = metadata.line.uid;
-            var ext = mime_list[metadata.line.mime_type];
             break;
         default:
-            var language = metadata.language;
-            var original = language === metadata.line.original_language ? "o" : "t";
             var lecturer = metadata.line.lecturer;
-            var date = metadata.line.capture_date || metadata.line.film_date;
-            //var type = metadata.line.send_name.split("_")[4];
             var type = CONTENT_TYPES_MAPPINGS[metadata.line.content_type].pattern;
             var desc = metadata.line.send_name.split("_").slice(5, -1).join("_");
-            var ext = mime_list[metadata.line.mime_type];
     };
 
-    let filename =
-        language + '_' +
-        original + '_' +
-        lecturer + '_' +
-        date + '_' +
-        type + '_' +
-        desc + '.' +
-        ext;
-    return filename;
+    let lang = metadata.language;
+    let ot = lang === metadata.line.original_language ? "o" : "t";
+    let date = metadata.line.capture_date || metadata.line.film_date;
+
+    let filename = [lang,ot,lecturer,date,type,desc].join("_");
+    let ext = mime_list[metadata.line.mime_type];
+    return filename + '.' + ext;
 }
 
 export const Fetcher = (path, cb) => fetch(`${API_BACKEND}/${path}`)

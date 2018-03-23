@@ -151,6 +151,7 @@ class ModalContent extends Component {
 
     handleUidSelect = (data) => {
         console.log("--HandleUidSelect--");
+        console.log(":::: Unit Selected :::: ", data);
         let path = data.id + '/files/';
         fetchUnits(path, (data) => {
                 console.log(":: Got FILES: ", data);
