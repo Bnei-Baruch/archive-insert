@@ -17,15 +17,14 @@ class MdbData extends Component {
             active: null,
         };
         console.log("--ConstractorProps--");
-        //let path = `?page_no=1&content_type=${this.props.content_type}&start_date=${this.props.start_date}&end_date=${this.props.end_date}`
-        //if (this.props.content_type && this.props.language && this.props.upload_type ) {
-        //    fetchUnits(path, (data) => this.setState({units: data.data}))
-        //}
+        let path = `?&page_size=1000&content_type=${this.props.content_type}&start_date=${this.props.start_date}&end_date=${this.props.end_date}`
+        if (this.props.content_type)
+            fetchUnits(path, (data) => this.setState({units: data.data}))
     };
 
     componentWillReceiveProps(nextProps) {
         console.log("--ReceiveProps--");
-        if (JSON.stringify(this.props) !== JSON.stringify(nextProps) && nextProps.content_type && nextProps.language && nextProps.upload_type ) {
+        if (JSON.stringify(this.props) !== JSON.stringify(nextProps) && nextProps.content_type && nextProps.language && nextProps.upload_type && nextProps.start_date) {
             // Yeah it's look long :)
             if(nextProps.content_type === "LESSON_PART") {
                 var path = `?&page_size=1000&content_type=FULL_LESSON&content_type=WOMEN_LESSON&content_type=${nextProps.content_type}&start_date=${nextProps.start_date}&end_date=${nextProps.end_date}`

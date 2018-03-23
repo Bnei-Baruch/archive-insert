@@ -87,14 +87,15 @@ class ModalContent extends Component {
     }
 
     componentDidMount() {
-        fetchSources(sources => this.setState({ store: { ...this.state.store, sources } }));
-        fetchTags(tags => this.setState({ store: { ...this.state.store, tags } }));
+        //fetchSources(sources => this.setState({ store: { ...this.state.store, sources } }));
+        //fetchTags(tags => this.setState({ store: { ...this.state.store, tags } }));
         fetchPublishers(publishers => this.setState({ store: { ...this.state.store, publishers: publishers.data } }));
     }
 
     handleContentFilter = (e, data) => {
         console.log("-Content type: "+ data.value);
-        this.setState({content_type: data.value, input_uid: "", upload_type: ""});
+        //this.setState({content_type: data.value, input_uid: "", upload_type: ""});
+        data.value === "ARTICLE" ? this.setState({content_type: data.value, input_uid: "", upload_type: ""}) : this.setState({content_type: data.value, input_uid: ""})
     };
 
     handleLanguageFilter = (e, data) => {
@@ -158,7 +159,7 @@ class ModalContent extends Component {
                     console.log(":: No files in this UNIT!")
                     this.setState({files: null, send_name: null});
                 } else if(unit_file.length == 0 && this.state.upload_type === "aricha") {
-                    this.setState({files: data, send_name: this.prop.filedata.filename});
+                    this.setState({files: data, send_name: this.props.filedata.filename});
                 } else {
                     this.setState({files: data, send_name: unit_file[0].name});
                 }
@@ -208,7 +209,7 @@ class ModalContent extends Component {
     };
 
     render() {
-        const { store } = this.state;
+        //const { store } = this.state;
 
         let start_date = (
             <DatePicker
