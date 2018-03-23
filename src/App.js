@@ -133,14 +133,14 @@ class ModalContent extends Component {
         this.setState({input_uid: data.value, isValidated: false});
     };
 
-    handleUidSelect = (data, state) => {
+    handlePubSelect = (data) => {
+        console.log("--HandlePubSelect--");
+        console.log(":: Publisher selected: ", data);
+        this.setState({metadata: { ...this.state.metadata, publisher: data.uid }});
+    };
+
+    handleUidSelect = (data) => {
         console.log("--HandleUidSelect--");
-        //TODO: Filter publication uid
-        console.log(":: Got UNIT: ", data);
-        if(state === "publisher") {
-            this.setState({metadata: { ...this.state.metadata, publisher: data }});
-            return
-        }
         let path = data.id + '/files/';
         fetchUnits(path, (data) => {
                 console.log(":: Got FILES: ", data);
@@ -225,7 +225,7 @@ class ModalContent extends Component {
                 //excludeDates={[moment(), moment().add(1, "months")]}
                 //highlightDates={moment().add(-1, "months")}
             />
-        )
+        );
 
         let input_uid = (
             <Input
@@ -315,6 +315,7 @@ class ModalContent extends Component {
                         upload_type={this.state.upload_type}
                         store={this.state.store}
                         onUidSelect={this.handleUidSelect}
+                        onPubSelect={this.handlePubSelect}
                     />
                     <Button
                         color='green'

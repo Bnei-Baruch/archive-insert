@@ -34,7 +34,7 @@ class NestedModal extends Component {
     };
 
     selectPublisher  = () => {
-        this.props.onUidSelect(this.state.publisher.uid, "publisher");
+        this.props.onPubSelect(this.state.publisher);
         this.setState({ open: false });
     }
 
