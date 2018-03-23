@@ -25,7 +25,7 @@ export const upload_options = [
     //{ value: 'article', text: 'מאמרים ', icon: 'newspaper' },
     //{ value: 'publication', text: 'פירסומים ', icon: 'announcement', disabled: true },
     { value: 'dibuv', text: 'דיבוב', icon: 'translate' },
-    { value: 'aricha', text: ' עריכה', icon: 'paint brush' },
+    { value: 'aricha', text: ' עריכה', icon: 'paint brush', disabled: true},
     { value: 'sirtutim', text: ' ‏שרטוטים', icon: 'edit' },
     { value: 'kitei-makor', text: 'קיטעי-מקור', icon: 'copyright' },
     { value: 'tamlil', text: 'תמליל', icon: 'indent' },

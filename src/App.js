@@ -57,15 +57,15 @@ class ModalContent extends Component {
             metadata: {
                 sha1: props.filedata.sha1,
                 size: props.filedata.size,
-                line: { upload_filename: props.filedata.filename, mime_type: props.filedata.type, url: props.filedata.url },
-                    },
+                line: {
+                    upload_filename: props.filedata.filename,
+                    mime_type: props.filedata.type,
+                    url: props.filedata.url
+                }
+            },
             unit: {},
             files: [],
-            store: {
-                sources: [],
-                tags: [],
-                publishers: [],
-            },
+            store: { sources: [], tags: [], publishers: []},
             startDate: this.props.filedata.start_date ? moment(this.props.filedata.start_date) : moment(),
             start_date: this.props.filedata.start_date ? this.props.filedata.start_date : moment().format('YYYY-MM-DD'),
             end_date: this.props.filedata.start_date ? this.props.filedata.start_date : moment().format('YYYY-MM-DD'),
@@ -74,6 +74,8 @@ class ModalContent extends Component {
             upload_type: this.props.filedata.upload_type ? this.props.filedata.upload_type : "",
             input_uid: this.props.filedata.input_uid ? this.props.filedata.input_uid : null,
             isValidated: false,
+            cTypeSelection: true,
+            uTypeSelection: this.props.filedata.upload_type === "aricha" ? false : true,
         };
         this.handleDateChange = this.handleDateChange.bind(this);
     }
@@ -94,8 +96,11 @@ class ModalContent extends Component {
 
     handleContentFilter = (e, data) => {
         console.log("-Content type: "+ data.value);
-        //this.setState({content_type: data.value, input_uid: "", upload_type: ""});
-        data.value === "ARTICLE" ? this.setState({content_type: data.value, input_uid: "", upload_type: ""}) : this.setState({content_type: data.value, input_uid: ""})
+        if(data.value === "ARTICLE") {
+            this.setState({content_type: data.value, input_uid: "", upload_type: "", cTypeSelection: false})
+        } else {
+            this.setState({content_type: data.value, input_uid: ""})
+        }
     };
 
     handleLanguageFilter = (e, data) => {
@@ -105,7 +110,11 @@ class ModalContent extends Component {
 
     handleUploadFilter = (e, data) => {
         console.log("-Upload type: "+ data.value);
-        this.setState({upload_type: data.value});
+        if(data.value === "aricha") {
+            this.setState({upload_type: data.value, uTypeSelection: false});
+        } else {
+            this.setState({upload_type: data.value});
+        }
     };
 
     handleDateChange(date) {
@@ -250,6 +259,7 @@ class ModalContent extends Component {
                     <Header floated='left' >
                         <Dropdown
                             error={!this.state.content_type}
+                            disabled={!this.state.cTypeSelection}
                             defaultValue={this.state.content_type}
                             className="large"
                             placeholder="Content:"
@@ -304,6 +314,7 @@ class ModalContent extends Component {
                     <Dropdown
                         upward
                         error={!this.state.upload_type}
+                        disabled={!this.state.uTypeSelection}
                         defaultValue={this.state.upload_type}
                         placeholder="Upload Type:"
                         selection
