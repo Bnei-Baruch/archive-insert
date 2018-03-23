@@ -144,18 +144,22 @@ class ModalContent extends Component {
         }
         let path = data.id + '/files/';
         fetchUnits(path, (data) => {
+                console.log(":: Got FILES: ", data);
                 let units = data.filter((file) => (file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/)));
                 // Filter trimmed without send
                 let unit_file = units.filter(capd => capd.properties.capture_date);
                 console.log(":: Try to get trim source: ", unit_file);
-                if(unit_file.length == 0 && this.state.upload_type !== "aricha") {
+                if(unit_file.length == 0 && this.state.upload_type !== "aricha" && data.length > 0) {
                     console.log("No trim source found, taking first file:",data[0]);
                     let unit_sendname = data[0].name.split(".")[0];
                     let unit_sendext = data[0].name.split(".")[1];
                     let unit_name = unit_sendname + "_" + data[0].uid + "." + unit_sendext;
                     this.setState({files: data, send_name: unit_name});
+                } else if(data.length == 0 && this.state.upload_type !== "aricha") {
+                    console.log(":: No files in this UNIT!")
+                    this.setState({files: null, send_name: null});
                 } else if(unit_file.length == 0 && this.state.upload_type === "aricha") {
-                    this.setState({files: data, send_name: this.state.filedata.filename});
+                    this.setState({files: data, send_name: this.prop.filedata.filename});
                 } else {
                     this.setState({files: data, send_name: unit_file[0].name});
                 }
