@@ -27,8 +27,8 @@ export const upload_options = [
     { value: 'dibuv', text: 'דיבוב', icon: 'translate' },
     { value: 'aricha', text: ' עריכה', icon: 'paint brush' },
     { value: 'sirtutim', text: ' ‏שרטוטים', icon: 'edit' },
-    { value: 'kitei-makor', text: 'קיטעי-מקור', icon: 'commenting outline' },
-    { value: 'tamlil', text: 'תמליל', icon: 'file text outline' },
+    { value: 'kitei-makor', text: 'קיטעי-מקור', icon: 'copyright' },
+    { value: 'tamlil', text: 'תמליל', icon: 'indent' },
     { value: 'akladot', text: ' ‏הקלדות', icon: 'file word outline' },
 ];
 

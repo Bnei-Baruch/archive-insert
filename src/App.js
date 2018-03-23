@@ -66,10 +66,9 @@ class ModalContent extends Component {
                 tags: [],
                 publishers: [],
             },
-            startDate: moment(),
-            today_date: moment().format('YYYY-MM-DD'),
+            startDate: this.props.filedata.start_date ? moment(this.props.filedata.start_date) : moment(),
             start_date: this.props.filedata.start_date ? this.props.filedata.start_date : moment().format('YYYY-MM-DD'),
-            end_date: this.props.filedata.end_date ? this.props.filedata.end_date : moment().add(340, 'days').format('YYYY-MM-DD'),
+            end_date: this.props.filedata.start_date ? this.props.filedata.start_date : moment().format('YYYY-MM-DD'),
             content_type: this.props.filedata.content_type ? this.props.filedata.content_type : null,
             language: this.props.filedata.language ? this.props.filedata.language : null,
             upload_type: this.props.filedata.upload_type ? this.props.filedata.upload_type : "",
@@ -220,6 +219,7 @@ class ModalContent extends Component {
                 showMonthDropdown
                 scrollableYearDropdown
                 maxDate={moment()}
+                openToDate={moment(this.state.start_date)}
                 selected={this.state.startDate}
                 onChange={this.handleDateChange}
                 //excludeDates={[moment(), moment().add(1, "months")]}
