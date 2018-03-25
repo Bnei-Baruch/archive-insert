@@ -146,7 +146,7 @@ class ModalContent extends Component {
     handlePubSelect = (data) => {
         console.log("--HandlePubSelect--");
         console.log(":: Publisher selected: ", data);
-        this.setState({metadata: { ...this.state.metadata, publisher: data.uid }});
+        this.setState({metadata: { ...this.state.metadata, publisher: data.pattern, publisher_uid: data.uid }});
     };
 
     handleUidSelect = (data) => {

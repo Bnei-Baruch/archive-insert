@@ -47,7 +47,7 @@ export const getName = (metadata) => {
         case "publication":
             var lecturer = "rav";
             var type = "publication";
-            var desc = metadata.publisher + '_' + metadata.line.uid;
+            var desc = metadata.publisher + "_" + metadata.line.uid;
             break;
         case "article":
             var lecturer = "rav";
