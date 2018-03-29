@@ -4,6 +4,7 @@ import UploadFile from './components/UploadFile';
 import LoginPage from './components/LoginPage';
 import {client, getUser} from "./tools/UserManager";
 import ModalApp from './ModalApp';
+import {insertSha} from './shared/tools';
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 
@@ -38,8 +39,16 @@ class App extends Component {
     };
 
     setFileData = (filedata) => {
-        console.log(":: Setting Filedata:", filedata);
-        this.setState({filedata: filedata, open: true});
+        insertSha(filedata.sha1, (data) => {
+            console.log(":: Got SHA1 check", data);
+            if (data.total > 0) {
+                console.log(":: File with SHA1: " + filedata.sha1 + " - already exist!");
+                alert("File already exist in MDB!");
+            } else {
+                console.log(":: Setting Filedata:", filedata);
+                this.setState({filedata: filedata, open: true});
+            }
+        });
     };
 
     onComplete = (metadata) => {
