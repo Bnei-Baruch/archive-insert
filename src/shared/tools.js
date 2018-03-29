@@ -111,6 +111,15 @@ export const insertName = (filename, cb) => fetch(`https://upload.kli.one/insert
     })
     .catch(ex => console.log(`get ${filename}`, ex));
 
+export const insertSha = (sha, cb) => fetch(`https://upload.kli.one/rest/files/?sha1=${sha}`)
+    .then((response) => {
+        if (response.ok) {
+            console.log("--FetchInsertSha--");
+            return response.json().then(data => cb(data));
+        }
+    })
+    .catch(ex => console.log(`get ${sha}`, ex));
+
 //export const fetchUnits = (path,cb) => fetcher(path, cb);
 
 export const fetchCollections = (data,col) => {

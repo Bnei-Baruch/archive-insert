@@ -199,11 +199,11 @@ class ModalApp extends Component {
                     // Check if name already exist
                     insertName(metadata.filename, (data) => {
                         console.log(":: Got WFObject",data);
-                        if(data.length > 0 && this.props.url === "upload.kli.one") {
+                        if(data.length > 0 && this.props.insert === "new") {
                             console.log(":: File with name: "+metadata.filename+" - already exist!");
                             alert("File with name: "+metadata.filename+" - already exist!");
                             this.setState({ isValidated: false });
-                        } else if(data.length == 0 && this.props.url === "update.kli.one") {
+                        } else if(data.length == 0 && this.props.insert === "update") {
                             console.log(":: File with name: "+metadata.filename+" - does NOT exist! In current mode the operation must be update only");
                             alert("File with name: "+metadata.filename+" - does NOT exist! In current mode the operation must be update only");
                             this.setState({ isValidated: false });
@@ -214,7 +214,6 @@ class ModalApp extends Component {
                     });
                 });
             });
-        //this.state.content_type && this.state.language && this.state.upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
         this.setState({ unit: data });
     };
 
@@ -256,7 +255,7 @@ class ModalApp extends Component {
         return (
             <Container className="ui modal fullscreen visible transition">
                 <Segment clearing>
-                    {this.props.url === "update.kli.one" ? update_style : ""}
+                    {this.props.insert === "update" ? update_style : ""}
                     <Header floated='left' >
                         <Dropdown
                             error={!this.state.content_type}
