@@ -12,8 +12,11 @@ class LoginPage extends Component {
             if(user === null) {
                 client.signinRedirect({state: `${BASE_URL}`});
             } else {
-                console.log(":: Get User", user);
-                onGetUser(user);
+                //FIXME: We need show "logout" button if going to use this function
+                client.signoutRedirect();
+                //window.location = `${BASE_URL}`;
+                //console.log(":: Get User", user);
+                //onGetUser(user);
             }
         }).catch(function(error) {
             console.log("Error: ",error);

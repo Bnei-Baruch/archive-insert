@@ -18,7 +18,10 @@ class App extends Component {
     };
 
     componentDidMount() {
-        getUser(cb => this.setState({ user: cb }));
+        getUser(cb => {if(cb) {
+                this.checkPermission(cb);
+            }
+        });
         client.signinRedirectCallback().then(function(user) {
             console.log(":: callback", user);
             if(user.state)
@@ -31,6 +34,12 @@ class App extends Component {
     setUser = (user) => {
         console.log(":: App User:", user);
         this.setState({user: user});
+    };
+
+    checkPermission = (user) => {
+        let bbrole = user.roles.filter(role => role.match(/^(bb_user)$/)).length;
+        console.log(":: BB Role: ", bbrole);
+        bbrole > 0 ? this.setState({user: user}) : alert("Access denied!");
     };
 
     setMode = (mode) => {
