@@ -21,11 +21,11 @@ class NestedModal extends Component {
         //     })
     };
 
-    componentWillReceiveProps(nextProps) {
-        if (JSON.stringify(this.props) !== JSON.stringify(nextProps)) {
-            if(nextProps.upload_type === "publication") {
+    componentDidUpdate(prevProps) {
+        if (JSON.stringify(this.props) !== JSON.stringify(prevProps)) {
+            if(this.props.upload_type === "publication") {
                 this.open();
-            };
+            }
         }
     };
 
