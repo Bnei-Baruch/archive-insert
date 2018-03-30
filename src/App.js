@@ -63,7 +63,17 @@ class App extends Component {
     onComplete = (metadata) => {
         console.log(":: Complete Metadata:", metadata);
         this.setState({open: false});
-        //TODO: post json for workflow
+        fetch('https://upload.kli.one/archive/'+metadata.sha1, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body:  JSON.stringify(metadata)
+        })
+            .then(function(response){
+                return response.json();
+            })
+            .then(function(data){
+                console.log(" :: Post to workflow: ",data)
+            }).catch(ex => console.log("Post to workflow:", ex));
     };
 
     onCancel = (data) => {
