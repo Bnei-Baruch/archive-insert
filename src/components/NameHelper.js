@@ -10,8 +10,8 @@ class NameHelper extends Component {
         };
     };
 
-    componentWillMount() {
-        console.log("--NameHelper Did mount--");
+    componentDidMount() {
+        console.log("--componentDidMount--");
         let path = this.props.id + '/files/';
         fetchUnits(path, (data) => {
             // TODO: make sure we get last trimmed
