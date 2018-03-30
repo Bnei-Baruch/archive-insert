@@ -250,7 +250,7 @@ class ModalApp extends Component {
             />
         );
 
-        let update_style = (<style>{'.ui.segment { background-color: #F8E0E0; }'}</style>);
+        let update_style = (<style>{'.ui.segment { background-color: #f9e7db; }'}</style>);
 
         return (
             <Container className="ui modal fullscreen visible transition">

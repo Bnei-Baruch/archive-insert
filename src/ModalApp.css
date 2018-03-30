@@ -46,6 +46,11 @@
     max-height: 350px!important;
 }
 
+.ui.selection.dropdown.error {
+    background: #fff6f6;
+    border-color: #db2828;
+}
+
 .ui.selection.dropdown .menu>.item {
     font-size: 18px;
 }
@@ -61,7 +66,7 @@
     font-size: 22px!important;
     border-color: #396dad;
     background-color: #ebf5fa;
-    border: 1px solid rgba(34,36,38,.15);
+    border: 1px solid #96c9f3;
     border-radius: .28571429rem;
 }
 
