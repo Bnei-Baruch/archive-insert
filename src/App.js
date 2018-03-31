@@ -15,31 +15,36 @@ class App extends Component {
         insert: null,
         filedata: null,
         open: false,
+        loading: true,
     };
 
     componentDidMount() {
-        getUser(cb => {if(cb) {
+        // FIXME: hack solution
+        setTimeout(() => this.setState({ loading: false }), 2000);
+        getUser(cb => {
+            if(cb) {
                 this.checkPermission(cb);
             }
         });
         client.signinRedirectCallback().then(function(user) {
             console.log(":: callback", user);
-            if(user.state)
+            if(user.state) {
                 window.location = user.state;
+            }
         }).catch(function(err) {
             //console.log("callback error",err);
         });
     };
 
-    setUser = (user) => {
-        console.log(":: App User:", user);
-        this.setState({user: user});
-    };
-
     checkPermission = (user) => {
         let bbrole = user.roles.filter(role => role.match(/^(bb_user)$/)).length;
         console.log(":: BB Role: ", bbrole);
-        bbrole > 0 ? this.setState({user: user}) : alert("Access denied!");
+        if(bbrole > 0) {
+            this.setState({user: user})
+        } else {
+            alert("Access denied!");
+            client.signoutRedirect();
+        }
     };
 
     setMode = (mode) => {
@@ -82,8 +87,7 @@ class App extends Component {
     };
 
   render() {
-
-      let login = (<LoginPage onGetUser={this.setUser} onInsert={this.setMode} user={this.state.user}/>);
+      let login = (<LoginPage onInsert={this.setMode} user={this.state.user} loading={this.state.loading} />);
       let upload = (<UploadFile onFileData={this.setFileData}/>);
 
     return (
