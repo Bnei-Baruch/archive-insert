@@ -40,7 +40,7 @@ class App extends Component {
         let bbrole = user.roles.filter(role => role.match(/^(bb_user)$/)).length;
         console.log(":: BB Role: ", bbrole);
         if(bbrole > 0) {
-            this.setState({user: user})
+            this.setState({user: user});
         } else {
             alert("Access denied!");
             client.signoutRedirect();

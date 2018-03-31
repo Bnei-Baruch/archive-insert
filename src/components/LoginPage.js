@@ -21,7 +21,7 @@ class LoginPage extends Component {
 
   render() {
 
-      let login = (<Button size='massive' primary onClick={this.getUser} {...this.props} >Login</Button>);
+      let login = (<Button size='massive' primary onClick={this.getUser} {...this.props} disabled={this.props.loading} >Login</Button>);
       //let logout = (<Button size='mini' primary onClick={() => client.signoutRedirect()}>LogOut</Button>);
       let profile = (
           <Dropdown inline text=''>
@@ -44,7 +44,7 @@ class LoginPage extends Component {
           <Message size='massive'>
               <Message.Header {...this.props}>
                   {this.props.user === null ? "Insert Archive" : "Welcome, "+this.props.user.name}
-                  {this.props.user === null ? <Dimmer {...this.props} active={this.props.loading} ></Dimmer> : profile}
+                  {this.props.user === null ? "" : profile}
               </Message.Header>
               <p>Service for inserting new materials into the bb archive.</p>
               {this.props.user === null ? login : main}
