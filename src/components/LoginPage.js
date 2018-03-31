@@ -32,11 +32,12 @@ class LoginPage extends Component {
 
       let login = (<Button size='massive' primary onClick={this.getUser} {...this.props} >Login</Button>);
       //let logout = (<Button size='mini' primary onClick={() => client.signoutRedirect()}>LogOut</Button>);
-      let user_dropdown = (
+      let profile = (
           <Dropdown inline text=''>
           <Dropdown.Menu>
-              <Dropdown.Item text='Settings' />
-              <Dropdown.Item text='Logout' onClick={() => client.signoutRedirect()} />
+              <Dropdown.Item icon='tags' content='Settings:' disabled />
+              <Dropdown.Item text='My Account' onClick={() => window.open("https://accounts.kbb1.com/auth/realms/main/account", "_blank")} />
+              <Dropdown.Item text='Sign Out' onClick={() => client.signoutRedirect()} />
           </Dropdown.Menu>
           </Dropdown>);
       let main = (
@@ -52,7 +53,7 @@ class LoginPage extends Component {
           <Message size='massive'>
               <Message.Header {...this.props}>
                   {this.props.user === null ? "Insert Archive" : "Welcome, "+this.props.user.name}
-                  {this.props.user === null ? "" : user_dropdown}
+                  {this.props.user === null ? "" : profile}
               </Message.Header>
               <p>Service for inserting new materials into the bb archive.</p>
               {this.props.user === null ? login : main}
