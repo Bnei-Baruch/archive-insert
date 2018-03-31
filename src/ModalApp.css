@@ -42,6 +42,10 @@
     display: inline-flex!important;
 }
 
+.ui.selection.dropdown {
+    margin-left: 10px;
+}
+
 .ui.selection.dropdown .menu {
     max-height: 350px!important;
 }
