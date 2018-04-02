@@ -20,7 +20,7 @@ class App extends Component {
 
     componentDidMount() {
         // FIXME: hack solution
-        setTimeout(() => this.setState({ loading: false }), 2000);
+        setTimeout(() => this.setState({ loading: false }), 1000);
         getUser(cb => {
             if(cb) {
                 this.checkPermission(cb);

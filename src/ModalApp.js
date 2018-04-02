@@ -288,17 +288,7 @@ class ModalApp extends Component {
                 </Segment>
                 <Segment clearing secondary color='blue'>
                 <Modal.Content className="tabContent">
-                    <MdbData
-                        content_type={this.state.content_type}
-                        start_date={this.state.start_date}
-                        end_date={this.state.end_date}
-                        language={this.state.language}
-                        upload_type={this.state.upload_type}
-                        uploaded_filename={this.state.filedata.filename}
-                        mime_type={this.state.filedata.type}
-                        input_uid={this.state.input_uid}
-                        onUidSelect={this.handleUidSelect}
-                    />
+                    <MdbData {...this.state} onUidSelect={this.handleUidSelect} />
                 </Modal.Content>
                 </Segment>
                 <Segment clearing tertiary color='yellow'>

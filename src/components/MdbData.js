@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import { Table, Popup, Icon } from 'semantic-ui-react'
 import { fetchUnits, fetchCollections, toHms } from '../shared/tools';
-import { MDB_LANGUAGES } from '../shared/consts';
 import NameHelper from './NameHelper';
 
 class MdbData extends Component {
-
-    static defaultProps = {
-        uploaded_filename: "",
-    };
 
     constructor(props) {
         super(props);
@@ -16,10 +11,6 @@ class MdbData extends Component {
             units: [],
             active: null,
         };
-        console.log("--ConstractorProps--");
-        let path = `?&page_size=1000&content_type=${this.props.content_type}&start_date=${this.props.start_date}&end_date=${this.props.end_date}`
-        if (this.props.content_type)
-            fetchUnits(path, (data) => this.setState({units: data.data}))
     };
 
     componentDidUpdate(prevProps) {
@@ -40,7 +31,6 @@ class MdbData extends Component {
                 console.log("Got new input UID");
                 let unit_uid = this.state.units.filter((unit) => unit.uid == this.props.input_uid);
                 this.setState({units: unit_uid });
-                //fetchUnits(path, (data) => fetchCollections(data, (units) => this.setState({units: units.data.filter((unit) => unit.uid == nextProps.input_uid) })))
             } else {
                 fetchUnits(path, (data) => this.setState({units: data.data}))
             }
@@ -65,27 +55,18 @@ class MdbData extends Component {
                             flowing
                             position='bottom left'
                             hoverable >
-                            <NameHelper
-                                id={unit.id}
-                                language={this.props.language}
-                                upload_type={this.props.upload_type}
-                                mime_type={this.props.mime_type}
-                                uploaded_filename={this.props.uploaded_filename}
-                                send_name={this.props.send_name}
-                                film_date={unit.properties.film_date}
-                                original_language={MDB_LANGUAGES[unit.properties.original_language]}
-                            />
+                            <NameHelper id={unit.id} {...this.props.metadata} />
                         </Popup>
                     </Table.Cell>
                     <Table.Cell>{this.props.upload_type.match(/^(article|publication)$/) ? "" : toHms(unit.properties.duration)}</Table.Cell>
                     <Table.Cell textAlign='right' className={"rtl-dir"} >{unit.number !== undefined ?  '(שיעור: ' +unit.number + ' חלק: ' +unit.part + ')' : ""}</Table.Cell>
-                    <Table.Cell  textAlign='right' className={(unit.i18n.he ? "rtl-dir" : "negative")}>{name}</Table.Cell>
+                    <Table.Cell textAlign='right' className={(unit.i18n.he ? "rtl-dir" : "negative")}>{name}</Table.Cell>
                     <Table.Cell>{unit.properties.capture_date}</Table.Cell>
                 </Table.Row>
             );
         });
         return (
-            <Table selectable color='grey' key='teal' {...this.props}>
+            <Table selectable color='grey' key='teal' >
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell width={1}>Info</Table.HeaderCell>

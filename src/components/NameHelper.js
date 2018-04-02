@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { fetchUnits, getName } from '../shared/tools';
+import { fetchUnits } from '../shared/tools';
 import { Grid, Header } from 'semantic-ui-react'
 
 class NameHelper extends Component {
@@ -31,7 +31,7 @@ class NameHelper extends Component {
                 <Grid.Column textAlign='left'>
                     <Header
                         as='h4'
-                        color={ this.props.uploaded_filename === this.state.name ? "" : "red" } >
+                        color={ this.props.line.upload_filename === this.state.name ? "" : "red" } >
                     {this.state.file_name}
                     </Header>
                 </Grid.Column>
