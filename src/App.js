@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
-import { Modal } from 'semantic-ui-react'
+import { Modal } from 'semantic-ui-react';
+import moment from 'moment';
 import UploadFile from './components/UploadFile';
 import LoginPage from './components/LoginPage';
 import {client, getUser} from "./tools/UserManager";
@@ -60,6 +61,17 @@ class App extends Component {
                 alert("File already exist in MDB!");
             } else {
                 console.log(":: Setting Filedata:", filedata);
+                // Extract and validate UID from filename
+                let uid = filedata.filename.split(".")[0].split("_").pop();
+                if(uid.length === 8 && (/[_]/).test(filedata.filename))
+                    filedata["input_uid"] = uid;
+                // Extract and validate date from filename
+                if((/\d{4}-\d{2}-\d{2}/).test(filedata.filename)) {
+                    let string_date = filedata.filename.match(/\d{4}-\d{2}-\d{2}/)[0];
+                    let test_date = moment(string_date);
+                    if(test_date.isValid())
+                        filedata["start_date"] = string_date;
+                }
                 this.setState({filedata: filedata, open: true});
             }
         });
