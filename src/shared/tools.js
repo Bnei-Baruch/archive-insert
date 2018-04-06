@@ -1,4 +1,4 @@
-import { mime_list, CONTENT_TYPES_MAPPINGS} from './consts';
+import { mime_list, CONTENT_TYPES_MAPPINGS, MDB_LANGUAGES} from './consts';
 
 const API_BACKEND = 'https://upload.kli.one/rest';
 // const API_BACKEND = 'http://app.mdb.bbdomain.org/rest/content_units';
@@ -13,7 +13,11 @@ export const toHms = (time) => {
 
     let result = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds  < 10 ? "0" + seconds : seconds);
     return result.split(".")[0];
-}
+};
+
+export const getLang = (lang) => {
+    return Object.keys(MDB_LANGUAGES).find(key => MDB_LANGUAGES[key] === lang);
+};
 
 export const getName = (metadata) => {
     switch (metadata.upload_type) {

@@ -35,6 +35,10 @@
     width: 130px!important;
 }
 
+.rtl-dir {
+    direction: rtl;
+}
+
 .input_uid {
     margin-top: -3px!important;
     width: 180px!important;

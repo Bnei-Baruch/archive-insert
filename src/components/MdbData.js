@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Popup, Icon } from 'semantic-ui-react'
-import { fetchUnits, fetchCollections, toHms } from '../shared/tools';
+import { fetchUnits, fetchCollections, toHms, getLang } from '../shared/tools';
 import NameHelper from './NameHelper';
 
 class MdbData extends Component {
@@ -26,7 +26,8 @@ class MdbData extends Component {
                 var path = `?&page_size=1000&content_type=${this.props.content_type}&start_date=${this.props.start_date}&end_date=${this.props.end_date}`
             }
             if(this.props.content_type === "LESSON_PART" && !this.props.input_uid) {
-                fetchUnits(path, (data) => fetchCollections(data, (units) => this.setState({units: units.data})))
+                //fetchUnits(path, (data) => fetchCollections(data, (units) => this.setState({units: units.data})))
+                fetchUnits(path, (data) => this.setState({units: data.data}))
             } else if(this.props.input_uid) {
                 console.log("Got new input UID");
                 let unit_uid = this.state.units.filter((unit) => unit.uid == this.props.input_uid);
@@ -43,10 +44,17 @@ class MdbData extends Component {
     };
 
     render() {
-        console.log("--MdbData Render--")
+        console.log("--MdbData Render--");
+        let lang = getLang(this.props.language);
         let uidList = this.state.units.map((unit) => {
-            let name = (unit.i18n.he) ? unit.i18n.he.name : "Name not found";
-            let active = (this.state.active === unit.uid ? 'active' : '');
+            let name = lang && unit.i18n[lang] ? unit.i18n[lang].name : unit.i18n.he ? unit.i18n.he.name : "Name not found";
+            let active = this.state.active === unit.uid ? 'active' : '';
+            let num = unit.properties.number || "-";
+            let part = unit.properties.part === -1 ? "full" : unit.properties.part || "-";
+            let numprt = num !== "-" ? '( n: ' + num + ' p: ' + part + ' )' : "";
+            let date = unit.properties.capture_date || unit.properties.film_date;
+            let duration = this.props.upload_type.match(/^(article|publication)$/) ? "" : toHms(unit.properties.duration);
+            let rtlclass = lang === "he" || !lang ? "rtl-dir" : "";
             return (
                 <Table.Row className={active} key={unit.id} onClick={() => this.handleClick(unit)}>
                     <Table.Cell>
@@ -58,10 +66,10 @@ class MdbData extends Component {
                             <NameHelper id={unit.id} {...this.props.metadata} />
                         </Popup>
                     </Table.Cell>
-                    <Table.Cell>{this.props.upload_type.match(/^(article|publication)$/) ? "" : toHms(unit.properties.duration)}</Table.Cell>
-                    <Table.Cell textAlign='right' className={"rtl-dir"} >{unit.number !== undefined ?  '(שיעור: ' +unit.number + ' חלק: ' +unit.part + ')' : ""}</Table.Cell>
-                    <Table.Cell textAlign='right' className={(unit.i18n.he ? "rtl-dir" : "negative")}>{name}</Table.Cell>
-                    <Table.Cell>{unit.properties.capture_date}</Table.Cell>
+                    <Table.Cell>{duration}</Table.Cell>
+                    <Table.Cell textAlign='left' >{numprt}</Table.Cell>
+                    <Table.Cell textAlign='right' className={rtlclass}>{name}</Table.Cell>
+                    <Table.Cell>{date}</Table.Cell>
                 </Table.Row>
             );
         });
@@ -70,8 +78,8 @@ class MdbData extends Component {
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell width={1}>Info</Table.HeaderCell>
-                        <Table.HeaderCell width={2}>Duration</Table.HeaderCell>
-                        <Table.HeaderCell width={3}></Table.HeaderCell>
+                        <Table.HeaderCell width={1}>Duration</Table.HeaderCell>
+                        <Table.HeaderCell width={2}>No</Table.HeaderCell>
                         <Table.HeaderCell textAlign='right'>Content Name</Table.HeaderCell>
                         <Table.HeaderCell width={2}>Date</Table.HeaderCell>
                     </Table.Row>
