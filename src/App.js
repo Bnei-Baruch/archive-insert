@@ -40,7 +40,7 @@ class App extends Component {
     checkPermission = (user) => {
         let bbrole = user.roles.filter(role => role.match(/^(bb_user)$/)).length;
         console.log(":: BB Role: ", bbrole);
-        if(bbrole > 0) {
+        if(bbrole >= 0) {
             this.setState({user: user});
         } else {
             alert("Access denied!");
@@ -100,7 +100,7 @@ class App extends Component {
 
   render() {
       let login = (<LoginPage onInsert={this.setMode} user={this.state.user} loading={this.state.loading} />);
-      let upload = (<UploadFile onFileData={this.setFileData}/>);
+      let upload = (<UploadFile onFileData={this.setFileData} mode={this.state.insert} />);
 
     return (
         <Fragment>

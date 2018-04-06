@@ -41,7 +41,14 @@ class UploadFile extends Component {
     return (
           <Container textAlign='center'>
           <Message>
-          <Upload className="upload" {...this.props} {...props} onSuccess={this.uploadDone} onProgress={this.progress}>Drop file here or click me</Upload>
+          <Upload
+              {...this.props}
+              {...props}
+              className={this.props.mode === "new" ? "insert" : "update"}
+              onSuccess={this.uploadDone}
+              onProgress={this.progress} >
+              Drop file here or click me
+          </Upload>
               <Progress label='' percent={this.state.percent} indicating progress='percent' />
           </Message>
           </Container>
