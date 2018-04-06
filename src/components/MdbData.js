@@ -50,7 +50,7 @@ class MdbData extends Component {
             let name = lang && unit.i18n[lang] ? unit.i18n[lang].name : unit.i18n.he ? unit.i18n.he.name : "Name not found";
             let active = this.state.active === unit.uid ? 'active' : '';
             let num = unit.properties.number || "-";
-            let part = unit.properties.part === -1 ? "full" : unit.properties.part || "-";
+            let part = unit.properties.part === -1 ? "full" : unit.properties.part;
             let numprt = num !== "-" ? '( n: ' + num + ' p: ' + part + ' )' : "";
             let date = unit.properties.capture_date || unit.properties.film_date;
             let duration = this.props.upload_type.match(/^(article|publication)$/) ? "" : toHms(unit.properties.duration);

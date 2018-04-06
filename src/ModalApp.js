@@ -3,13 +3,18 @@ import DatePicker from 'react-datepicker';
 import PropTypes from 'prop-types';
 import noop from 'lodash/noop';
 import moment from 'moment';
-import ru from 'moment/locale/ru';
 import he from 'moment/locale/he';
+import ru from 'moment/locale/ru';
+import es from 'moment/locale/es';
+import fr from 'moment/locale/fr';
+import it from 'moment/locale/it';
+import de from 'moment/locale/de';
+import en from 'moment/locale/en-gb';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'semantic-ui-css/semantic.min.css';
 import './ModalApp.css';
 import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react';
-import { fetchSources, fetchTags, fetchPublishers, fetchUnits, fetchPersons, insertName, getName } from './shared/tools';
+import { fetchSources, fetchTags, fetchPublishers, fetchUnits, fetchPersons, insertName, getName, getLang } from './shared/tools';
 
 import {
     content_options,
@@ -71,6 +76,7 @@ class ModalApp extends Component {
             end_date: this.props.filedata.start_date ? this.props.filedata.start_date : moment().format('YYYY-MM-DD'),
             content_type: this.props.filedata.content_type ? this.props.filedata.content_type : null,
             language: this.props.filedata.language ? this.props.filedata.language : null,
+            locale: "he",
             upload_type: this.props.filedata.upload_type ? this.props.filedata.upload_type : "",
             input_uid: this.props.filedata.input_uid ? this.props.filedata.input_uid : null,
             isValidated: false,
@@ -81,6 +87,13 @@ class ModalApp extends Component {
     }
 
     componentDidMount() {
+        // Set sunday first weekday in russian
+        moment.updateLocale('ru', { week: {dow: 0,},});
+        moment.updateLocale('es', { week: {dow: 0,},});
+        moment.updateLocale('it', { week: {dow: 0,},});
+        moment.updateLocale('de', { week: {dow: 0,},});
+        moment.updateLocale('fr', { week: {dow: 0,},});
+        moment.updateLocale('en', { week: {dow: 0,},});
         //fetchSources(sources => this.setState({ store: { ...this.state.store, sources } }));
         //fetchTags(tags => this.setState({ store: { ...this.state.store, tags } }));
         fetchPublishers(publishers => this.setState({ store: { ...this.state.store, publishers: publishers.data } }));
@@ -105,7 +118,7 @@ class ModalApp extends Component {
 
     handleLanguageFilter = (e, data) => {
         console.log("-Language: "+ data.value);
-        this.setState({language: data.value});
+        this.setState({language: data.value, locale: getLang(data.value)});
     };
 
     handleUploadFilter = (e, data) => {
@@ -223,7 +236,7 @@ class ModalApp extends Component {
         let start_date = (
             <DatePicker
                 className="datepickercs"
-                locale="en"
+                locale={this.state.locale}
                 dateFormat="YYYY-MM-DD"
                 showYearDropdown
                 showMonthDropdown
