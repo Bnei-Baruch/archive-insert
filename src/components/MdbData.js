@@ -15,8 +15,8 @@ class MdbData extends Component {
 
     componentDidUpdate(prevProps) {
         console.log("--DidUpdate----");
-        let prev = [prevProps.content_type, prevProps.start_date, prevProps.input_uid];
-        let next = [this.props.content_type, this.props.start_date, this.props.input_uid];
+        let prev = [prevProps.content_type, prevProps.start_date, prevProps.input_uid, prevProps.language, prevProps.upload_type];
+        let next = [this.props.content_type, this.props.start_date, this.props.input_uid, this.props.language, this.props.upload_type];
         if (JSON.stringify(prev) !== JSON.stringify(next)) {
             if(this.props.content_type === "LESSON_PART") {
                 var path = `?&page_size=1000&content_type=FULL_LESSON&content_type=WOMEN_LESSON&content_type=${this.props.content_type}&start_date=${this.props.start_date}&end_date=${this.props.end_date}`
@@ -27,13 +27,13 @@ class MdbData extends Component {
             }
             if(this.props.content_type === "LESSON_PART" && !this.props.input_uid) {
                 //fetchUnits(path, (data) => fetchCollections(data, (units) => this.setState({units: units.data})))
-                fetchUnits(path, (data) => this.setState({units: data.data}))
+                fetchUnits(path, (data) => this.setState({units: data.data, active: null}))
             } else if(this.props.input_uid) {
                 console.log("Got new input UID");
                 let unit_uid = this.state.units.filter((unit) => unit.uid == this.props.input_uid);
-                this.setState({units: unit_uid });
+                this.setState({units: unit_uid, active: null });
             } else {
-                fetchUnits(path, (data) => this.setState({units: data.data}))
+                fetchUnits(path, (data) => this.setState({units: data.data, active: null}))
             }
         }
     };
