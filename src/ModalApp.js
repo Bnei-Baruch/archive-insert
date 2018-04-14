@@ -10,7 +10,7 @@ import fr from 'moment/locale/fr';
 import it from 'moment/locale/it';
 import de from 'moment/locale/de';
 import en from 'moment/locale/en-gb';
-import 'react-datepicker/dist/react-datepicker.css';
+    import 'react-datepicker/dist/react-datepicker.css';
 import 'semantic-ui-css/semantic.min.css';
 import './ModalApp.css';
 import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react';

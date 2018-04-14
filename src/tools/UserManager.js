@@ -1,9 +1,8 @@
-import { Log as oidclog, UserManager,WebStorageStateStore } from 'oidc-client';
+import { Log as oidclog, UserManager } from 'oidc-client';
 import {KJUR} from 'jsrsasign';
 
 const AUTH_URL = 'https://accounts.kbb1.com/auth/realms/main';
-export const BASE_URL = 'http://localhost:3000/';
-//export const BASE_URL = 'https://insert.kbb1.com/';
+export const BASE_URL = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_BASE_URL : 'http://localhost:3000/';
 
 oidclog.logger = console;
 oidclog.level  = 3;
@@ -16,10 +15,6 @@ const userManagerConfig = {
     scope: 'profile',
     post_logout_redirect_uri: `${BASE_URL}`,
     automaticSilentRenew: false,
-    //silent_redirect_uri: `${BASE_URL}/silent_renew.html`,
-
-    //userStore: new WebStorageStateStore({ store: localStorage }),
-
     filterProtocolClaims: true,
     loadUserInfo: true,
 };
