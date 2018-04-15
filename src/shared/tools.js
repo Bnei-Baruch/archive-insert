@@ -56,7 +56,7 @@ export const getName = (metadata) => {
         case "article":
             var lecturer = "rav";
             var type = "art";
-            var desc = metadata.line.uid;
+            var desc = metadata.line.upload_filename.test.split(".")[0].split("_").pop().replace(/([^-a-zA-Z0-9]+)/g, '').toLowerCase();
             break;
         default:
             var lecturer = metadata.line.lecturer;
