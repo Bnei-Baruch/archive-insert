@@ -40,7 +40,8 @@ export const mime_list = {
     "audio/mpeg": "mp3",
     "audio/mp3": "mp3",
     "video/mp4": "mp4",
-    "application/zip": "zip"
+    "application/zip": "zip",
+    "application/x-zip-compressed": "zip"
 };
 
 export const language_options = [
