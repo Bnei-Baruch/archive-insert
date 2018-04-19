@@ -94,8 +94,7 @@ class App extends Component {
     };
 
     onCancel = (data) => {
-        console.log(":: Cancel acton:", data);
-        //TODO: What happen here?
+        this.setState({open: false});
     };
 
   render() {
@@ -106,10 +105,9 @@ class App extends Component {
         <Fragment>
         {this.state.insert === null ? login : upload}
             <Modal { ...this.props }
-                   closeOnDimmerClick={true}
-                   closeIcon={false}
-                   defaultOpen={false}
-                   onClose={this.handleOnClose}
+                   closeOnDimmerClick={false}
+                   closeIcon={true}
+                   onClose={this.onCancel}
                    open={this.state.open}
                    size="large"
             >

@@ -6,6 +6,7 @@
 .ui.modal,
 .ui.active.modal {
     margin: 0 auto!important;
+    margin-top: 2% !important;
     top: auto !important;
     left: auto !important;
     transform-origin: center !important;
