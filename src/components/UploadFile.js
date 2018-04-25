@@ -23,7 +23,7 @@ class UploadFile extends Component {
   render() {
 
       const props = {
-          action: 'https://upload.kli.one/upload',
+          action: 'https://insert.kbb1.com/upload',
           type: 'drag',
           //accept: '.zip;.mp3',
           beforeUpload(file) {
