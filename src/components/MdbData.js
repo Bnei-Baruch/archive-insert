@@ -53,7 +53,6 @@ class MdbData extends Component {
                     <Table.Cell>
                         <Popup
                             trigger={upload_type.match(/^(aricha|article|publication)$/) ? "" : <Icon link name='help' />}
-                            mountNode={document.getElementById("ltr-modal-mount")}
                             flowing
                             position='bottom left'
                             hoverable >
