@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {client,BASE_URL} from '../tools/UserManager';
-import { Container,Message,Button,Dropdown,Dimmer } from 'semantic-ui-react';
+import { Container,Message,Button,Dropdown } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import '../App.css';
 

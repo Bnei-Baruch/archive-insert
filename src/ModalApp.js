@@ -3,42 +3,19 @@ import DatePicker from 'react-datepicker';
 import PropTypes from 'prop-types';
 import noop from 'lodash/noop';
 import moment from 'moment';
-import he from 'moment/locale/he';
-import ru from 'moment/locale/ru';
-import es from 'moment/locale/es';
-import fr from 'moment/locale/fr';
-import it from 'moment/locale/it';
-import de from 'moment/locale/de';
-import en from 'moment/locale/en-gb';
-    import 'react-datepicker/dist/react-datepicker.css';
+import 'moment/locale/he';
+import 'moment/locale/ru';
+import 'moment/locale/es';
+import 'moment/locale/fr';
+import 'moment/locale/it';
+import 'moment/locale/de';
+import 'moment/locale/en-gb';
+import 'react-datepicker/dist/react-datepicker.css';
 import 'semantic-ui-css/semantic.min.css';
 import './ModalApp.css';
 import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react';
-import { fetchSources, fetchTags, fetchPublishers, fetchUnits, fetchPersons, insertName, getName, getLang } from './shared/tools';
-
-import {
-    content_options,
-    language_options,
-    upload_options,
-    article_options,
-    MDB_LANGUAGES,
-    CT_LESSON_PART,
-    CT_LECTURE,
-    CT_CHILDREN_LESSON_PART,
-    CT_WOMEN_LESSON_PART,
-    CT_VIRTUAL_LESSON,
-    CT_FRIENDS_GATHERING,
-    CT_MEAL,
-    CT_VIDEO_PROGRAM_CHAPTER,
-    CT_FULL_LESSON,
-    CT_TEXT,
-    CT_UNKNOWN,
-    CT_EVENT_PART,
-    CT_CLIP,
-    CT_TRAINING,
-    CT_KITEI_MAKOR,
-    CONTENT_TYPE_BY_ID
-} from './shared/consts';
+import { fetchPublishers, fetchUnits, fetchPersons, insertName, getName, getLang } from './shared/tools';
+import {content_options, language_options, upload_options, article_options, MDB_LANGUAGES, CONTENT_TYPE_BY_ID} from './shared/consts';
 
 import MdbData from './components/MdbData';
 import NestedModal from './components/NestedModal';
@@ -172,16 +149,16 @@ class ModalApp extends Component {
                 // Filter trimmed without send
                 let unit_file = units.filter(capd => capd.properties.capture_date);
                 console.log(":: Try to get trim source: ", unit_file);
-                if(unit_file.length == 0 && this.state.upload_type !== "aricha" && data.length > 0) {
+                if(unit_file.length === 0 && this.state.upload_type !== "aricha" && data.length > 0) {
                     console.log("No trim source found, taking first file:",data[0]);
                     let unit_sendname = data[0].name.split(".")[0];
                     let unit_sendext = data[0].name.split(".")[1];
                     let unit_name = unit_sendname + "_" + data[0].uid + "." + unit_sendext;
                     this.setState({files: data, send_name: unit_name});
-                } else if(data.length == 0 && this.state.upload_type !== "aricha") {
+                } else if(data.length === 0 && this.state.upload_type !== "aricha") {
                     console.log(":: No files in this UNIT!")
                     this.setState({files: null, send_name: null});
-                } else if(unit_file.length == 0 && this.state.upload_type === "aricha") {
+                } else if(unit_file.length === 0 && this.state.upload_type === "aricha") {
                     this.setState({files: data, send_name: this.props.filedata.filename});
                 } else {
                     this.setState({files: data, send_name: unit_file[0].name});
@@ -216,7 +193,7 @@ class ModalApp extends Component {
                             console.log(":: File with name: "+metadata.filename+" - already exist!");
                             alert("File with name: "+metadata.filename+" - already exist!");
                             this.setState({ isValidated: false });
-                        } else if(data.length == 0 && this.props.insert === "update") {
+                        } else if(data.length === 0 && this.props.insert === "update") {
                             console.log(":: File with name: "+metadata.filename+" - does NOT exist! In current mode the operation must be update only");
                             alert("File with name: "+metadata.filename+" - does NOT exist! In current mode the operation must be update only");
                             this.setState({ isValidated: false });
