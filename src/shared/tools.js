@@ -16,7 +16,7 @@ export const getLang = (lang) => {
 };
 
 export const getName = (metadata) => {
-
+    console.log(":: GetName - got metadata: ",metadata);
     let name = [];
 
     // Language

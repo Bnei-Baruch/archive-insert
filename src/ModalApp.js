@@ -156,7 +156,7 @@ class ModalApp extends Component {
                     let unit_name = unit_sendname + "_" + data[0].uid + "." + unit_sendext;
                     this.setState({files: data, send_name: unit_name});
                 } else if(data.length === 0 && this.state.upload_type !== "aricha") {
-                    console.log(":: No files in this UNIT!")
+                    console.log(":: No files in this UNIT!");
                     this.setState({files: null, send_name: null});
                 } else if(unit_file.length === 0 && this.state.upload_type === "aricha") {
                     this.setState({files: data, send_name: this.props.filedata.filename});
@@ -169,7 +169,7 @@ class ModalApp extends Component {
                 metadata.insert_type = this.props.insert === "new" ? "1" : "2";
                 metadata.send_id = this.state.send_name ? this.state.send_name.split(".")[0].split("_").pop().slice(0,-1) : null;
                 metadata.line.uid = this.state.unit.uid;
-                metadata.line.send_name = this.state.send_name ? this.state.send_name : null;
+                metadata.line.send_name = this.state.send_name ? this.state.send_name : this.state.unit.uid;
                 metadata.line.content_type = CONTENT_TYPE_BY_ID[this.state.unit.type_id];
                 metadata.line.capture_date = this.state.unit.properties.capture_date;
                 metadata.line.film_date = this.state.unit.properties.film_date;
@@ -185,7 +185,7 @@ class ModalApp extends Component {
                     }
                     // Calculate new name here
                     metadata.filename = getName(metadata);
-                    console.log(":: Metadata: ",metadata);
+                    console.log(":: Metadata - after getName: ",metadata);
                     // Check if name already exist
                     insertName(metadata.filename, (data) => {
                         console.log(":: Got WFObject",data);
