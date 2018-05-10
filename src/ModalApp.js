@@ -55,7 +55,7 @@ class ModalApp extends Component {
     componentDidUpdate(prevProps, prevState) {
         // const prev = [prevState.content_type, prevState.language, prevState.upload_type, prevState.start_date];
         // const next = [this.state.content_type, this.state.language, this.state.upload_type, this.state.start_date];
-        if (JSON.stringify(prevProps.metadata) !== JSON.stringify(this.state.metadata))
+        if (JSON.stringify(prevState.metadata) !== JSON.stringify(this.state.metadata))
             this.setState({ isValidated: false });
     };
 
@@ -68,23 +68,22 @@ class ModalApp extends Component {
     };
 
     selectLanguage = (language) => {
-        this.setState({language, locale: getLang(language)});
+        let {metadata} = this.state;
+        this.setState({metadata: {...metadata, language}, locale: getLang(language)});
     };
 
     selectUpload = (upload_type) => {
+        let {metadata} = this.state;
         if(upload_type === "aricha") {
-            this.setState({upload_type, uTypeSelection: false});
+            this.setState({metadata: {...metadata, upload_type}, uTypeSelection: false});
         } else {
-            this.setState({upload_type});
+            this.setState({metadata: {...metadata,upload_type}});
         }
     };
 
     selectDate = (date) => {
-        this.setState({
-            startDate: date,
-            start_date: date.format('YYYY-MM-DD'),
-            end_date: date.format('YYYY-MM-DD'),
-        });
+        let {metadata} = this.state;
+        this.setState({metadata: {...metadata, date}, startDate: date});
     };
 
     onComplete = () => {
