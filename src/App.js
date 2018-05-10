@@ -67,13 +67,13 @@ class App extends Component {
                     filedata["input_uid"] = uid;
                 // Extract and validate date from filename
                 if((/\d{4}-\d{2}-\d{2}/).test(filedata.filename)) {
-                    let string_date = filedata.filename.match(/\d{4}-\d{2}-\d{2}/)[0];
-                    let test_date = moment(string_date);
+                    let start_date = filedata.filename.match(/\d{4}-\d{2}-\d{2}/)[0];
+                    let test_date = moment(start_date);
                     if(test_date.isValid())
-                        filedata["start_date"] = string_date;
+                        this.setState({start_date});
                 }
-                this.setState({filedata: filedata, open: true});
-            }
+                this.setState({filedata, open: true});
+            };
         });
     };
 

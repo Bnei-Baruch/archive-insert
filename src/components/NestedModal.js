@@ -40,7 +40,7 @@ class NestedModal extends Component {
 
     render() {
         const { open } = this.state;
-        let pub_list = this.props.store.publishers.map((pub) => {
+        let pub_list = this.props.publishers.map((pub) => {
             let name = (pub.i18n.he) ? pub.i18n.he.name : "Name not found";
             let active = (this.state.active === pub.uid ? 'active' : '');
             return (

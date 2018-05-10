@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import DatePicker from 'react-datepicker';
-import PropTypes from 'prop-types';
-import noop from 'lodash/noop';
 import moment from 'moment';
 import 'moment/locale/he';
 import 'moment/locale/ru';
@@ -21,49 +19,34 @@ import MdbData from './components/MdbData';
 import NestedModal from './components/NestedModal';
 
 class ModalApp extends Component {
-    static propTypes = {
-        filedata: PropTypes.object,
-        metadata: PropTypes.object,
-        onComplete: PropTypes.func,
-        onCancel: PropTypes.func,
+
+    state = {
+        metadata: {},
+        unit: {},
+        files: [],
+        store: { sources: [], tags: [], publishers: []},
+        startDate: moment(),
+        start_date: moment().format('YYYY-MM-DD'),
+        end_date: moment().format('YYYY-MM-DD'),
+        content_type: null,
+        language:  null,
+        locale: "he",
+        upload_type: "",
+        input_uid:  null,
+        isValidated: false,
+        cTypeSelection: true,
+        disable_selection: false,
     };
-    static defaultProps = {
-        filedata: {},
-        onComplete: noop,
-        onCancel: noop,
-    };
-    constructor(props) {
-        super(props);
-        this.state = {
-            filedata: { ...props.filedata },
-            metadata: {
-                sha1: props.filedata.sha1,
-                size: props.filedata.size,
-                line: {
-                    upload_filename: props.filedata.filename,
-                    mime_type: props.filedata.type,
-                    url: props.filedata.url
-                }
-            },
-            unit: {},
-            files: [],
-            store: { sources: [], tags: [], publishers: []},
-            startDate: this.props.filedata.start_date ? moment(this.props.filedata.start_date) : moment(),
-            start_date: this.props.filedata.start_date ? this.props.filedata.start_date : moment().format('YYYY-MM-DD'),
-            end_date: this.props.filedata.start_date ? this.props.filedata.start_date : moment().format('YYYY-MM-DD'),
-            content_type: this.props.filedata.content_type ? this.props.filedata.content_type : null,
-            language: this.props.filedata.language ? this.props.filedata.language : null,
-            locale: "he",
-            upload_type: this.props.filedata.upload_type ? this.props.filedata.upload_type : "",
-            input_uid: this.props.filedata.input_uid ? this.props.filedata.input_uid : null,
-            isValidated: false,
-            cTypeSelection: true,
-            uTypeSelection: this.props.filedata.upload_type === "aricha" ? false : true,
-        };
-        this.handleDateChange = this.handleDateChange.bind(this);
-    }
+
 
     componentDidMount() {
+        const {filedata, start_date = "", content_type = null, language = null, upload_type = "", input_uid = ""} = this.props;
+        const {sha1,size,filename,type,url} = filedata;
+        this.setState({
+            start_date, end_date: start_date, startDate: moment(start_date),
+            content_type, language, disable_selection: upload_type !==  "", upload_type, input_uid,
+            metadata: { sha1, size, line:{upload_filename: filename, mime_type: type, url}}
+        });
         // Set sunday first weekday in russian
         moment.updateLocale('ru', { week: {dow: 0,},});
         moment.updateLocale('es', { week: {dow: 0,},});
@@ -71,75 +54,65 @@ class ModalApp extends Component {
         moment.updateLocale('de', { week: {dow: 0,},});
         moment.updateLocale('fr', { week: {dow: 0,},});
         moment.updateLocale('en', { week: {dow: 0,},});
-        //fetchSources(sources => this.setState({ store: { ...this.state.store, sources } }));
-        //fetchTags(tags => this.setState({ store: { ...this.state.store, tags } }));
         fetchPublishers(publishers => this.setState({ store: { ...this.state.store, publishers: publishers.data } }));
     };
 
     componentDidUpdate(prevProps, prevState) {
-        //console.log("--componentDidUpdate--", prevState);
-        let prev = [prevState.content_type, prevState.language, prevState.upload_type, prevState.start_date]
-        let next = [this.state.content_type, this.state.language, this.state.upload_type, this.state.start_date]
+        const prev = [prevState.content_type, prevState.language, prevState.upload_type, prevState.start_date];
+        const next = [this.state.content_type, this.state.language, this.state.upload_type, this.state.start_date];
         if (JSON.stringify(prev) !== JSON.stringify(next))
             this.setState({ isValidated: false });
     };
 
-    handleContentFilter = (e, data) => {
-        console.log("-Content type: "+ data.value);
-        if(data.value === "ARTICLE") {
-            this.setState({content_type: data.value, input_uid: "", upload_type: "", cTypeSelection: false})
+    selectContentType = (content_type) => {
+        if(content_type === "ARTICLE") {
+            this.setState({content_type, input_uid: "", upload_type: "", cTypeSelection: false})
         } else {
-            this.setState({content_type: data.value, input_uid: ""})
+            this.setState({content_type, input_uid: ""})
         }
     };
 
-    handleLanguageFilter = (e, data) => {
-        console.log("-Language: "+ data.value);
-        this.setState({language: data.value, locale: getLang(data.value)});
+    selectLanguage = (language) => {
+        this.setState({language, locale: getLang(language)});
     };
 
-    handleUploadFilter = (e, data) => {
-        console.log("-Upload type: "+ data.value);
-        if(data.value === "aricha") {
-            this.setState({upload_type: data.value, uTypeSelection: false});
+    selectUpload = (upload_type) => {
+        if(upload_type === "aricha") {
+            this.setState({upload_type, uTypeSelection: false});
         } else {
-            this.setState({upload_type: data.value});
+            this.setState({upload_type});
         }
     };
 
-    handleDateChange(date) {
-        let startdate = (date) ? date.format('YYYY-MM-DD') : this.props.filedata.filename.split(".")[0].split("_")[3];
-        let enddate = (date) ? date.format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+    selectDate = (date) => {
         this.setState({
             startDate: date,
-            start_date: startdate, end_date: enddate
+            start_date: date.format('YYYY-MM-DD'),
+            end_date: date.format('YYYY-MM-DD'),
         });
-    }
+    };
 
-    handleOnComplete = () => {
-        console.log("--HandelOnComplete--");
-        // Object we return from react
-        console.log("::We returnt this metadata: ", this.state.metadata);
+    onComplete = () => {
+        console.log("::onComplete metadata: ", this.state.metadata);
         this.props.onComplete(this.state.metadata);
     };
 
-    handleOnClose = () => {
-        console.log("--HandelOnCancel--");
+    onClose = () => {
+        console.log("--onCancel--");
         this.props.onCancel();
     };
 
-    handleUidInput = (e, data) => {
-        console.log(":: Input changed: ", data.value);
-        this.setState({input_uid: data.value, isValidated: false});
+    inputUid = (input_uid) => {
+        console.log(":: Input changed: ", input_uid);
+        this.setState({input_uid, isValidated: false});
     };
 
-    handlePubSelect = (data) => {
-        console.log("--HandlePubSelect--");
-        console.log(":: Publisher selected: ", data);
+    setPublisher = (data) => {
+        console.log(":: Set Publisher: ", data);
         this.setState({metadata: { ...this.state.metadata, publisher: data.pattern, publisher_uid: data.uid }});
     };
 
-    handleUidSelect = (data) => {
+    setUid = (data) => {
         console.log("--HandleUidSelect--");
         console.log(":::: Unit Selected :::: ", data);
         let path = data.id + '/files/';
@@ -208,26 +181,26 @@ class ModalApp extends Component {
     };
 
     render() {
-        //const { store } = this.state;
 
-        let start_date = (
+        const {filename} = this.props.filedata;
+        const {locale,start_date,startDate,input_uid,upload_type,content_type,cTypeSelection,value,language,disable_selection,isValidated} = this.state;
+
+        let date_picker = (
             <DatePicker
                 className="datepickercs"
-                locale={this.state.locale}
+                locale={locale}
                 dateFormat="YYYY-MM-DD"
                 showYearDropdown
                 showMonthDropdown
                 scrollableYearDropdown
                 maxDate={moment()}
-                openToDate={moment(this.state.start_date)}
-                selected={this.state.startDate}
-                onChange={this.handleDateChange}
-                //excludeDates={[moment(), moment().add(1, "months")]}
-                //highlightDates={moment().add(-1, "months")}
+                openToDate={moment(start_date)}
+                selected={startDate}
+                onChange={this.selectDate}
             />
         );
 
-        let input_uid = (
+        let uid_input = (
             <Input
                 error={false}
                 className="input_uid"
@@ -235,8 +208,8 @@ class ModalApp extends Component {
                 icon='barcode'
                 placeholder="UID"
                 iconPosition='left'
-                value={this.state.input_uid}
-                onChange={this.handleUidInput}
+                value={input_uid}
+                onChange={(e,{value}) => this.inputUid(value)}
             />
         );
 
@@ -248,37 +221,37 @@ class ModalApp extends Component {
                     {this.props.insert === "update" ? update_style : ""}
                     <Header floated='left' >
                         <Dropdown
-                            error={!this.state.content_type}
-                            disabled={!this.state.cTypeSelection}
-                            defaultValue={this.state.content_type}
+                            error={!content_type}
+                            disabled={!cTypeSelection}
+                            defaultValue={content_type}
                             className="large"
                             placeholder="Content:"
                             selection
                             options={content_options}
-                            content_type={this.state.content_type}
-                            onChange={this.handleContentFilter}
-                            value={this.state.value} >
+                            content_type={content_type}
+                            onChange={(e,{value}) => this.selectContentType(value)}
+                            value={value} >
                         </Dropdown>
                         <Dropdown
-                            error={!this.state.language}
-                            defaultValue={this.state.language}
+                            error={!language}
+                            defaultValue={language}
                             className="large"
                             placeholder="Language:"
                             selection
                             options={language_options}
-                            language={this.state.language}
-                            onChange={this.handleLanguageFilter}
-                            value={this.state.value} >
+                            language={language}
+                            onChange={(e,{value}) => this.selectLanguage(value)}
+                            value={value} >
                         </Dropdown>
                     </Header>
                     <Header floated='right'>
-                        {!this.state.upload_type.match(/^(aricha|article|publication)$/) ? input_uid : ""}
+                        {uid_input}
                     </Header>
-                        {this.state.upload_type.match(/^(aricha|article|publication)$/) ? start_date : start_date}
+                        {date_picker}
                 </Segment>
                 <Segment clearing secondary color='blue'>
                 <Modal.Content className="tabContent">
-                    <MdbData {...this.state} onUidSelect={this.handleUidSelect} />
+                    <MdbData {...this.state} onUidSelect={this.setUid} />
                 </Modal.Content>
                 </Segment>
                 <Segment clearing tertiary color='yellow'>
@@ -289,30 +262,30 @@ class ModalApp extends Component {
                         icon='file'
                         iconPosition='left'
                         focus={true}
-                        value={ this.state.filedata.filename }
+                        value={filename}
                     />
                     <Dropdown
                         upward
-                        error={!this.state.upload_type}
-                        disabled={!this.state.uTypeSelection}
-                        defaultValue={this.state.upload_type}
+                        error={!upload_type}
+                        disabled={disable_selection}
+                        defaultValue={upload_type}
                         placeholder="Upload Type:"
                         selection
-                        options={this.state.content_type === "ARTICLE" ? article_options : upload_options}
-                        upload_type={this.state.upload_type}
-                        onChange={this.handleUploadFilter}
-                        value={this.state.value} >
-                    </Dropdown>
+                        options={content_type === "ARTICLE" ? article_options : upload_options}
+                        upload_type={upload_type}
+                        onChange={(e,{value}) => this.selectUpload(value)}
+                        value={value}
+                    />
                     <NestedModal
-                        upload_type={this.state.upload_type}
-                        store={this.state.store}
-                        onUidSelect={this.handleUidSelect}
-                        onPubSelect={this.handlePubSelect}
+                        upload_type={upload_type}
+                        publishers={this.state.store.publishers}
+                        onUidSelect={this.setUid}
+                        onPubSelect={this.setPublisher}
                     />
                     <Button
                         color='green'
-                        disabled={!this.state.isValidated}
-                        onClick={this.handleOnComplete} >Select
+                        disabled={!isValidated}
+                        onClick={this.onComplete} >Select
                     </Button>
                 </Modal.Actions>
                 </Segment>
