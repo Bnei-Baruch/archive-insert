@@ -12,7 +12,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import 'semantic-ui-css/semantic.min.css';
 import './ModalApp.css';
 import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react';
-import { fetchPublishers, fetchUnits, fetchPersons, insertName, getName, getLang } from './shared/tools';
+import { fetchPublishers, fetchUnits, fetchPersons, insertName, getName, getLang, getWflowData } from './shared/tools';
 import {content_options, language_options, upload_options, article_options, MDB_LANGUAGES, CONTENT_TYPE_BY_ID} from './shared/consts';
 
 import MdbData from './components/MdbData';
@@ -61,11 +61,7 @@ class ModalApp extends Component {
 
     selectUpload = (upload_type) => {
         let {metadata} = this.state;
-        if(upload_type === "aricha") {
-            this.setState({metadata: {...metadata, upload_type}, uTypeSelection: false});
-        } else {
-            this.setState({metadata: {...metadata,upload_type}});
-        }
+        this.setState({metadata: {...metadata,upload_type}});
     };
 
     selectDate = (date) => {
@@ -93,72 +89,58 @@ class ModalApp extends Component {
         this.setState({metadata: { ...this.state.metadata, publisher: data.pattern, publisher_uid: data.uid }});
     };
 
-    setUid = (data) => {
-        console.log("--HandleUidSelect--");
-        console.log(":::: Unit Selected :::: ", data);
-        let path = data.id + '/files/';
-        fetchUnits(path, (data) => {
-                console.log(":: Got FILES: ", data);
-                let units = data.filter((file) => (file.name.split(".")[0].split("_").pop().match(/^t[\d]{10}o$/)));
-                // Filter trimmed without send
-                let unit_file = units.filter(capd => capd.properties.capture_date);
-                console.log(":: Try to get trim source: ", unit_file);
-                if(unit_file.length === 0 && this.state.upload_type !== "aricha" && data.length > 0) {
-                    console.log("No trim source found, taking first file:",data[0]);
-                    let unit_sendname = data[0].name.split(".")[0];
-                    let unit_sendext = data[0].name.split(".")[1];
-                    let unit_name = unit_sendname + "_" + data[0].uid + "." + unit_sendext;
-                    this.setState({files: data, send_name: unit_name});
-                } else if(data.length === 0 && this.state.upload_type !== "aricha") {
-                    console.log(":: No files in this UNIT!");
-                    this.setState({files: null, send_name: null});
-                } else if(unit_file.length === 0 && this.state.upload_type === "aricha") {
-                    this.setState({files: data, send_name: this.props.filedata.filename});
-                } else {
-                    this.setState({files: data, send_name: unit_file[0].name});
-                }
-                let metadata = this.state.metadata;
-                metadata.upload_type = this.state.upload_type;
-                metadata.language = this.state.language;
-                metadata.insert_type = this.props.insert === "new" ? "1" : "2";
-                metadata.send_id = this.state.send_name ? this.state.send_name.split(".")[0].split("_").pop().slice(0,-1) : null;
-                metadata.line.uid = this.state.unit.uid;
-                metadata.line.send_name = this.state.send_name ? this.state.send_name : this.state.unit.uid;
-                metadata.line.content_type = CONTENT_TYPE_BY_ID[this.state.unit.type_id];
-                metadata.line.capture_date = this.state.unit.properties.capture_date;
-                metadata.line.film_date = this.state.unit.properties.film_date;
-                metadata.line.original_language = MDB_LANGUAGES[this.state.unit.properties.original_language];
-                fetchPersons(this.state.unit.id, (data) => {
-                    console.log(":: Got Persons: ",data);
-                    if(data.length > 0 && data[0].person.uid === "abcdefgh") {
-                        metadata.line.lecturer = "rav";
-                        this.setState({lecturer: "rav"});
-                    } else {
-                        metadata.line.lecturer = "norav";
-                        this.setState({lecturer: "norav"});
-                    }
-                    // Calculate new name here
-                    metadata.filename = getName(metadata);
-                    console.log(":: Metadata - after getName: ",metadata);
-                    // Check if name already exist
-                    insertName(metadata.filename, (data) => {
-                        console.log(":: Got WFObject",data);
-                        if(data.length > 0 && this.props.insert === "new") {
-                            console.log(":: File with name: "+metadata.filename+" - already exist!");
-                            alert("File with name: "+metadata.filename+" - already exist!");
-                            this.setState({ isValidated: false });
-                        } else if(data.length === 0 && this.props.insert === "update") {
-                            console.log(":: File with name: "+metadata.filename+" - does NOT exist! In current mode the operation must be update only");
-                            alert("File with name: "+metadata.filename+" - does NOT exist! In current mode the operation must be update only");
-                            this.setState({ isValidated: false });
-                        } else {
-                            this.state.content_type && this.state.language && this.state.upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
-                            this.setState({metadata: { ...this.state.metadata }});
-                        }
-                    });
-                });
+    onGetUID = (unit) => {
+        console.log(":::: Unit Selected :::: ", unit);
+        this.setState({unit});
+        let {metadata} = this.state;
+        const {properties,uid,type_id,id} = unit;
+        metadata.line.uid = uid;
+        metadata.line.content_type = CONTENT_TYPE_BY_ID[type_id];
+        metadata.line.capture_date = properties.capture_date;
+        metadata.line.film_date = properties.film_date;
+        metadata.line.original_language = MDB_LANGUAGES[properties.original_language];
+        metadata.send_id = properties.workflow_id || null;
+        const wfid = metadata.send_id;
+        if(wfid) {
+            console.log(":::: Workflow ID :::: ", wfid);
+            getWflowData(wfid, (wfdata) => {
+                console.log(":: Got Workflow Data: ", wfdata);
+                metadata.line.send_name = wfdata.file_name;
+                metadata.line.lecturer = wfdata.line.lecturer;
+                metadata.filename = getName(metadata);
+                console.log(":: Metadata - after getName: ",metadata);
+                this.setMeta(metadata);
             });
-        this.setState({ unit: data });
+        } else {
+            fetchPersons(id, (data) => {
+                console.log(":: Got Persons: ",data);
+                metadata.line.lecturer = (data.length > 0 && data[0].person.uid === "abcdefgh") ? "rav" : "norav";
+                // Calculate new name here
+                metadata.filename = getName(metadata);
+                console.log(":: Metadata - after getName: ",metadata);
+                this.setMeta(metadata);
+            });
+        }
+    };
+
+    setMeta = (metadata) => {
+        const {content_type,language,upload_type,insert_type,filename} = metadata;
+        // Check if name already exist
+        insertName(filename, (data) => {
+            console.log(":: Got WFObject",data);
+            if(data.length > 0 && insert_type === "1") {
+                console.log(":: File with name: "+filename+" - already exist!");
+                alert("File with name: "+filename+" - already exist!");
+                this.setState({ isValidated: false });
+            } else if(data.length === 0 && insert_type === "2") {
+                console.log(":: File with name: "+filename+" - does NOT exist! In current mode the operation must be update only");
+                alert("File with name: "+filename+" - does NOT exist! In current mode the operation must be update only");
+                this.setState({ isValidated: false });
+            } else {
+                content_type && language && upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
+                this.setState({metadata: { ...metadata }});
+            }
+        });
     };
 
     render() {
@@ -231,7 +213,7 @@ class ModalApp extends Component {
                 </Segment>
                 <Segment clearing secondary color='blue'>
                 <Modal.Content className="tabContent">
-                    <MdbData metadata={metadata} onUidSelect={this.setUid} />
+                    <MdbData metadata={metadata} onUidSelect={this.onGetUID} />
                 </Modal.Content>
                 </Segment>
                 <Segment clearing tertiary color='yellow'>
@@ -258,7 +240,7 @@ class ModalApp extends Component {
                     <NestedModal
                         upload_type={upload_type}
                         publishers={this.state.store.publishers}
-                        onUidSelect={this.setUid}
+                        onUidSelect={this.onGetUID}
                         onPubSelect={this.setPublisher}
                     />
                     <Button

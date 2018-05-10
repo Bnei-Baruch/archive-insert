@@ -1,7 +1,7 @@
 import { mime_list, CONTENT_TYPES_MAPPINGS, MDB_LANGUAGES} from './consts';
 
 const MDB_BACKEND = 'https://insert.kbb1.com/rest';
-const WF_BACKEND = 'https://insert.kbb1.com/insert';
+const WF_BACKEND = 'https://insert.kbb1.com';
 
 export const toHms = (totalSec) => {
     let hours = parseInt( totalSec / 3600, 10 ) % 24;
@@ -82,7 +82,7 @@ export const fetchPersons = (id, cb) => fetch(`${MDB_BACKEND}/content_units/${id
     })
     .catch(ex => console.log(`get ${id}`, ex));
 
-export const insertName = (filename, cb) => fetch(`${WF_BACKEND}/find?key=insert_name&value=${filename}`)
+export const insertName = (filename, cb) => fetch(`${WF_BACKEND}/insert/find?key=insert_name&value=${filename}`)
     .then((response) => {
         if (response.ok) {
             console.log("--FetchInsertName--");
@@ -90,6 +90,24 @@ export const insertName = (filename, cb) => fetch(`${WF_BACKEND}/find?key=insert
         }
     })
     .catch(ex => console.log(`get ${filename}`, ex));
+
+export const getWflowData = (id, cb) =>  {
+    fetch(`${WF_BACKEND}/${getEndpoint(id)}/${id}`)
+    .then((response) => {
+        if (response.ok) {
+            console.log("--FetchWorkflowData--");
+            return response.json().then(data => cb(data));
+        }
+    })
+    .catch(ex => console.log(`get ${id}`, ex));
+};
+
+const getEndpoint = (id) => {
+    if(id.match(/^t[\d]{10}$/)) return "trimmer";
+    if(id.match(/^a[\d]{10}$/)) return "aricha";
+    if(id.match(/^d[\d]{10}$/)) return "dgima";
+    if(id.match(/^i[\d]{10}$/)) return "insert";
+};
 
 export const insertSha = (sha, cb) => fetch(`${MDB_BACKEND}/files/?sha1=${sha}`)
     .then((response) => {
