@@ -33,9 +33,9 @@ class LoginPage extends Component {
           </Dropdown>);
       let main = (
             <Button.Group size='massive' >
-                <Button positive value='new' onClick={this.handleInsert}>&nbsp;&nbsp;Insert&nbsp;</Button>
+                <Button positive value='1' onClick={this.handleInsert}>&nbsp;&nbsp;Insert&nbsp;</Button>
                 <Button.Or />
-                <Button value='update' onClick={this.handleInsert} color='orange'>Update</Button>
+                <Button value='2' onClick={this.handleInsert} color='orange'>Update</Button>
             </Button.Group>
       );
 

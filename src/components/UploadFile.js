@@ -44,7 +44,7 @@ class UploadFile extends Component {
           <Upload
               {...this.props}
               {...props}
-              className={this.props.mode === "new" ? "insert" : "update"}
+              className={this.props.mode === "1" ? "insert" : "update"}
               onSuccess={this.uploadDone}
               onProgress={this.progress} >
               Drop file here or click me

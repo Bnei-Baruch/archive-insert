@@ -21,7 +21,7 @@ import NestedModal from './components/NestedModal';
 class ModalApp extends Component {
 
     state = {
-        metadata: {},
+        metadata: {...this.props.metadata},
         unit: {},
         files: [],
         store: { sources: [], tags: [], publishers: []},
@@ -40,13 +40,8 @@ class ModalApp extends Component {
 
 
     componentDidMount() {
-        const {filedata, start_date = "", content_type = null, language = null, upload_type = "", input_uid = ""} = this.props;
-        const {sha1,size,filename,type,url} = filedata;
-        this.setState({
-            start_date, end_date: start_date, startDate: moment(start_date),
-            content_type, language, disable_selection: upload_type !==  "", upload_type, input_uid,
-            metadata: { sha1, size, line:{upload_filename: filename, mime_type: type, url}}
-        });
+        const {date, upload_type, send_uid} = this.state.metadata;
+        this.setState({startDate: moment(date), disable_selection: upload_type !== "", input_uid: send_uid});
         // Set sunday first weekday in russian
         moment.updateLocale('ru', { week: {dow: 0,},});
         moment.updateLocale('es', { week: {dow: 0,},});
@@ -58,9 +53,9 @@ class ModalApp extends Component {
     };
 
     componentDidUpdate(prevProps, prevState) {
-        const prev = [prevState.content_type, prevState.language, prevState.upload_type, prevState.start_date];
-        const next = [this.state.content_type, this.state.language, this.state.upload_type, this.state.start_date];
-        if (JSON.stringify(prev) !== JSON.stringify(next))
+        // const prev = [prevState.content_type, prevState.language, prevState.upload_type, prevState.start_date];
+        // const next = [this.state.content_type, this.state.language, this.state.upload_type, this.state.start_date];
+        if (JSON.stringify(prevProps.metadata) !== JSON.stringify(this.state.metadata))
             this.setState({ isValidated: false });
     };
 

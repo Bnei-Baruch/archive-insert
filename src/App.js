@@ -15,6 +15,7 @@ class App extends Component {
         user: null,
         insert: null,
         filedata: null,
+        metadata: {},
         open: false,
         loading: true,
     };
@@ -60,21 +61,31 @@ class App extends Component {
                 console.log(":: File with SHA1: " + filedata.sha1 + " - already exist!");
                 alert("File already exist in MDB!");
             } else {
-                console.log(":: Setting Filedata:", filedata);
-                // Extract and validate UID from filename
-                let uid = filedata.filename.split(".")[0].split("_").pop();
-                if(uid.length === 8 && (/[_]/).test(filedata.filename))
-                    filedata["input_uid"] = uid;
-                // Extract and validate date from filename
-                if((/\d{4}-\d{2}-\d{2}/).test(filedata.filename)) {
-                    let start_date = filedata.filename.match(/\d{4}-\d{2}-\d{2}/)[0];
-                    let test_date = moment(start_date);
-                    if(test_date.isValid())
-                        this.setState({start_date});
-                }
-                this.setState({filedata, open: true});
-            };
+                this.setMetaData(filedata);
+            }
         });
+    };
+
+    setMetaData = (filedata) => {
+        console.log(":: Setting metadata from:", filedata);
+        const {sha1,size,filename,type,url} = filedata;
+        let line = {content_type: null, upload_filename: filename, mime_type: type, url};
+        let metadata = {sha1, size, line, content_type: null, language: null,
+            send_uid: "", upload_type: "", insert_type: this.state.insert};
+
+        // Extract and validate UID from filename
+        let uid = filename.split(".")[0].split("_").pop();
+        if(uid.length === 8 && (/[_]/).test(filename))
+            metadata.send_uid = uid;
+
+        // Extract and validate date from filename
+        if((/\d{4}-\d{2}-\d{2}/).test(filedata.filename)) {
+            let string_date = filedata.filename.match(/\d{4}-\d{2}-\d{2}/)[0];
+            let test_date = moment(string_date);
+            let date = test_date.isValid() ? string_date : moment().format('YYYY-MM-DD');
+            metadata.date = date;
+        }
+        this.setState({filedata, metadata, open: true});
     };
 
     onComplete = (metadata) => {
@@ -98,8 +109,9 @@ class App extends Component {
     };
 
   render() {
-      let login = (<LoginPage onInsert={this.setMode} user={this.state.user} loading={this.state.loading} />);
-      let upload = (<UploadFile onFileData={this.setFileData} mode={this.state.insert} />);
+      const {filedata,metadata,user,loading,insert,open} = this.state;
+      let login = (<LoginPage onInsert={this.setMode} user={user} loading={loading} />);
+      let upload = (<UploadFile onFileData={this.setFileData} mode={insert} />);
 
     return (
         <Fragment>
@@ -108,10 +120,13 @@ class App extends Component {
                    closeOnDimmerClick={false}
                    closeIcon={true}
                    onClose={this.onCancel}
-                   open={this.state.open}
-                   size="large"
-            >
-                <ModalApp { ...this.state } onComplete={this.onComplete} />
+                   open={open}
+                   size="large">
+                <ModalApp
+                    filedata={filedata}
+                    metadata={metadata}
+                    user={user}
+                    onComplete={this.onComplete} />
             </Modal>
         </Fragment>
     );
