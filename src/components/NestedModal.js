@@ -5,20 +5,7 @@ import { Modal, Button, Table } from 'semantic-ui-react'
 class NestedModal extends Component {
     state = {
         open: false,
-        active: null,
-    };
-
-    open = () => this.setState({ open: true })
-
-    close = () => this.setState({ open: false })
-
-    componentDidMount() {
-        // console.log("--Did mount--");
-        // let path = this.props.id + '/files/';
-        // Fetcher(path)
-        //     .then(data => {
-        //         this.setState({files: data.data});
-        //     })
+        actived: null,
     };
 
     componentDidUpdate(prevProps) {
@@ -29,20 +16,24 @@ class NestedModal extends Component {
         }
     };
 
-    rawClick = (pub) => {
-        this.setState({active: pub.uid, publisher: pub});
+    rawClick = (publisher) => {
+        this.setState({actived: publisher.uid, publisher});
     };
 
     selectPublisher  = () => {
         this.props.onPubSelect(this.state.publisher);
         this.setState({ open: false });
-    }
+    };
+
+    open = () => this.setState({ open: true });
+
+    close = () => this.setState({ open: false });
 
     render() {
-        const { open } = this.state;
+        const {open,actived} = this.state;
         let pub_list = this.props.publishers.map((pub) => {
             let name = (pub.i18n.he) ? pub.i18n.he.name : "Name not found";
-            let active = (this.state.active === pub.uid ? 'active' : '');
+            let active = (actived === pub.uid ? 'active' : '');
             return (
                 <Table.Row className={active} key={pub.id} onClick={() => this.rawClick(pub)}>
                     <Table.Cell textAlign='right'
@@ -78,7 +69,7 @@ class NestedModal extends Component {
                     </Table>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button color='blue' content='Select' disabled={!this.state.active} onClick={this.selectPublisher} />
+                    <Button color='blue' content='Select' disabled={!actived} onClick={this.selectPublisher} />
                 </Modal.Actions>
             </Modal>
         )

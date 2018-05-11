@@ -69,11 +69,6 @@ class ModalApp extends Component {
         this.setState({metadata: {...metadata, date: date.format('YYYY-MM-DD')}, startDate: date});
     };
 
-    onComplete = () => {
-        console.log("::onComplete metadata: ", this.state.metadata);
-        this.props.onComplete(this.state.metadata);
-    };
-
     onClose = () => {
         console.log("--onCancel--");
         this.props.onCancel();
@@ -84,15 +79,20 @@ class ModalApp extends Component {
         this.setState({input_uid, isValidated: false});
     };
 
-    setPublisher = (data) => {
-        console.log(":: Set Publisher: ", data);
-        this.setState({metadata: { ...this.state.metadata, publisher: data.pattern, publisher_uid: data.uid }});
+    setPublisher = (publisher) => {
+        const {uid,pattern} = publisher;
+        let {metadata} = this.state;
+        metadata.line.publisher_uid = uid;
+        metadata.line.publisher = pattern;
+        console.log(":: Set Publisher: ", publisher);
+        this.setState({metadata: {...metadata}});
     };
 
     onGetUID = (unit) => {
-        console.log(":::: Unit Selected :::: ", unit);
+        console.log(":: Selected unit: ", unit);
         this.setState({unit});
-        let {metadata} = this.state;
+        let {metadata,isValidated} = this.state;
+        const {content_type,language,upload_type} = metadata;
         const {properties,uid,type_id,id} = unit;
         metadata.line.uid = uid;
         metadata.line.content_type = CONTENT_TYPE_BY_ID[type_id];
@@ -107,40 +107,50 @@ class ModalApp extends Component {
                 console.log(":: Got Workflow Data: ", wfdata);
                 metadata.line.send_name = wfdata.file_name;
                 metadata.line.lecturer = wfdata.line.lecturer;
-                metadata.filename = getName(metadata);
-                console.log(":: Metadata - after getName: ",metadata);
-                this.setMeta(metadata);
             });
         } else {
+            console.log(":::: UNIT from Import :::: ");
+            metadata.line.send_name = metadata.line.upload_filename.split('.')[0];
             fetchPersons(id, (data) => {
                 console.log(":: Got Persons: ",data);
                 metadata.line.lecturer = (data.length > 0 && data[0].person.uid === "abcdefgh") ? "rav" : "norav";
-                // Calculate new name here
-                metadata.filename = getName(metadata);
-                console.log(":: Metadata - after getName: ",metadata);
-                this.setMeta(metadata);
             });
+        }
+        if(content_type && language && upload_type) {
+            metadata.insert_name = getName(metadata);
+            console.log(":: Metadata - after getName: ", metadata);
+            this.setMeta(metadata);
         }
     };
 
     setMeta = (metadata) => {
-        const {content_type,language,upload_type,insert_type,filename} = metadata;
+        const {content_type,language,upload_type,insert_type,insert_name} = metadata;
         // Check if name already exist
-        insertName(filename, (data) => {
+        insertName(insert_name, (data) => {
             console.log(":: Got WFObject",data);
             if(data.length > 0 && insert_type === "1") {
-                console.log(":: File with name: "+filename+" - already exist!");
-                alert("File with name: "+filename+" - already exist!");
+                console.log(":: File with name: "+insert_name+" - already exist!");
+                alert("File with name: "+insert_name+" - already exist!");
                 this.setState({ isValidated: false });
             } else if(data.length === 0 && insert_type === "2") {
-                console.log(":: File with name: "+filename+" - does NOT exist! In current mode the operation must be update only");
-                alert("File with name: "+filename+" - does NOT exist! In current mode the operation must be update only");
+                console.log(":: File with name: "+insert_name+" - does NOT exist! In current mode the operation must be update only");
+                alert("File with name: "+insert_name+" - does NOT exist! In current mode the operation must be update only");
                 this.setState({ isValidated: false });
             } else {
                 content_type && language && upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
                 this.setState({metadata: { ...metadata }});
             }
         });
+    };
+
+    onComplete = () => {
+        let {metadata} = this.state;
+        metadata.file_name = metadata.insert_name.split('.')[0];
+        metadata.extension = metadata.insert_name.split('.')[1];
+        delete metadata.send_uid;
+        delete metadata.content_type;
+        console.log(" ::: onComplete metadata ::: ", metadata);
+        //this.props.onComplete(metadata);
     };
 
     render() {
