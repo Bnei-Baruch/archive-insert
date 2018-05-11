@@ -5,7 +5,7 @@ import UploadFile from './components/UploadFile';
 import LoginPage from './components/LoginPage';
 import {client, getUser} from "./tools/UserManager";
 import ModalApp from './ModalApp';
-import {insertSha} from './shared/tools';
+import {insertSha, putData} from './shared/tools';
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 
@@ -89,22 +89,14 @@ class App extends Component {
     };
 
     onComplete = (metadata) => {
-        console.log(":: Complete Metadata:", metadata);
+        console.log(":: Put Metadata:", metadata);
         this.setState({open: false});
-        fetch('https://upload.kli.one/archive/'+metadata.sha1, {
-            method: 'PUT',
-            headers: {'Content-Type': 'application/json'},
-            body:  JSON.stringify(metadata)
-        })
-            .then(function(response){
-                return response.json();
-            })
-            .then(function(data){
-                console.log(" :: Post to workflow: ",data)
-            }).catch(ex => console.log("Post to workflow:", ex));
+        putData(`insert`, metadata, (cb) => {
+            console.log(":: WFSRV respond: ",cb);
+        });
     };
 
-    onCancel = (data) => {
+    onCancel = () => {
         this.setState({open: false});
     };
 

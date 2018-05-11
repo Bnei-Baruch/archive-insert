@@ -2,6 +2,7 @@ import { mime_list, CONTENT_TYPES_MAPPINGS, MDB_LANGUAGES} from './consts';
 
 const MDB_BACKEND = 'https://insert.kbb1.com/rest';
 const WF_BACKEND = 'https://insert.kbb1.com';
+const SRV_BACKEND = 'https://insert.kbb1.com/workflow';
 
 export const toHms = (totalSec) => {
     let hours = parseInt( totalSec / 3600, 10 ) % 24;
@@ -16,7 +17,7 @@ export const getLang = (lang) => {
 };
 
 export const getName = (metadata) => {
-    console.log(":: GetName - got metadata: ",metadata);
+    //console.log(":: GetName - got metadata: ",metadata);
     let name = [];
 
     // Language
@@ -30,7 +31,7 @@ export const getName = (metadata) => {
     // Type
     name[4] = CONTENT_TYPES_MAPPINGS[metadata.line.content_type].pattern;
     // Description
-    name[5] = metadata.line.send_name.split("_").slice(5, -1).join("_");
+    name[5] = metadata.line.send_name.split("_").slice(5).join("_");
 
     if(metadata.upload_type === "akladot") {
         name[4] = "akladot";
@@ -92,7 +93,7 @@ export const insertName = (filename, cb) => fetch(`${WF_BACKEND}/insert/find?key
     })
     .catch(ex => console.log(`get ${filename}`, ex));
 
-export const getWflowData = (id, cb) =>  {
+export const getData = (id, cb) =>  {
     fetch(`${WF_BACKEND}/${getEndpoint(id)}/${id}`)
     .then((response) => {
         if (response.ok) {
@@ -102,6 +103,19 @@ export const getWflowData = (id, cb) =>  {
     })
     .catch(ex => console.log(`get ${id}`, ex));
 };
+
+export const putData = (path, data, cb) => fetch(`${SRV_BACKEND}/${path}`, {
+    method: 'PUT',
+    headers: {'Content-Type': 'application/json'},
+    body:  JSON.stringify(data)
+})
+    .then((response) => {
+        if (response.ok) {
+            return response.json().then(respond => cb(respond));
+        }
+    })
+    .catch(ex => console.log("Put Data error:", ex));
+
 
 const getEndpoint = (id) => {
     if(id.match(/^t[\d]{10}$/)) return "trimmer";

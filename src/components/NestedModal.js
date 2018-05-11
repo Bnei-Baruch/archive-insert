@@ -41,7 +41,7 @@ class NestedModal extends Component {
                 </Table.Row>
             );
         });
-        console.log("--NestedModal Render--")
+
         return (
             <Modal
                 {...this.props}
@@ -60,7 +60,7 @@ class NestedModal extends Component {
                     <Table selectable compact='very' color='grey' key='teal' {...this.props}>
                         <Table.Header>
                             <Table.Row>
-                                <Table.HeaderCell></Table.HeaderCell>
+                                <Table.HeaderCell />
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>

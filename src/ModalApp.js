@@ -12,7 +12,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import 'semantic-ui-css/semantic.min.css';
 import './ModalApp.css';
 import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react';
-import { fetchPublishers, fetchUnits, fetchPersons, insertName, getName, getLang, getWflowData } from './shared/tools';
+import { fetchPublishers, fetchPersons, insertName, getName, getLang, getData } from './shared/tools';
 import {content_options, language_options, upload_options, article_options, MDB_LANGUAGES, CONTENT_TYPE_BY_ID} from './shared/consts';
 
 import MdbData from './components/MdbData';
@@ -103,7 +103,7 @@ class ModalApp extends Component {
         const wfid = metadata.send_id;
         if(wfid) {
             console.log(":::: Workflow ID :::: ", wfid);
-            getWflowData(wfid, (wfdata) => {
+            getData(wfid, (wfdata) => {
                 console.log(":: Got Workflow Data: ", wfdata);
                 metadata.line.send_name = wfdata.file_name;
                 metadata.line.lecturer = wfdata.line.lecturer;
@@ -118,7 +118,7 @@ class ModalApp extends Component {
         }
         if(content_type && language && upload_type) {
             metadata.insert_name = getName(metadata);
-            console.log(":: Metadata - after getName: ", metadata);
+            console.log(":: Metadata insert_name: ", metadata.insert_name);
             this.setMeta(metadata);
         }
     };
@@ -145,8 +145,7 @@ class ModalApp extends Component {
 
     onComplete = () => {
         let {metadata} = this.state;
-        metadata.file_name = metadata.insert_name.split('.')[0];
-        metadata.extension = metadata.insert_name.split('.')[1];
+        [metadata.file_name,metadata.extension] = metadata.insert_name.split('.');
         delete metadata.send_uid;
         delete metadata.content_type;
         console.log(" ::: onComplete metadata ::: ", metadata);

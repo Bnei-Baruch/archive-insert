@@ -11,7 +11,7 @@ class MdbData extends Component {
     };
 
     componentDidUpdate(prevProps) {
-        console.log("PrevProps: ", prevProps);
+        //console.log("PrevProps: ", prevProps);
         const {content_type, date, input_uid} = this.props.metadata;
         let path = ['page_size=1000', `start_date=${date}`, `end_date=${date}`, `content_type=${content_type}`];
         if (JSON.stringify(prevProps.metadata) !== JSON.stringify(this.props.metadata)) {
