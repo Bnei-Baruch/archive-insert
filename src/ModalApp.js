@@ -116,14 +116,14 @@ class ModalApp extends Component {
     };
 
     newUnitWF = (metadata, wfid) => {
-        console.log(":::: New Workflow UNIT :::: ", wfid);
+        console.log(":::: New Workflow UNIT :::: ");
         console.log(":: Workflow ID: ", wfid);
         getData(wfid, (wfdata) => {
             console.log(":: Got Workflow Data: ", wfdata);
             metadata.line.send_name = wfdata.file_name;
             metadata.line.lecturer = wfdata.line.lecturer;
             metadata.insert_name = getName(metadata);
-            console.log(":: Metadata insert_name: ", metadata.insert_name);
+            console.log(":: Metadata insert_name: \n%c"+metadata.insert_name,"color:Green");
             this.setMeta(metadata);
         });
     };
@@ -145,7 +145,7 @@ class ModalApp extends Component {
         const {insert_type,insert_name} = metadata;
         // Check if name already exist
         insertName(insert_name, (data) => {
-            console.log(":: Got WFObject",data);
+            console.log(":: insertName - got: ",data);
             if(data.length > 0 && insert_type === "1") {
                 console.log(":: File with name: "+insert_name+" - already exist!");
                 alert("File with name: "+insert_name+" - already exist!");
@@ -166,7 +166,7 @@ class ModalApp extends Component {
         delete metadata.send_uid;
         delete metadata.content_type;
         console.log(" ::: onComplete metadata ::: ", metadata);
-        //this.props.onComplete(metadata);
+        this.props.onComplete(metadata);
     };
 
     render() {

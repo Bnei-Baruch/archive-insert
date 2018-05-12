@@ -5,7 +5,7 @@ const AUTH_URL = 'https://accounts.kbb1.com/auth/realms/main';
 export const BASE_URL = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_BASE_URL : 'http://localhost:3000/';
 
 oidclog.logger = console;
-oidclog.level  = 3;
+oidclog.level  = 0;
 
 const userManagerConfig = {
     authority: AUTH_URL,
@@ -27,7 +27,7 @@ export const getUser = (cb) => client.getUser()
             let at = KJUR.jws.JWS.parse(user.access_token);
             let roles = at.payloadObj.realm_access.roles;
             console.log(":: User's Roles: ", roles);
-            user = {...user.profile, roles: roles}
+            user = {...user.profile, roles}
         }
         cb(user)
     })

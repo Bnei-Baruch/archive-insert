@@ -17,7 +17,7 @@ class MdbData extends Component {
         if (JSON.stringify(prevProps.metadata) !== JSON.stringify(this.props.metadata)) {
             if(content_type === "LESSON_PART") path.push('content_type=FULL_LESSON', 'content_type=WOMEN_LESSON');
             if (content_type === "LECTURE") path.push('content_type=FRIENDS_GATHERING', 'content_type=EVENT_PART');
-            console.log("Going to fetch MDB");
+            //console.log("Going to fetch MDB");
             fetchUnits('?'+path.join('&'), (data) => {
                 if(input_uid) data.data = data.data.filter((unit) => unit.uid === input_uid);
                 this.setState({units: data.data, active: null})

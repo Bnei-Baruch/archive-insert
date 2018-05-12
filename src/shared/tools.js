@@ -70,7 +70,7 @@ export const fetchPublishers = cb => Fetcher('publishers/', cb);
 export const fetchUnits = (path, cb) => fetch(`${MDB_BACKEND}/content_units/${path}`)
     .then((response) => {
         if (response.ok) {
-            console.log("--FetchDataWithCB--");
+            //console.log("--FetchDataWithCB--");
             return response.json().then(data => cb(data));
         }
     })
@@ -79,7 +79,7 @@ export const fetchUnits = (path, cb) => fetch(`${MDB_BACKEND}/content_units/${pa
 export const fetchPersons = (id, cb) => fetch(`${MDB_BACKEND}/content_units/${id}/persons/`)
     .then((response) => {
         if (response.ok) {
-            console.log("--FetchPersonsName--");
+            //console.log("--FetchPersonsName--");
             return response.json().then(data => cb(data));
         }
     })
@@ -88,7 +88,7 @@ export const fetchPersons = (id, cb) => fetch(`${MDB_BACKEND}/content_units/${id
 export const insertName = (filename, cb) => fetch(`${WF_BACKEND}/insert/find?key=insert_name&value=${filename}`)
     .then((response) => {
         if (response.ok) {
-            console.log("--FetchInsertName--");
+            //console.log("--FetchInsertName--");
             return response.json().then(data => cb(data));
         }
     })
@@ -98,7 +98,7 @@ export const getData = (id, cb) =>  {
     fetch(`${WF_BACKEND}/${getEndpoint(id)}/${id}`)
     .then((response) => {
         if (response.ok) {
-            console.log("--FetchWorkflowData--");
+            //console.log("--FetchWorkflowData--");
             return response.json().then(data => cb(data));
         }
     })
@@ -128,7 +128,7 @@ const getEndpoint = (id) => {
 export const insertSha = (sha, cb) => fetch(`${MDB_BACKEND}/files/?sha1=${sha}`)
     .then((response) => {
         if (response.ok) {
-            console.log("--FetchInsertSha--");
+            //console.log("--FetchInsertSha--");
             return response.json().then(data => cb(data));
         }
     })

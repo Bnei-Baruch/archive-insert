@@ -15,7 +15,7 @@ class UploadFile extends Component {
     };
 
     uploadDone = (file) => {
-        console.log(':: upload done: ', file);
+        //console.log(':: upload done: ', file);
         this.props.onFileData(file);
         this.setState({percent: 0})
     };
@@ -27,10 +27,10 @@ class UploadFile extends Component {
           type: 'drag',
           //accept: '.zip;.mp3',
           beforeUpload(file) {
-              console.log('beforeUpload', file.name);
+              //console.log('beforeUpload', file.name);
           },
           onStart(file) {
-              console.log('onStart', file.name);
+              //console.log('onStart', file.name);
           },
           onError(err) {
               console.log('onError', err);
