@@ -91,9 +91,17 @@ class ModalApp extends Component {
     onGetUID = (unit) => {
         console.log(":: Selected unit: ", unit);
         this.setState({unit});
-        let {metadata,isValidated} = this.state;
-        const {content_type,language,upload_type} = metadata;
-        const {properties,uid,type_id,id} = unit;
+        let {metadata, isValidated} = this.state;
+
+        // Check if all Required meta is selected
+        const {content_type, language, upload_type} = metadata;
+        if (!content_type || !language || !upload_type) {
+            console.log(":: Required meta not selected! ::");
+            return
+        }
+
+        // Meta from unit properties going to line
+        const {properties, uid, type_id, id} = unit;
         metadata.line.uid = uid;
         metadata.line.content_type = CONTENT_TYPE_BY_ID[type_id];
         metadata.line.capture_date = properties.capture_date;
@@ -101,29 +109,36 @@ class ModalApp extends Component {
         metadata.line.original_language = MDB_LANGUAGES[properties.original_language];
         metadata.send_id = properties.workflow_id || null;
         const wfid = metadata.send_id;
-        if(wfid) {
-            console.log(":::: Workflow ID :::: ", wfid);
-            getData(wfid, (wfdata) => {
-                console.log(":: Got Workflow Data: ", wfdata);
-                metadata.line.send_name = wfdata.file_name;
-                metadata.line.lecturer = wfdata.line.lecturer;
-            });
-        } else {
-            console.log(":::: UNIT from Import :::: ");
-            metadata.line.send_name = metadata.line.upload_filename.split('.')[0];
-            fetchPersons(id, (data) => {
-                console.log(":: Got Persons: ",data);
-                metadata.line.lecturer = (data.length > 0 && data[0].person.uid === "abcdefgh") ? "rav" : "norav";
-            });
-        }
-        if(content_type && language && upload_type) {
+        wfid ? this.newUnitWF(metadata, wfid) : this.oldUnitWF(metadata, id);
+    };
+
+    newUnitWF = (metadata, wfid) => {
+        console.log(":::: New Workflow UNIT :::: ", wfid);
+        console.log(":: Workflow ID: ", wfid);
+        getData(wfid, (wfdata) => {
+            console.log(":: Got Workflow Data: ", wfdata);
+            metadata.line.send_name = wfdata.file_name;
+            metadata.line.lecturer = wfdata.line.lecturer;
             metadata.insert_name = getName(metadata);
             console.log(":: Metadata insert_name: ", metadata.insert_name);
             this.setMeta(metadata);
-        }
+        });
+    };
+
+    oldUnitWF = (metadata, id) => {
+        console.log(":::: Old Workflow UNIT :::: ");
+        metadata.line.send_name = metadata.line.upload_filename.split('.')[0];
+        fetchPersons(id, (data) => {
+            console.log(":: Got Persons: ",data);
+            metadata.line.lecturer = (data.length > 0 && data[0].person.uid === "abcdefgh") ? "rav" : "norav";
+            metadata.insert_name = getName(metadata);
+            console.log(":: Metadata insert_name: ", metadata.insert_name);
+            this.setMeta(metadata);
+        });
     };
 
     setMeta = (metadata) => {
+        console.log(":: setMeta - metadata: ", metadata);
         const {content_type,language,upload_type,insert_type,insert_name} = metadata;
         // Check if name already exist
         insertName(insert_name, (data) => {

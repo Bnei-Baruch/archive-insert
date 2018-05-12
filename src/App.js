@@ -69,7 +69,8 @@ class App extends Component {
     setMetaData = (filedata) => {
         console.log(":: Setting metadata from:", filedata);
         const {sha1,size,filename,type,url} = filedata;
-        let line = {content_type: null, upload_filename: filename, mime_type: type, url};
+        let line = {content_type: null, upload_filename: filename, mime_type: type,
+            url: `https://insert.kbb1.com/u/${url}`};
         let metadata = {sha1, size, line, content_type: null, language: null,
             send_uid: "", upload_type: "", insert_type: this.state.insert};
 
