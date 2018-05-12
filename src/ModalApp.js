@@ -155,7 +155,6 @@ class ModalApp extends Component {
                 alert("File with name: "+insert_name+" - does NOT exist! In current mode the operation must be update only");
                 this.setState({ isValidated: false });
             } else {
-                //content_type && language && upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
                 this.setState({metadata: { ...metadata }});
             }
         });

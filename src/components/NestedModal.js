@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//import {Fetcher, MDB_LANGUAGES, toHms} from '../shared/consts';
 import { Modal, Button, Table } from 'semantic-ui-react'
 
 class NestedModal extends Component {
@@ -44,7 +43,6 @@ class NestedModal extends Component {
 
         return (
             <Modal
-                {...this.props}
                 className="nestedmodal"
                 size="tiny"
                 dimmer={true}
@@ -56,7 +54,7 @@ class NestedModal extends Component {
             >
                 <Modal.Header>Publishers</Modal.Header>
                 <Modal.Content className="tabContent">
-                    <Table selectable compact='very' color='grey' key='teal' {...this.props}>
+                    <Table selectable compact='very' color='grey' key='teal'>
                         <Table.Header>
                             <Table.Row>
                                 <Table.HeaderCell />

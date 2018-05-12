@@ -14,15 +14,13 @@ class LoginPage extends Component {
         });
     };
 
-    handleInsert = (e, data) => {
-      console.log("-- Handle Insert --", data.value);
-        this.props.onInsert(data.value);
-    };
-
   render() {
 
-      let login = (<Button size='massive' primary onClick={this.getUser} {...this.props} disabled={this.props.loading} >Login</Button>);
+      const {user,loading,onInsert} = this.props;
+
+      let login = (<Button size='massive' primary onClick={this.getUser} disabled={loading} >Login</Button>);
       //let logout = (<Button size='mini' primary onClick={() => client.signoutRedirect()}>LogOut</Button>);
+
       let profile = (
           <Dropdown inline text=''>
           <Dropdown.Menu>
@@ -31,23 +29,24 @@ class LoginPage extends Component {
               <Dropdown.Item text='Sign Out' onClick={() => client.signoutRedirect()} />
           </Dropdown.Menu>
           </Dropdown>);
+
       let main = (
             <Button.Group size='massive' >
-                <Button positive value='1' onClick={this.handleInsert}>&nbsp;&nbsp;Insert&nbsp;</Button>
+                <Button positive value='1' onClick={(e,{value}) => onInsert(value)}>&nbsp;&nbsp;Insert&nbsp;</Button>
                 <Button.Or />
-                <Button value='2' onClick={this.handleInsert} color='orange'>Update</Button>
+                <Button value='2' onClick={(e,{value}) => onInsert(value)} color='orange'>Update</Button>
             </Button.Group>
       );
 
     return (
           <Container textAlign='center' >
           <Message size='massive'>
-              <Message.Header {...this.props}>
-                  {this.props.user === null ? "Insert Archive" : "Welcome, "+this.props.user.name}
-                  {this.props.user === null ? "" : profile}
+              <Message.Header>
+                  {user === null ? "Insert Archive" : "Welcome, "+user.name}
+                  {user === null ? "" : profile}
               </Message.Header>
               <p>Service for inserting new materials into the bb archive.</p>
-              {this.props.user === null ? login : main}
+              {user === null ? login : main}
           </Message>
           </Container>
     );
