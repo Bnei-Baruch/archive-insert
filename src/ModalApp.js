@@ -91,13 +91,16 @@ class ModalApp extends Component {
     onGetUID = (unit) => {
         console.log(":: Selected unit: ", unit);
         this.setState({unit});
-        let {metadata, isValidated} = this.state;
+        let {metadata} = this.state;
 
         // Check if all Required meta is selected
         const {content_type, language, upload_type} = metadata;
         if (!content_type || !language || !upload_type) {
             console.log(":: Required meta not selected! ::");
+            this.setState({ isValidated: false });
             return
+        } else {
+            this.setState({ isValidated: true });
         }
 
         // Meta from unit properties going to line
@@ -139,7 +142,7 @@ class ModalApp extends Component {
 
     setMeta = (metadata) => {
         console.log(":: setMeta - metadata: ", metadata);
-        const {content_type,language,upload_type,insert_type,insert_name} = metadata;
+        const {insert_type,insert_name} = metadata;
         // Check if name already exist
         insertName(insert_name, (data) => {
             console.log(":: Got WFObject",data);
@@ -152,7 +155,7 @@ class ModalApp extends Component {
                 alert("File with name: "+insert_name+" - does NOT exist! In current mode the operation must be update only");
                 this.setState({ isValidated: false });
             } else {
-                content_type && language && upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
+                //content_type && language && upload_type ? this.setState({ isValidated: true }) : this.setState({ isValidated: false });
                 this.setState({metadata: { ...metadata }});
             }
         });

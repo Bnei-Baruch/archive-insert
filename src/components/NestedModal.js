@@ -50,7 +50,6 @@ class NestedModal extends Component {
                 dimmer={true}
                 closeIcon={false}
                 closeOnDimmerClick={false}
-                defaultOpen={true}
                 open={open}
                 onOpen={this.open}
                 onClose={this.close}
