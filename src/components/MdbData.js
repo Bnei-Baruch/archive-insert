@@ -12,23 +12,16 @@ class MdbData extends Component {
     };
 
     componentDidUpdate(prevProps) {
-        //console.log("PrevProps: ", prevProps);
-        //if(this.props.units[0]) this.setState({units: this.props.units, active: null});
         const {content_type, date, send_uid} = this.props.metadata;
-        //let path = send_uid && send_uid.length === 8 ? [`query=${send_uid}`] : ['page_size=1000', `start_date=${date}`, `end_date=${date}`, `content_type=${content_type}`];
         let path = ['page_size=1000', `start_date=${date}`, `end_date=${date}`];
         if (JSON.stringify(prevProps.metadata) !== JSON.stringify(this.props.metadata)) {
-            //if(content_type === "LESSON_PART") path.push('content_type=FULL_LESSON', 'content_type=WOMEN_LESSON');
-            //if(content_type === "LECTURE") path.push('content_type=FRIENDS_GATHERING', 'content_type=EVENT_PART');
-            DCT_OPTIOS[content_type].map(ct => path.push(`content_type=${ct}`));
-            //if(send_uid && send_uid.length === 8) path.push(`query=${send_uid}`);
-            if(send_uid && send_uid.length === 8) {
+            if(send_uid) {
                 this.setState({units: this.props.units, active: null});
                 return
             }
-            //console.log("Going to fetch MDB");
+            if(content_type) DCT_OPTIOS[content_type].map(ct => path.push(`content_type=${ct}`));
+            console.log("Going to fetch MDB");
             fetchUnits('?'+path.join('&'), (data) => {
-                //if(input_uid) data.data = data.data.filter((unit) => unit.uid === input_uid);
                 this.setState({units: data.data, active: null})
             });
         }

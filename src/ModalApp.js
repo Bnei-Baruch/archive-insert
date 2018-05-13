@@ -24,7 +24,6 @@ class ModalApp extends Component {
         metadata: {...this.props.metadata},
         unit: null,
         files: [],
-        input_uid: "",
         store: { sources: [], tags: [], publishers: []},
         locale: "he",
         isValidated: false,
@@ -32,8 +31,8 @@ class ModalApp extends Component {
 
 
     componentDidMount() {
-        const {date} = this.state.metadata;
-        this.setState({startDate: moment(date)});
+        const {send_uid} = this.state.metadata;
+        this.inputUid(send_uid);
         // Set sunday first weekday in russian
         moment.updateLocale('ru', { week: {dow: 0,},});
         moment.updateLocale('es', { week: {dow: 0,},});
@@ -70,22 +69,20 @@ class ModalApp extends Component {
     };
 
     onClose = () => {
-        console.log("--onCancel--");
         this.props.onCancel();
     };
 
     inputUid = (send_uid) => {
-        this.setState({input_uid: send_uid});
+        let {metadata} = this.state;
+        this.setState({metadata: {...metadata, send_uid}, isValidated: false});
         if(send_uid.length === 8) {
-            let {metadata} = this.state;
-            //this.setState({metadata: {...metadata,send_uid}, isValidated: false});
-            console.log(":: Got Valid input: UID: ",send_uid);
+            console.log(":: Got Valid input: UID: ", send_uid);
             fetchUnits(`?query=${send_uid}`, (data) => {
                 let unit = data.data[0];
-                console.log(":: Got UNIT: ",unit);
+                console.log(":: Got UNIT: ", unit);
                 metadata.content_type = getDCT(CONTENT_TYPE_BY_ID[unit.type_id]);
                 metadata.date = unit.properties.capture_date;
-                this.setState({metadata: {...metadata,}, isValidated: false, unit});
+                this.setState({metadata: {...metadata, send_uid}, isValidated: false, unit});
             })
         }
     };
@@ -183,7 +180,7 @@ class ModalApp extends Component {
     render() {
 
         const {filename} = this.props.filedata;
-        const {metadata, isValidated, locale, input_uid, unit} = this.state;
+        const {metadata, isValidated, locale, unit} = this.state;
         const {date,upload_type,content_type,language,insert_type,send_uid} = metadata;
 
         let date_picker = (
@@ -209,7 +206,7 @@ class ModalApp extends Component {
                 icon='barcode'
                 placeholder="UID"
                 iconPosition='left'
-                value={input_uid}
+                value={send_uid}
                 onChange={(e,{value}) => this.inputUid(value)}
             />
         );
