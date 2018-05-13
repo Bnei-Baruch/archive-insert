@@ -16,7 +16,7 @@ export const content_options = [
     //{ value: 'PUBLICATION', text: 'פירסומים ', icon: 'announcement' },
 ];
 
-export const DCT_OPTIOS = {
+export const DCT_OPTS = {
     LESSONS: ['LESSON_PART','FULL_LESSON','WOMEN_LESSON'],
     PROGRAMS: ['VIDEO_PROGRAM_CHAPTER'],
     WEBINARS: ['VIRTUAL_LESSON'],

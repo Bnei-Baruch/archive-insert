@@ -76,10 +76,9 @@ class ModalApp extends Component {
         let {metadata} = this.state;
         this.setState({metadata: {...metadata, send_uid}, isValidated: false});
         if(send_uid.length === 8) {
-            console.log(":: Got Valid input: UID: ", send_uid);
             fetchUnits(`?query=${send_uid}`, (data) => {
                 let unit = data.data[0];
-                console.log(":: Got UNIT: ", unit);
+                console.log(":: Got UNIT: ", data);
                 metadata.content_type = getDCT(CONTENT_TYPE_BY_ID[unit.type_id]);
                 metadata.date = unit.properties.capture_date;
                 this.setState({metadata: {...metadata, send_uid}, isValidated: false, unit});
