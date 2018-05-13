@@ -12,7 +12,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import 'semantic-ui-css/semantic.min.css';
 import './ModalApp.css';
 import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react';
-import { fetchPublishers, fetchPersons, insertName, getName, getLang, getData } from './shared/tools';
+import {fetchPublishers, fetchPersons, insertName, getName, getLang, getData, fetchUnits, getDCT} from './shared/tools';
 import {content_options, language_options, upload_options, article_options, MDB_LANGUAGES, CONTENT_TYPE_BY_ID} from './shared/consts';
 
 import MdbData from './components/MdbData';
@@ -22,10 +22,10 @@ class ModalApp extends Component {
 
     state = {
         metadata: {...this.props.metadata},
-        unit: {},
+        unit: null,
         files: [],
+        input_uid: "",
         store: { sources: [], tags: [], publishers: []},
-        startDate: moment(),
         locale: "he",
         isValidated: false,
     };
@@ -66,7 +66,7 @@ class ModalApp extends Component {
 
     selectDate = (date) => {
         let {metadata} = this.state;
-        this.setState({metadata: {...metadata, date: date.format('YYYY-MM-DD')}, startDate: date});
+        this.setState({metadata: {...metadata, date: date.format('YYYY-MM-DD')}});
     };
 
     onClose = () => {
@@ -74,9 +74,20 @@ class ModalApp extends Component {
         this.props.onCancel();
     };
 
-    inputUid = (input_uid) => {
-        console.log(":: Input changed: ", input_uid);
-        this.setState({input_uid, isValidated: false});
+    inputUid = (send_uid) => {
+        this.setState({input_uid: send_uid});
+        if(send_uid.length === 8) {
+            let {metadata} = this.state;
+            //this.setState({metadata: {...metadata,send_uid}, isValidated: false});
+            console.log(":: Got Valid input: UID: ",send_uid);
+            fetchUnits(`?query=${send_uid}`, (data) => {
+                let unit = data.data[0];
+                console.log(":: Got UNIT: ",unit);
+                metadata.content_type = getDCT(CONTENT_TYPE_BY_ID[unit.type_id]);
+                metadata.date = unit.properties.capture_date;
+                this.setState({metadata: {...metadata,}, isValidated: false, unit});
+            })
+        }
     };
 
     setPublisher = (publisher) => {
@@ -172,7 +183,7 @@ class ModalApp extends Component {
     render() {
 
         const {filename} = this.props.filedata;
-        const {metadata, isValidated, locale, startDate} = this.state;
+        const {metadata, isValidated, locale, input_uid, unit} = this.state;
         const {date,upload_type,content_type,language,insert_type,send_uid} = metadata;
 
         let date_picker = (
@@ -185,7 +196,7 @@ class ModalApp extends Component {
                 scrollableYearDropdown
                 maxDate={moment()}
                 openToDate={moment(date)}
-                selected={startDate}
+                selected={moment(date)}
                 onChange={this.selectDate}
             />
         );
@@ -198,7 +209,7 @@ class ModalApp extends Component {
                 icon='barcode'
                 placeholder="UID"
                 iconPosition='left'
-                value={send_uid}
+                value={input_uid}
                 onChange={(e,{value}) => this.inputUid(value)}
             />
         );
@@ -239,7 +250,7 @@ class ModalApp extends Component {
                 </Segment>
                 <Segment clearing secondary color='blue'>
                 <Modal.Content className="tabContent">
-                    <MdbData metadata={metadata} onUidSelect={this.onGetUID} />
+                    <MdbData metadata={metadata} units={[unit]} onUidSelect={this.onGetUID} />
                 </Modal.Content>
                 </Segment>
                 <Segment clearing tertiary color='yellow'>

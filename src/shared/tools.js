@@ -1,4 +1,4 @@
-import { mime_list, CONTENT_TYPES_MAPPINGS, MDB_LANGUAGES} from './consts';
+import { mime_list, CONTENT_TYPES_MAPPINGS, MDB_LANGUAGES, DCT_OPTIOS} from './consts';
 
 const MDB_BACKEND = 'https://insert.kbb1.com/rest';
 const WF_BACKEND = 'https://insert.kbb1.com';
@@ -14,6 +14,10 @@ export const toHms = (totalSec) => {
 
 export const getLang = (lang) => {
     return Object.keys(MDB_LANGUAGES).find(key => MDB_LANGUAGES[key] === lang);
+};
+
+export const getDCT = (val) => {
+    return Object.entries(DCT_OPTIOS).find(i => i[1].filter(p => p === val))[0]
 };
 
 export const getName = (metadata) => {
