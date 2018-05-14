@@ -37,7 +37,7 @@ class MdbData extends Component {
     };
 
     render() {
-        const {language,upload_type} = this.props.metadata;
+        const {language,upload_type,content_type} = this.props.metadata;
         const {units,active} = this.state;
         let lang = getLang(language);
 
@@ -47,7 +47,7 @@ class MdbData extends Component {
             let a = active === unit.uid ? 'active' : '';
             let n = number || "-";
             let p = part === -1 ? "full" : part || "";
-            let np = n !== "-" ? '( n: ' + n + ' p: ' + p + ' )' : "";
+            let np = n !== "-" && content_type === "LESSONS" ? '( n: ' + n + ' p: ' + p + ' )' : "";
             let date = capture_date || film_date;
             let d = upload_type.match(/^(article|publication)$/) ? "" : toHms(duration);
             let rtlclass = lang === "he" || !lang ? "rtl-dir" : "";
