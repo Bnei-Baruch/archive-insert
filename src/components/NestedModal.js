@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Button, Table } from 'semantic-ui-react'
 
 class NestedModal extends Component {
+
     state = {
         open: false,
         actived: null,
@@ -35,8 +36,11 @@ class NestedModal extends Component {
             let active = (actived === pub.uid ? 'active' : '');
             return (
                 <Table.Row className={active} key={pub.id} onClick={() => this.rawClick(pub)}>
-                    <Table.Cell textAlign='right'
-                                className={(pub.i18n.he ? "rtl-dir" : "negative")}>{name}</Table.Cell>
+                    <Table.Cell
+                        textAlign='right'
+                        className={(pub.i18n.he ? "rtl-dir" : "negative")}>
+                        {name}
+                    </Table.Cell>
                 </Table.Row>
             );
         });
@@ -50,11 +54,14 @@ class NestedModal extends Component {
                 closeOnDimmerClick={false}
                 open={open}
                 onOpen={this.open}
-                onClose={this.close}
-            >
+                onClose={this.close}>
                 <Modal.Header>Publishers</Modal.Header>
                 <Modal.Content className="tabContent">
-                    <Table selectable compact='very' color='grey' key='teal'>
+                    <Table
+                        selectable
+                        compact='very'
+                        color='grey'
+                        key='teal'>
                         <Table.Header>
                             <Table.Row>
                                 <Table.HeaderCell />
@@ -66,7 +73,11 @@ class NestedModal extends Component {
                     </Table>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button color='blue' content='Select' disabled={!actived} onClick={this.selectPublisher} />
+                    <Button
+                        color='blue'
+                        content='Select'
+                        disabled={!actived}
+                        onClick={this.selectPublisher} />
                 </Modal.Actions>
             </Modal>
         )
