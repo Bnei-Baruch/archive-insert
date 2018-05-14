@@ -40,6 +40,9 @@ export const getName = (metadata) => {
 
     if(upload_type === "akladot") {
         name[4] = "akladot";
+    } else if(upload_type === "tamlil") {
+        name[4] = line.send_name.split("_").slice(4).join("_");
+        name.splice(-1,1);
     } else if(upload_type === "kitei-makor") {
         name[4] = "kitei-makor";
     } else if(upload_type === "article") {

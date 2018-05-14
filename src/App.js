@@ -96,6 +96,8 @@ class App extends Component {
             insertName(sha1, "sha1", (data) => {
                 console.log(":: insert data - got: ",data);
                 metadata.upload_type = data[0].upload_type;
+                metadata.send_uid = data[0].line.uid;
+                metadata.language = data[0].language;
                 this.setState({filedata, metadata, open: true});
             });
         } else {
