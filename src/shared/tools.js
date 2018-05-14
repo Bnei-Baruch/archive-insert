@@ -89,7 +89,7 @@ export const fetchPersons = (id, cb) => fetch(`${MDB_BACKEND}/content_units/${id
     })
     .catch(ex => console.log(`get ${id}`, ex));
 
-export const insertName = (filename, cb) => fetch(`${WF_BACKEND}/insert/find?key=insert_name&value=${filename}`)
+export const insertName = (filename, key, cb) => fetch(`${WF_BACKEND}/insert/find?key=${key}&value=${filename}`)
     .then((response) => {
         if (response.ok) {
             //console.log("--FetchInsertName--");

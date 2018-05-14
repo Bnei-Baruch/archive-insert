@@ -5,7 +5,7 @@ import UploadFile from './components/UploadFile';
 import LoginPage from './components/LoginPage';
 import {client, getUser} from "./tools/UserManager";
 import ModalApp from './ModalApp';
-import {insertSha, putData} from './shared/tools';
+import {insertName, insertSha, putData} from './shared/tools';
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 
@@ -90,7 +90,17 @@ class App extends Component {
             let date = test_date.isValid() ? string_date : moment().format('YYYY-MM-DD');
             metadata.date = date;
         }
-        this.setState({filedata, metadata, open: true});
+
+        // If mode rename get insert workflow data
+        if(this.state.insert === "3") {
+            insertName(sha1, "sha1", (data) => {
+                console.log(":: insert data - got: ",data);
+                metadata.upload_type = data[0].upload_type;
+                this.setState({filedata, metadata, open: true});
+            });
+        } else {
+            this.setState({filedata, metadata, open: true});
+        }
     };
 
     onComplete = (metadata) => {

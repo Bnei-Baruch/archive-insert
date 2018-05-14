@@ -151,7 +151,7 @@ class ModalApp extends Component {
         console.log(":: setMeta - metadata: ", metadata);
         const {insert_type,insert_name} = metadata;
         // Check if name already exist
-        insertName(insert_name, (data) => {
+        insertName(insert_name, "insert_name", (data) => {
             console.log(":: insertName - got: ",data);
             if(data.length > 0 && insert_type === "1") {
                 console.log(":: File with name: "+insert_name+" - already exist!");
@@ -264,7 +264,7 @@ class ModalApp extends Component {
                     <Dropdown
                         upward
                         error={!upload_type}
-                        disabled={upload_type === "aricha"}
+                        disabled={this.props.metadata.upload_type !== ""}
                         placeholder="Upload Type:"
                         selection
                         options={content_type === "ARTICLE" ? article_options : upload_options}
