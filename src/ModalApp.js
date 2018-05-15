@@ -150,7 +150,7 @@ class ModalApp extends Component {
             console.log(":: Got Persons: ",data);
             metadata.line.lecturer = (data.length > 0 && data[0].person.uid === "abcdefgh") ? "rav" : "norav";
             metadata.insert_name = getName(metadata);
-            console.log(":: Metadata insert_name: ", metadata.insert_name);
+            console.log(":: Metadata insert_name: \n%c"+metadata.insert_name,"color:Green");
             this.setMeta(metadata);
         });
     };

@@ -100,11 +100,19 @@ class App extends Component {
         if(this.state.insert === "3") {
             insertName(sha1, "sha1", (data) => {
                 console.log(":: insert data - got: ",data);
-                metadata.send_uid = data[0].line.uid;
-                metadata.line.uid = data[0].line.uid;
-                let {upload_type,language,insert_id} = data[0];
-                metadata = { ...metadata,upload_type,language,insert_id};
-                this.setState({filedata, metadata, open: true});
+                if(data.length > 0) {
+                    metadata.send_uid = data[0].line.uid;
+                    metadata.line.uid = data[0].line.uid;
+                    let {upload_type, language, insert_id} = data[0];
+                    metadata = {...metadata, upload_type, language, insert_id};
+                    this.setState({filedata, metadata, open: true});
+                } else {
+                    console.log("File exist in MDB, but come from import");
+                    alert("File exist in MDB, but did NOT found in insert workflow");
+                    // TODO: What we going to do in this case?
+                    this.setState({insert: null});
+                    return false;
+                }
             });
         } else {
             this.setState({filedata, metadata, open: true});
