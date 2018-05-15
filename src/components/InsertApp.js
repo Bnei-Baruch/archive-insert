@@ -11,7 +11,7 @@ import 'moment/locale/en-gb';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'semantic-ui-css/semantic.min.css';
 import './InsertApp.css';
-import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react';
+import { Grid, Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react';
 import {fetchPublishers, fetchPersons, insertName, getName, getLang, getData, fetchUnits, getDCT} from '../shared/tools';
 import {content_options, language_options, MDB_LANGUAGES, CONTENT_TYPE_BY_ID} from '../shared/consts';
 
@@ -50,7 +50,9 @@ class InsertApp extends Component {
 
     selectContentType = (content_type) => {
         let {metadata} = this.state;
-        this.setState({metadata: {...metadata, content_type, upload_type: ""}});
+        const {upload_type} = this.props.metadata;
+        //this.setState({metadata: {...metadata, content_type, upload_type}});
+        this.setState({metadata: {...metadata, content_type, upload_type}});
     };
 
     selectLanguage = (language) => {
@@ -259,6 +261,17 @@ class InsertApp extends Component {
                             onChange={(e,{value}) => this.selectLanguage(value)}
                             value={language} >
                         </Dropdown>
+                        <Dropdown
+                            className="large"
+                            error={!upload_type}
+                            disabled={this.props.metadata.upload_type !== "" || content_type === ""}
+                            placeholder="Upload Type:"
+                            selection
+                            options={upload_options}
+                            upload_type={upload_type}
+                            onChange={(e,{value}) => this.selectUpload(value)}
+                            value={upload_type}
+                        />
                     </Header>
                     <Header floated='right'>
                         {uid_input}
@@ -272,36 +285,32 @@ class InsertApp extends Component {
                 </Segment>
                 <Segment clearing tertiary color='yellow'>
                 <Modal.Actions>
-                    <Input
-                        disabled
-                        className="filename"
-                        icon='file'
-                        iconPosition='left'
-                        focus={true}
-                        value={filename}
-                    />
-                    <Dropdown
-                        upward
-                        error={!upload_type}
-                        disabled={this.props.metadata.upload_type !== "" || content_type === ""}
-                        placeholder="Upload Type:"
-                        selection
-                        options={upload_options}
-                        upload_type={upload_type}
-                        onChange={(e,{value}) => this.selectUpload(value)}
-                        value={upload_type}
-                    />
+                    <Grid columns='equal'>
+                        <Grid.Column width={12}>
+                            <Input
+                                disabled
+                                fluid
+                                icon='file'
+                                iconPosition='left'
+                                focus={true}
+                                value={filename}
+                            />
+                        </Grid.Column>
+                        <Grid.Column>
+                            <Button
+                                fluid
+                                color='green'
+                                disabled={!isValidated}
+                                onClick={this.onComplete} >Send
+                            </Button>
+                        </Grid.Column>
+                    </Grid>
                     <NestedModal
                         upload_type={upload_type}
                         publishers={this.state.store.publishers}
                         onUidSelect={this.onGetUID}
                         onPubSelect={this.setPublisher}
                     />
-                    <Button
-                        color='green'
-                        disabled={!isValidated}
-                        onClick={this.onComplete} >Select
-                    </Button>
                 </Modal.Actions>
                 </Segment>
             </Container>
