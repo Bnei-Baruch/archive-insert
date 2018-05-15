@@ -51,7 +51,6 @@ class InsertApp extends Component {
     selectContentType = (content_type) => {
         let {metadata} = this.state;
         const {upload_type} = this.props.metadata;
-        //this.setState({metadata: {...metadata, content_type, upload_type}});
         this.setState({metadata: {...metadata, content_type, upload_type}});
     };
 
@@ -224,14 +223,14 @@ class InsertApp extends Component {
         let rename_style = (<style>{'.ui.segment { background-color: #e6aaaa; }'}</style>);
 
         const upload_options = [
-            { value: 'publication', text: 'פירסומים ', icon: 'announcement', disabled: content_type !== "ARTICLES" },
-            { value: 'article', text: 'מאמרים ', icon: 'newspaper', disabled: content_type !== "ARTICLES" },
-            { value: 'aricha', text: ' עריכה', icon: 'paint brush', disabled: true},
-            { value: 'dibuv', text: 'דיבוב', icon: 'translate', disabled: content_type === "ARTICLES" },
-            { value: 'sirtutim', text: ' ‏שרטוטים', icon: 'edit', disabled: content_type === "ARTICLES" },
-            { value: 'kitei-makor', text: 'קיטעי-מקור', icon: 'copyright', disabled: content_type === "ARTICLES" },
-            { value: 'tamlil', text: 'תמליל', icon: 'indent', disabled: content_type === "ARTICLES" },
             { value: 'akladot', text: ' ‏הקלדות', icon: 'file word outline', disabled: content_type === "ARTICLES" },
+            { value: 'tamlil', text: 'תמליל', icon: 'indent', disabled: content_type === "ARTICLES" },
+            { value: 'kitei-makor', text: 'קיטעי-מקור', icon: 'copyright', disabled: content_type === "ARTICLES" },
+            { value: 'sirtutim', text: ' ‏שרטוטים', icon: 'edit', disabled: content_type === "ARTICLES" },
+            { value: 'dibuv', text: 'דיבוב', icon: 'translate', disabled: content_type === "ARTICLES" },
+            { value: 'aricha', text: ' עריכה', icon: 'paint brush', disabled: true},
+            { value: 'article', text: 'מאמרים ', icon: 'newspaper', disabled: content_type !== "ARTICLES" },
+            { value: 'publication', text: 'פירסומים ', icon: 'announcement', disabled: content_type !== "ARTICLES" },
         ];
 
         return (
