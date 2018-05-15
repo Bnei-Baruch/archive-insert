@@ -10,15 +10,15 @@ import 'moment/locale/de';
 import 'moment/locale/en-gb';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'semantic-ui-css/semantic.min.css';
-import './ModalApp.css';
+import './InsertApp.css';
 import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react';
-import {fetchPublishers, fetchPersons, insertName, getName, getLang, getData, fetchUnits, getDCT} from './shared/tools';
-import {content_options, language_options, MDB_LANGUAGES, CONTENT_TYPE_BY_ID} from './shared/consts';
+import {fetchPublishers, fetchPersons, insertName, getName, getLang, getData, fetchUnits, getDCT} from '../shared/tools';
+import {content_options, language_options, MDB_LANGUAGES, CONTENT_TYPE_BY_ID} from '../shared/consts';
 
-import MdbData from './components/MdbData';
-import NestedModal from './components/NestedModal';
+import MdbData from './MdbData';
+import NestedModal from './NestedModal';
 
-class ModalApp extends Component {
+class InsertApp extends Component {
 
     state = {
         metadata: {...this.props.metadata},
@@ -181,7 +181,7 @@ class ModalApp extends Component {
         delete metadata.send_uid;
         delete metadata.content_type;
         console.log(" ::: onComplete metadata ::: ", metadata);
-        //this.props.onComplete(metadata);
+        this.props.onComplete(metadata);
     };
 
     render() {
@@ -309,4 +309,4 @@ class ModalApp extends Component {
     }
 }
 
-export default ModalApp;
+export default InsertApp;

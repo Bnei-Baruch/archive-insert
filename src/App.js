@@ -4,7 +4,7 @@ import moment from 'moment';
 import UploadFile from './components/UploadFile';
 import LoginPage from './components/LoginPage';
 import {client, getUser} from "./tools/UserManager";
-import ModalApp from './ModalApp';
+import InsertApp from './components/InsertApp';
 import {insertName, insertSha, putData} from './shared/tools';
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
@@ -41,7 +41,7 @@ class App extends Component {
     checkPermission = (user) => {
         let bbrole = user.roles.filter(role => role.match(/^(bb_user)$/)).length;
         console.log(":: BB Role: ", bbrole);
-        if(bbrole >= 0) {
+        if(bbrole > 0) {
             this.setState({user: user});
         } else {
             alert("Access denied!");
@@ -146,7 +146,7 @@ class App extends Component {
                    onClose={this.onCancel}
                    open={open}
                    size="large">
-                <ModalApp
+                <InsertApp
                     filedata={filedata}
                     metadata={metadata}
                     user={user}
