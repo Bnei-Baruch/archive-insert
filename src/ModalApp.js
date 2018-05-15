@@ -80,7 +80,7 @@ class ModalApp extends Component {
                 let unit = data.data[0];
                 console.log(":: Got UNIT: ", data);
                 metadata.content_type = getDCT(CONTENT_TYPE_BY_ID[unit.type_id]);
-                metadata.date = unit.properties.capture_date;
+                metadata.date = unit.properties.capture_date || unit.properties.film_date;
                 this.setState({metadata: {...metadata, send_uid}, isValidated: false, unit});
             })
         }
