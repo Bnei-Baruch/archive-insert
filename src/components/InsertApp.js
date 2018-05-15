@@ -220,7 +220,7 @@ class InsertApp extends Component {
         );
 
         let update_style = (<style>{'.ui.segment { background-color: #f9e7db; }'}</style>);
-        let rename_style = (<style>{'.ui.segment { background-color: #e6aaaa; }'}</style>);
+        let rename_style = (<style>{'.ui.segment { background-color: #e2c2ae; }'}</style>);
 
         const upload_options = [
             { value: 'akladot', text: ' ‏הקלדות', icon: 'file word outline', disabled: content_type === "ARTICLES" },
