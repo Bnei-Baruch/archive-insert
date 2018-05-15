@@ -42,6 +42,7 @@ class MdbData extends Component {
         let lang = getLang(language);
 
         let uidList = units.map((unit) => {
+            if(!unit.properties) return false;
             const {number,part,capture_date,film_date,duration,workflow_id} = unit.properties;
             let name = lang && unit.i18n[lang] ? unit.i18n[lang].name : unit.i18n.he ? unit.i18n.he.name : "Name not found";
             let a = active === unit.uid ? 'active' : '';

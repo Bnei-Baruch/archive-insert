@@ -13,7 +13,7 @@ import 'semantic-ui-css/semantic.min.css';
 import './ModalApp.css';
 import { Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react';
 import {fetchPublishers, fetchPersons, insertName, getName, getLang, getData, fetchUnits, getDCT} from './shared/tools';
-import {content_options, language_options, upload_options, article_options, MDB_LANGUAGES, CONTENT_TYPE_BY_ID} from './shared/consts';
+import {content_options, language_options, MDB_LANGUAGES, CONTENT_TYPE_BY_ID} from './shared/consts';
 
 import MdbData from './components/MdbData';
 import NestedModal from './components/NestedModal';
@@ -50,7 +50,7 @@ class ModalApp extends Component {
 
     selectContentType = (content_type) => {
         let {metadata} = this.state;
-        this.setState({metadata: {...metadata, content_type}});
+        this.setState({metadata: {...metadata, content_type, upload_type: ""}});
     };
 
     selectLanguage = (language) => {
@@ -181,7 +181,7 @@ class ModalApp extends Component {
         delete metadata.send_uid;
         delete metadata.content_type;
         console.log(" ::: onComplete metadata ::: ", metadata);
-        this.props.onComplete(metadata);
+        //this.props.onComplete(metadata);
     };
 
     render() {
@@ -220,6 +220,17 @@ class ModalApp extends Component {
 
         let update_style = (<style>{'.ui.segment { background-color: #f9e7db; }'}</style>);
         let rename_style = (<style>{'.ui.segment { background-color: #e6aaaa; }'}</style>);
+
+        const upload_options = [
+            { value: 'publication', text: 'פירסומים ', icon: 'announcement', disabled: content_type !== "ARTICLES" },
+            { value: 'article', text: 'מאמרים ', icon: 'newspaper', disabled: content_type !== "ARTICLES" },
+            { value: 'aricha', text: ' עריכה', icon: 'paint brush', disabled: true},
+            { value: 'dibuv', text: 'דיבוב', icon: 'translate', disabled: content_type === "ARTICLES" },
+            { value: 'sirtutim', text: ' ‏שרטוטים', icon: 'edit', disabled: content_type === "ARTICLES" },
+            { value: 'kitei-makor', text: 'קיטעי-מקור', icon: 'copyright', disabled: content_type === "ARTICLES" },
+            { value: 'tamlil', text: 'תמליל', icon: 'indent', disabled: content_type === "ARTICLES" },
+            { value: 'akladot', text: ' ‏הקלדות', icon: 'file word outline', disabled: content_type === "ARTICLES" },
+        ];
 
         return (
             <Container className="ui modal fullscreen visible transition">
@@ -272,10 +283,10 @@ class ModalApp extends Component {
                     <Dropdown
                         upward
                         error={!upload_type}
-                        disabled={this.props.metadata.upload_type !== ""}
+                        disabled={this.props.metadata.upload_type !== "" || content_type === ""}
                         placeholder="Upload Type:"
                         selection
-                        options={content_type === "ARTICLE" ? article_options : upload_options}
+                        options={upload_options}
                         upload_type={upload_type}
                         onChange={(e,{value}) => this.selectUpload(value)}
                         value={upload_type}

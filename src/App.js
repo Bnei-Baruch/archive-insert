@@ -62,6 +62,7 @@ class App extends Component {
                 console.log(":: File with SHA1: " + filedata.sha1 + " - already exist!");
                 alert("File already exist in MDB!");
             } else if (data.total > 0 && insert === "2") {
+                console.log(":: File with SHA1: " + filedata.sha1 + " - already exist - Set rename mode");
                 this.setState({insert: "3"});
                 this.setMetaData(filedata);
             } else {
@@ -75,7 +76,7 @@ class App extends Component {
         const {sha1,size,filename,type,url} = filedata;
         let line = {content_type: null, upload_filename: filename, mime_type: type,
             url: `https://insert.kbb1.com/u/${url}`};
-        let metadata = {sha1, size, line, content_type: null, language: null,
+        let metadata = {sha1, size, line, content_type: "", language: null,
             send_uid: "", upload_type: "", insert_type: this.state.insert};
 
         // Extract and validate UID from filename
