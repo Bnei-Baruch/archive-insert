@@ -116,6 +116,7 @@ class App extends Component {
         this.setState({open: false});
         putData(`insert`, metadata, (cb) => {
             console.log(":: WFSRV respond: ",cb);
+            this.setState({insert: null});
         });
     };
 
