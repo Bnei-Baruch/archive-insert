@@ -139,7 +139,7 @@ class ModalApp extends Component {
             metadata.line.lecturer = wfdata.line.lecturer;
             metadata.insert_name = getName(metadata);
             console.log(":: Metadata insert_name: \n%c"+metadata.insert_name,"color:Green");
-            this.setMeta(metadata);
+            this.checkMeta(metadata);
         });
     };
 
@@ -151,11 +151,11 @@ class ModalApp extends Component {
             metadata.line.lecturer = (data.length > 0 && data[0].person.uid === "abcdefgh") ? "rav" : "norav";
             metadata.insert_name = getName(metadata);
             console.log(":: Metadata insert_name: \n%c"+metadata.insert_name,"color:Green");
-            this.setMeta(metadata);
+            this.checkMeta(metadata);
         });
     };
 
-    setMeta = (metadata) => {
+    checkMeta = (metadata) => {
         console.log(":: setMeta - metadata: ", metadata);
         const {insert_type,insert_name} = metadata;
         // Check if name already exist

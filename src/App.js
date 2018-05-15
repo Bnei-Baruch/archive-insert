@@ -49,12 +49,12 @@ class App extends Component {
         }
     };
 
-    setMode = (mode) => {
+    setInserMode = (mode) => {
         console.log(":: Setting Mode:", mode);
         this.setState({insert: mode});
     };
 
-    setFileData = (filedata) => {
+    checkFileData = (filedata) => {
         const {insert} = this.state;
         insertSha(filedata.sha1, (data) => {
             console.log(":: Got SHA1 check", data);
@@ -134,8 +134,8 @@ class App extends Component {
 
   render() {
       const {filedata,metadata,user,loading,insert,open} = this.state;
-      let login = (<LoginPage onInsert={this.setMode} user={user} loading={loading} />);
-      let upload = (<UploadFile onFileData={this.setFileData} mode={insert} />);
+      let login = (<LoginPage onInsert={this.setInserMode} user={user} loading={loading} />);
+      let upload = (<UploadFile onFileData={this.checkFileData} mode={insert} />);
 
     return (
         <Fragment>

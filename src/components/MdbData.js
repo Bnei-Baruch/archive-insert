@@ -31,7 +31,7 @@ class MdbData extends Component {
         }
     };
 
-    handleClick = (unit) => {
+    rawClick = (unit) => {
         this.props.onUidSelect(unit);
         this.setState({active: unit.uid});
     };
@@ -53,7 +53,7 @@ class MdbData extends Component {
             let d = upload_type.match(/^(article|publication)$/) ? "" : toHms(duration);
             let rtlclass = lang === "he" || !lang ? "rtl-dir" : "";
             return (
-                <Table.Row className={a} key={unit.id} onClick={() => this.handleClick(unit)}>
+                <Table.Row className={a} key={unit.id} onClick={() => this.rawClick(unit)}>
                     <Table.Cell>
                         <Popup
                             trigger={upload_type.match(/^(aricha|article|publication)$/) ? "" : <Icon link name='help' />}
