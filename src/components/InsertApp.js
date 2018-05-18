@@ -60,6 +60,7 @@ class InsertApp extends Component {
     };
 
     selectUpload = (upload_type) => {
+        // TODO: Make extension validation per type
         let {metadata} = this.state;
         this.setState({metadata: {...metadata,upload_type}});
     };
