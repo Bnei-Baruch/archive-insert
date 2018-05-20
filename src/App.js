@@ -90,6 +90,8 @@ class App extends Component {
             let test_date = moment(string_date);
             let date = test_date.isValid() ? string_date : moment().format('YYYY-MM-DD');
             metadata.date = date;
+        } else {
+            metadata.date = moment().format('YYYY-MM-DD');
         }
 
         // If mode rename get insert workflow data
