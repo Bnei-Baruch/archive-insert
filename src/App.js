@@ -101,6 +101,7 @@ class App extends Component {
                 if(data.length > 0) {
                     metadata.send_uid = data[0].line.uid;
                     metadata.line.uid = data[0].line.uid;
+                    metadata.line.old_name = data[0].insert_name;
                     let {upload_type, language, insert_id} = data[0];
                     metadata = {...metadata, upload_type, language, insert_id};
                     this.setState({filedata, metadata, open: true});
