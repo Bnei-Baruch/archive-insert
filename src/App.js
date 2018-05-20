@@ -117,10 +117,15 @@ class App extends Component {
 
     onComplete = (metadata) => {
         console.log(":: Put Metadata:", metadata);
-        this.setState({open: false});
         putData(`insert`, metadata, (cb) => {
             console.log(":: WFSRV respond: ",cb);
-            this.setState({insert: null});
+            if(cb.status === "ok") {
+                alert("Insert successful :)");
+                this.setState({open: false, insert: null});
+            } else {
+                alert("Something gone wrong :(");
+                this.setState({open: false});
+            }
         });
     };
 
