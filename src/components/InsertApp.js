@@ -13,7 +13,7 @@ import 'semantic-ui-css/semantic.min.css';
 import './InsertApp.css';
 import { Grid, Button, Header, Modal, Dropdown, Container, Segment, Input } from 'semantic-ui-react';
 import {fetchPublishers, fetchPersons, insertName, getName, getLang, getData, fetchUnits, getDCT} from '../shared/tools';
-import {content_options, language_options, MDB_LANGUAGES, CONTENT_TYPE_BY_ID} from '../shared/consts';
+import {content_options, language_options, upload_extensions, MDB_LANGUAGES, CONTENT_TYPE_BY_ID} from '../shared/consts';
 
 import MdbData from './MdbData';
 import NestedModal from './NestedModal';
@@ -60,7 +60,6 @@ class InsertApp extends Component {
     };
 
     selectUpload = (upload_type) => {
-        // TODO: Make extension validation per type
         let {metadata} = this.state;
         this.setState({metadata: {...metadata,upload_type}});
     };
@@ -158,8 +157,18 @@ class InsertApp extends Component {
     };
 
     checkMeta = (metadata) => {
-        console.log(":: setMeta - metadata: ", metadata);
-        const {insert_type,insert_name} = metadata;
+        console.log(":: checkMeta - metadata: ", metadata);
+        const {insert_type, insert_name, upload_type} = metadata;
+        [metadata.file_name, metadata.extension] = metadata.insert_name.split('.');
+
+        // Check upload type extension
+        let ext = upload_extensions[upload_type].filter(ext => ext === metadata.extension);
+        if (ext.length === 0) {
+            alert("Extension: " + metadata.extension + " - is NOT valid for upload type - " + upload_type);
+            this.setState({ isValidated: false });
+            return
+        }
+
         // Check if name already exist
         insertName(insert_name, "insert_name", (data) => {
             console.log(":: insertName - got: ",data);
@@ -179,7 +188,6 @@ class InsertApp extends Component {
 
     onComplete = () => {
         let {metadata} = this.state;
-        [metadata.file_name,metadata.extension] = metadata.insert_name.split('.');
         delete metadata.send_uid;
         delete metadata.content_type;
         console.log(" ::: onComplete metadata ::: ", metadata);
