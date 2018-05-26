@@ -95,7 +95,6 @@ export const fetchPersons = (id, cb) => fetch(`${MDB_BACKEND}/content_units/${id
 export const insertName = (filename, key, cb) => fetch(`${WF_BACKEND}/insert/find?key=${key}&value=${filename}`)
     .then((response) => {
         if (response.ok) {
-            //console.log("--FetchInsertName--");
             return response.json().then(data => cb(data));
         }
     })
@@ -105,8 +104,9 @@ export const getData = (id, cb) =>  {
     fetch(`${WF_BACKEND}/${getEndpoint(id)}/${id}`)
     .then((response) => {
         if (response.ok) {
-            //console.log("--FetchWorkflowData--");
             return response.json().then(data => cb(data));
+        } else {
+            return response.json().then(cb(null));
         }
     })
     .catch(ex => console.log(`get ${id}`, ex));
