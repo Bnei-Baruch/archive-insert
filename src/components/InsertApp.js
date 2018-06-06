@@ -167,6 +167,13 @@ class InsertApp extends Component {
         const {insert_type, insert_name, upload_type} = metadata;
         [metadata.file_name, metadata.extension] = metadata.insert_name.split('.');
 
+        // Check valid string
+        if(insert_name.length < 30) {
+            alert("Something wrong in file name building");
+            this.setState({ isValidated: false });
+            return
+        }
+
         // Check upload type extension
         let ext = upload_extensions[upload_type].filter(ext => ext === metadata.extension);
         if (ext.length === 0) {
