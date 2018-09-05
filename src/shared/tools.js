@@ -36,12 +36,12 @@ export const getName = (metadata) => {
     // Type
     name[4] = CONTENT_TYPES_MAPPINGS[line.content_type].pattern;
     // Description
-    name[5] = line.send_name.split("_").slice(5).join("_");
+    name[5] = line.send_name.split("_").slice(5).join("_").replace(/([^-_a-zA-Z0-9]+)/g, '').toLowerCase();
 
     if(upload_type === "akladot") {
         name[4] = "akladot";
     } else if(upload_type === "tamlil") {
-        name[4] = line.send_name.split("_").slice(4).join("_");
+        name[4] = line.send_name.split("_").slice(4).join("_").replace(/([^-_a-zA-Z0-9]+)/g, '').toLowerCase();
         name.splice(-1,1);
     } else if(upload_type === "kitei-makor") {
         name[4] = "kitei-makor";
