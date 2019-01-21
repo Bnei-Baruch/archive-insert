@@ -52,8 +52,7 @@ export const getName = (metadata) => {
     } else if(upload_type === "publication") {
         name[2] = "rav";
         name[4] = "pub";
-        name[5] = line.publisher + "_"
-            + line.upload_filename.split(".")[0].split("_").pop().replace(/([^-a-zA-Z0-9]+)/g, '').toLowerCase();
+        name[5] =  line.upload_filename.split("_").slice(5)[0].replace(/([^-a-zA-Z0-9]+)/g, '').toLowerCase() + "_" + line.publisher;
     }
 
     return name.join("_") + '.' + mime_list[line.mime_type];
