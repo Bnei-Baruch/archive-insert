@@ -165,6 +165,14 @@ class InsertApp extends Component {
     checkMeta = (metadata) => {
         console.log(":: checkMeta - metadata: ", metadata);
         const {insert_type, insert_name, upload_type} = metadata;
+
+        // Check valid filename string
+        if(metadata.insert_name === null) {
+            alert("Upload file name is worng");
+            this.setState({ isValidated: false });
+            return
+        }
+
         [metadata.file_name, metadata.extension] = metadata.insert_name.split('.');
 
         // Check valid string

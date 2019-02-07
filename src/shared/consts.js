@@ -23,7 +23,7 @@ export const upload_extensions = {
     "sirtutim": ["zip"],
     "dibuv": ["mp3","mp4"],
     "aricha": ["mp4"],
-    "article": ["doc","docx"],
+    "article": ["doc","docx","pdf"],
     "publication": ["zip"],
 };
 
@@ -45,6 +45,7 @@ export const mime_list = {
     "audio/mpeg": "mp3",
     "audio/mp3": "mp3",
     "video/mp4": "mp4",
+    "application/pdf": "pdf",
     "application/zip": "zip",
     "application/x-zip-compressed": "zip"
 };

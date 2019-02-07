@@ -25,6 +25,11 @@ export const getName = (metadata) => {
     let name = [];
     const {line,language,upload_type} = metadata;
 
+    //Validate file name
+    if(line.upload_filename.split("_").length < 6) {
+        return null
+    }
+
     // Language
     name[0] = language;
     // Original
