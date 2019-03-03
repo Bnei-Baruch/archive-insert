@@ -25,11 +25,6 @@ export const getName = (metadata) => {
     let name = [];
     const {line,language,upload_type} = metadata;
 
-    //Validate file name
-    if(line.upload_filename.split("_").length < 6) {
-        return null
-    }
-
     // Language
     name[0] = language;
     // Original
@@ -50,11 +45,21 @@ export const getName = (metadata) => {
         name.splice(-1,1);
     } else if(upload_type === "kitei-makor") {
         name[4] = "kitei-makor";
+    } else if(upload_type === "research-material") {
+        name[4] = "research-material";
     } else if(upload_type === "article") {
+        //Validate file name
+        if(line.upload_filename.split("_").length < 6) {
+            return null
+        }
         name[2] = "rav";
         name[4] = "art";
         name[5] = line.upload_filename.split(".")[0].split("_").pop().replace(/([^-a-zA-Z0-9]+)/g, '').toLowerCase();
     } else if(upload_type === "publication") {
+        //Validate file name
+        if(line.upload_filename.split("_").length < 6) {
+            return null
+        }
         name[2] = "rav";
         name[4] = "pub";
         name[5] =  line.upload_filename.split("_").slice(5)[0].replace(/([^-a-zA-Z0-9]+)/g, '').toLowerCase() + "_" + line.publisher;
