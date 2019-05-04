@@ -114,12 +114,22 @@ class App extends Component {
                 }
             });
         } else if(this.state.insert === "4") {
-            //TODO: fix metadata for autoinsert
+            metadata.line.film_date = metadata.date;
+            // Clean string
+            metadata.insert_name = metadata.line.upload_filename.replace(/([^-_a-zA-Z0-9\\.]+)/g, '').toLowerCase();
+            metadata.language = metadata.insert_name.slice(0, 3);
+            //FIXME: Here will detection content_type from filename string
+            metadata.line.content_type = "BLOG_POST";
+            metadata.line.lecturer = "rav";
+            metadata.line.source = "upload";
+            metadata.line.language = metadata.language;
+            metadata.line.original_language = metadata.language;
+            [metadata.file_name, metadata.extension] = metadata.insert_name.split('.');
+            metadata.upload_type = "dgima";
+            metadata.send_id = null;
             delete metadata.send_uid;
             delete metadata.content_type;
-            console.log(" :: AUTOINSERT: ", metadata);
-            this.setState({insert: null});
-            //this.onComplete(metadata);
+            this.onComplete(metadata);
         } else {
             this.setState({filedata, metadata, open: true});
         }
