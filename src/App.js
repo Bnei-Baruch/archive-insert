@@ -113,6 +113,13 @@ class App extends Component {
                     return false;
                 }
             });
+        } else if(this.state.insert === "4") {
+            //TODO: fix metadata for autoinsert
+            delete metadata.send_uid;
+            delete metadata.content_type;
+            console.log(" :: AUTOINSERT: ", metadata);
+            this.setState({insert: null});
+            //this.onComplete(metadata);
         } else {
             this.setState({filedata, metadata, open: true});
         }

@@ -45,12 +45,12 @@ class LoginPage extends Component {
                     <Fragment>
                         <Button positive value='1'
                                 onClick={(e,{value}) => onInsert(value)}>
-                            <Icon name='download' />&nbsp;&nbsp;Insert&nbsp;
+                            <Icon name='archive' />&nbsp;&nbsp;Insert&nbsp;
                         </Button>
                         <Button value='2'
                                 onClick={(e,{value}) => onInsert(value)}
                                 color='orange'>
-                            <Icon name='sync' />Update
+                            <Icon name='wrench' />Update
                         </Button>
                     </Fragment> : ""
                 }
