@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component, Fragment} from 'react';
 import {client,BASE_URL} from '../tools/UserManager';
-import { Container,Message,Button,Dropdown } from 'semantic-ui-react';
+import { Container,Message,Button,Dropdown,Icon } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import '../App.css';
 
@@ -32,9 +32,28 @@ class LoginPage extends Component {
 
       let main = (
             <Button.Group size='massive' >
-                <Button positive value='1' onClick={(e,{value}) => onInsert(value)}>&nbsp;&nbsp;Insert&nbsp;</Button>
-                <Button.Or />
-                <Button value='2' onClick={(e,{value}) => onInsert(value)} color='orange'>Update</Button>
+                {user && user.roles.find(role => role === "wf_insert") ?
+                    <Fragment>
+                        <Button value='4'
+                                onClick={(e,{value}) => onInsert(value)}
+                                color='brown'>
+                            <Icon name='upload' />Upload
+                        </Button>
+                    </Fragment> : ""
+                }
+                {user && user.roles.find(role => role.match(/^(archive_)/)) ?
+                    <Fragment>
+                        <Button positive value='1'
+                                onClick={(e,{value}) => onInsert(value)}>
+                            <Icon name='download' />&nbsp;&nbsp;Insert&nbsp;
+                        </Button>
+                        <Button value='2'
+                                onClick={(e,{value}) => onInsert(value)}
+                                color='orange'>
+                            <Icon name='sync' />Update
+                        </Button>
+                    </Fragment> : ""
+                }
             </Button.Group>
       );
 
