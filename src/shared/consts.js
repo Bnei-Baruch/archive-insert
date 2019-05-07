@@ -12,7 +12,7 @@ export const content_options = [
     { value: 'MEALS', text: ' ‏סעודה', icon: 'food' },
     { value: 'OTHER', text: ' ‏אחר', icon: 'unordered list' },
     { value: 'ARTICLES', text: 'מאמרים ', icon: 'newspaper' },
-    { value: 'BLOG_POST', text: ' ‏בלוג-פוסט', icon: 'users' },
+    { value: 'BLOG_POST', text: ' בלוג-פוסט', icon: 'blogger' },
     //{ value: 'PUBLICATION', text: 'פירסומים ', icon: 'announcement' },
 ];
 
@@ -192,6 +192,7 @@ export const CT_KITEI_MAKOR           = 'KITEI_MAKOR';
 export const CT_PUBLICATION           = 'PUBLICATION';
 export const CT_LELO_MIKUD            = 'LELO_MIKUD';
 export const CT_RESEARCH_MATERIAL     = 'RESEARCH_MATERIAL';
+export const CT_BLOG_POST             = 'BLOG_POST';
 
 export const EVENT_CONTENT_TYPES   = [CT_CONGRESS, CT_HOLIDAY, CT_PICNIC, CT_UNITY_DAY];
 export const LECTURE_CONTENT_TYPES = [CT_LECTURE_SERIES, CT_CHILDREN_LESSONS, CT_WOMEN_LESSONS, CT_VIRTUAL_LESSONS];
@@ -235,6 +236,7 @@ export const CONTENT_TYPE_BY_ID = {
     36: CT_PUBLICATION,
     37: CT_ARTICLES,
     38: CT_LELO_MIKUD,
+    44: CT_BLOG_POST,
     45: CT_RESEARCH_MATERIAL,
 };
 
@@ -255,6 +257,7 @@ export const CONTENT_TYPES_MAPPINGS = {
     [CT_EVENT_PART]: { collection_type: null, pattern: 'event-part' },
     [CT_ARTICLE]: { collection_type: null, pattern: 'art' },
     [CT_PUBLICATION]: { collection_type: null, pattern: 'pub' },
+    [CT_BLOG_POST]: { collection_type: null, pattern: 'declamation' },
     [CT_RESEARCH_MATERIAL]: { collection_type: null, pattern: 'research-material' },
 };
 

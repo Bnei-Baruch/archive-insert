@@ -101,15 +101,7 @@ class InsertApp extends Component {
         console.log(":: Selected unit: ", unit);
         this.setState({unit});
         let {metadata} = this.state;
-        const {properties, uid, type_id, id} = unit;
-
-        // Does rename mean shiuh lo nahon?
-        // if(metadata.line.uid === uid && metadata.insert_type === "3") {
-        //     console.log(":: This UID: "+uid+" - already slected!");
-        //     alert("This UID: "+uid+" - already slected!");
-        //     this.setState({ isValidated: false });
-        //     return
-        // }
+        let {properties, uid, type_id, id} = unit || {};
 
         // Check if all Required meta is selected
         const {content_type, language, upload_type} = metadata;
@@ -119,6 +111,23 @@ class InsertApp extends Component {
             return
         } else {
             this.setState({ isValidated: true });
+        }
+
+        // Declamation that does not has unit
+        if(!unit) {
+            console.log(" - Declamation without unit -");
+            type_id = 44;
+            metadata.line.content_type = "BLOG_POST";
+            metadata.line.send_name = metadata.line.upload_filename.split('.')[0];
+            metadata.line.lecturer = "rav";
+            metadata.line.film_date = metadata.date;
+            metadata.line.language = metadata.language;
+            metadata.line.original_language = "rus";
+            metadata.send_id = null;
+            metadata.line.uid = null;
+            metadata.insert_name = getName(metadata);
+            this.checkMeta(metadata);
+            return
         }
 
         // Meta from unit properties going to line
@@ -261,7 +270,7 @@ class InsertApp extends Component {
             { value: 'dibuv', text: 'דיבוב', icon: 'translate', disabled: content_type === "ARTICLES" },
             { value: 'research-material', text: 'נספחים', icon: 'paperclip', disabled: content_type === "ARTICLES" },
             { value: 'aricha', text: ' עריכה', icon: 'paint brush', disabled: true},
-            { value: 'declamation', text: ' בלוג-פוסט', icon: 'paint brush', disabled: true},
+            { value: 'declamation', text: ' דיקלום', icon: 'unmute', disabled: true},
             { value: 'article', text: 'מאמרים ', icon: 'newspaper', disabled: content_type !== "ARTICLES" },
             { value: 'publication', text: 'פירסומים ', icon: 'announcement', disabled: content_type !== "ARTICLES" },
         ];

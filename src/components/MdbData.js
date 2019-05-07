@@ -25,7 +25,11 @@ class MdbData extends Component {
                 let path = ['page_size=1000', `start_date=${date}`, `end_date=${date}`];
                 if(content_type) DCT_OPTS[content_type].map(ct => path.push(`content_type=${ct}`));
                 fetchUnits('?' + path.join('&'), (data) => {
+                    console.log(" :: Fetch units: ", data);
                     this.setState({units: data.data, active: null})
+                    if(content_type === "BLOG_POST" && data.total === 0) {
+                        this.props.onUidSelect(null);
+                    }
                 });
             }
         }
