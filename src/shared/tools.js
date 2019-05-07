@@ -63,6 +63,11 @@ export const getName = (metadata) => {
         name[2] = "rav";
         name[4] = "pub";
         name[5] =  line.upload_filename.split("_").slice(5)[0].replace(/([^-a-zA-Z0-9]+)/g, '').toLowerCase() + "_" + line.publisher;
+    } else if(upload_type === "declamation") {
+        name[1] = "o";
+        name[2] = "rav";
+        name[4] = "declamation";
+        name[5] =  "blog-rav_full";
     }
 
     return name.join("_") + '.' + mime_list[line.mime_type];

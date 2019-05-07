@@ -51,7 +51,7 @@ class InsertApp extends Component {
 
     selectContentType = (content_type) => {
         let {metadata} = this.state;
-        const {upload_type} = this.props.metadata;
+        let upload_type = content_type === "BLOG_POST" ? 'declamation' : this.props.metadata.upload_type;
         this.setState({metadata: {...metadata, content_type, upload_type}});
     };
 
@@ -261,6 +261,7 @@ class InsertApp extends Component {
             { value: 'dibuv', text: 'דיבוב', icon: 'translate', disabled: content_type === "ARTICLES" },
             { value: 'research-material', text: 'נספחים', icon: 'paperclip', disabled: content_type === "ARTICLES" },
             { value: 'aricha', text: ' עריכה', icon: 'paint brush', disabled: true},
+            { value: 'declamation', text: ' בלוג-פוסט', icon: 'paint brush', disabled: true},
             { value: 'article', text: 'מאמרים ', icon: 'newspaper', disabled: content_type !== "ARTICLES" },
             { value: 'publication', text: 'פירסומים ', icon: 'announcement', disabled: content_type !== "ARTICLES" },
         ];
@@ -295,7 +296,7 @@ class InsertApp extends Component {
                         <Dropdown
                             className="large"
                             error={!upload_type}
-                            disabled={this.props.metadata.upload_type !== "" || content_type === ""}
+                            disabled={this.props.metadata.upload_type !== "" || content_type === "" || content_type === "BLOG_POST"}
                             placeholder="Upload Type:"
                             selection
                             options={upload_options}

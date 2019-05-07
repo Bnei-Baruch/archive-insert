@@ -6,13 +6,13 @@ export const EMPTY_OBJECT = Object.freeze({});
 
 export const content_options = [
     { value: 'LESSONS', text: ' ‏שיעור', icon: 'student' },
-    //{ value: 'FRIENDS_GATHERING', text: ' ‏חברים', icon: 'users' },
     { value: 'WEBINARS', text: ' ‏וובינר', icon: 'conversation' },
     { value: 'PROGRAMS', text: ' ‏תוכנית', icon: 'record' },
     { value: 'CLIPS', text: ' ‏קליפ', icon: 'film' },
     { value: 'MEALS', text: ' ‏סעודה', icon: 'food' },
     { value: 'OTHER', text: ' ‏אחר', icon: 'unordered list' },
     { value: 'ARTICLES', text: 'מאמרים ', icon: 'newspaper' },
+    { value: 'BLOG_POST', text: ' ‏בלוג-פוסט', icon: 'users' },
     //{ value: 'PUBLICATION', text: 'פירסומים ', icon: 'announcement' },
 ];
 
@@ -26,6 +26,7 @@ export const upload_extensions = {
     "aricha": ["mp4"],
     "article": ["doc","docx","pdf"],
     "publication": ["zip"],
+    "declamation": ["mp3"],
 };
 
 export const DCT_OPTS = {
@@ -36,6 +37,7 @@ export const DCT_OPTS = {
     MEALS: ['MEAL'],
     OTHER: ['LECTURE','FRIENDS_GATHERING','EVENT_PART'],
     ARTICLES: ['ARTICLE'],
+    BLOG_POST: ['BLOG_POST'],
 };
 
 export const mime_list = {
