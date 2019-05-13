@@ -120,12 +120,14 @@ class InsertApp extends Component {
             metadata.line.content_type = "BLOG_POST";
             metadata.line.send_name = metadata.line.upload_filename.split('.')[0];
             metadata.line.lecturer = "rav";
+            metadata.line.has_translation = false;
             metadata.line.film_date = metadata.date;
             metadata.line.language = metadata.language;
-            metadata.line.original_language = "rus";
+            metadata.line.original_language = metadata.language;
             metadata.send_id = null;
             metadata.line.uid = null;
             metadata.insert_name = getName(metadata);
+            metadata.line.final_name = metadata.insert_name.split('.')[0];
             this.checkMeta(metadata);
             return
         }
