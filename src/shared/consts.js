@@ -12,7 +12,7 @@ export const content_options = [
     { value: 'MEALS', text: ' ‏סעודה', icon: 'food' },
     { value: 'OTHER', text: ' ‏אחר', icon: 'unordered list' },
     { value: 'ARTICLES', text: 'מאמרים ', icon: 'newspaper' },
-    { value: 'BLOG_POST', text: ' בלוג-פוסט', icon: 'blogger' },
+    { value: 'BLOG_POST', text: 'Blog-Post', icon: 'blogger' },
     //{ value: 'PUBLICATION', text: 'פירסומים ', icon: 'announcement' },
 ];
 
