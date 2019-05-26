@@ -74,10 +74,12 @@ class App extends Component {
     setMetaData = (filedata) => {
         console.log(":: Setting metadata from:", filedata);
         const {sha1,size,filename,type,url} = filedata;
+        const {roles} = this.state.user;
+        let archive_typist = roles.find(r => r === "archive_typist");
         let line = {content_type: null, upload_filename: filename, mime_type: type,
             url: `https://insert.kbb1.com/u/${url}`};
         let metadata = {sha1, size, line, content_type: "", language: null,
-            send_uid: "", upload_type: "", insert_type: this.state.insert};
+            send_uid: "", upload_type: (archive_typist ? "akladot": ""), insert_type: this.state.insert};
 
         // Extract and validate UID from filename
         let uid = filename.split(".")[0].split("_").pop();

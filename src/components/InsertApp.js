@@ -230,8 +230,12 @@ class InsertApp extends Component {
     render() {
 
         const {filename} = this.props.filedata;
+        const {roles} = this.props.user;
         const {metadata, isValidated, loading, locale, unit} = this.state;
         const {date,upload_type,content_type,language,insert_type,send_uid} = metadata;
+
+        //let archive_uploader = roles.find(r => r === "archive_uploader");
+        let archive_typist = roles.find(r => r === "archive_typist");
 
         let date_picker = (
             <DatePicker
@@ -265,16 +269,16 @@ class InsertApp extends Component {
         let rename_style = (<style>{'.ui.segment { background-color: #e2c2ae; }'}</style>);
 
         const upload_options = [
-            { value: 'akladot', text: ' ‏הקלדות', icon: 'file word outline', disabled: content_type === "ARTICLES" },
-            { value: 'tamlil', text: 'תמליל', icon: 'indent', disabled: content_type === "ARTICLES" },
-            { value: 'kitei-makor', text: 'קיטעי-מקור', icon: 'copyright', disabled: content_type === "ARTICLES" },
-            { value: 'sirtutim', text: ' ‏שרטוטים', icon: 'edit', disabled: content_type === "ARTICLES" },
-            { value: 'dibuv', text: 'דיבוב', icon: 'translate', disabled: content_type === "ARTICLES" },
-            { value: 'research-material', text: 'נספחים', icon: 'paperclip', disabled: content_type === "ARTICLES" },
+            { value: 'akladot', text: ' ‏הקלדות', icon: 'file word outline', disabled: (!archive_typist || content_type === "ARTICLES") },
+            { value: 'tamlil', text: 'תמליל', icon: 'indent', disabled: (archive_typist || content_type === "ARTICLES") },
+            { value: 'kitei-makor', text: 'קיטעי-מקור', icon: 'copyright', disabled: (archive_typist || content_type === "ARTICLES") },
+            { value: 'sirtutim', text: ' ‏שרטוטים', icon: 'edit', disabled: (archive_typist || content_type === "ARTICLES") },
+            { value: 'dibuv', text: 'דיבוב', icon: 'translate', disabled: (archive_typist || content_type === "ARTICLES") },
+            { value: 'research-material', text: 'נספחים', icon: 'paperclip', disabled: (archive_typist || content_type === "ARTICLES") },
             { value: 'aricha', text: ' עריכה', icon: 'paint brush', disabled: true},
             { value: 'declamation', text: ' דיקלום', icon: 'unmute', disabled: true},
-            { value: 'article', text: 'מאמרים ', icon: 'newspaper', disabled: content_type !== "ARTICLES" },
-            { value: 'publication', text: 'פירסומים ', icon: 'announcement', disabled: content_type !== "ARTICLES" },
+            { value: 'article', text: 'מאמרים ', icon: 'newspaper', disabled: (archive_typist || content_type !== "ARTICLES") },
+            { value: 'publication', text: 'פירסומים ', icon: 'announcement', disabled: (archive_typist || content_type !== "ARTICLES") },
         ];
 
         return (
