@@ -113,6 +113,31 @@ class InsertApp extends Component {
             this.setState({ isValidated: true });
         }
 
+        // Dibuv - check and got needed data for remux
+        if(upload_type === "dibuv") {
+            fetchUnits(`${id}/files/`, (data) => {
+                console.log(" :: Fetch files: ", data);
+                let published = data.filter(p => p.published);
+                console.log(" :: Published: ", published);
+                let lchk = published.find(l => l.name.match(language+"_"));
+                console.log(" :: Check: ", lchk);
+                if(lchk) {
+                    alert("Selected language already exist");
+                    this.setState({ isValidated: false });
+                    return
+                } else {
+                    let remux_src = published.filter(s => s.language === properties.original_language && s.mime_type === "video/mp4");
+                    console.log(" :: Got sources for remux: ", remux_src);
+                    if(remux_src.length === 0 || remux_src.length > 2) {
+                        alert("Fail to get valid sources for remux");
+                        this.setState({ isValidated: false });
+                        return
+                    }
+                    metadata.line.remux_src = remux_src;
+                }
+            });
+        }
+
         // Declamation that does not has unit
         if(!unit) {
             console.log(" - Declamation without unit -");
