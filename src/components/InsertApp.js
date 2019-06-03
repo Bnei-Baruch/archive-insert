@@ -113,6 +113,14 @@ class InsertApp extends Component {
             this.setState({ isValidated: true });
         }
 
+        // Meta from unit properties going to line
+        metadata.line.uid = uid;
+        metadata.line.content_type = CONTENT_TYPE_BY_ID[type_id];
+        metadata.line.capture_date = properties.capture_date;
+        metadata.line.film_date = properties.film_date;
+        metadata.line.original_language = MDB_LANGUAGES[properties.original_language];
+        metadata.send_id = properties.workflow_id || null;
+
         // Dibuv - check and got needed data for remux
         if(upload_type === "dibuv") {
             fetchUnits(`${id}/files/`, (data) => {
@@ -121,21 +129,45 @@ class InsertApp extends Component {
                 console.log(" :: Published: ", published);
                 let lchk = published.find(l => l.name.match(language+"_"));
                 console.log(" :: Check: ", lchk);
+                // Check if uploaded language already exist
                 if(lchk) {
                     alert("Selected language already exist");
                     this.setState({ isValidated: false });
-                    return
+                    return;
                 } else {
-                    let remux_src = published.filter(s => s.language === properties.original_language && s.mime_type === "video/mp4");
+                    // Not in all files we got original_language property so we going to check string
+                    // let remux_src = published.filter(s => s.language === properties.original_language && s.mime_type === "video/mp4");
+                    let remux_src = published.filter(s => s.name.match("_o_") && s.mime_type === "video/mp4");
                     console.log(" :: Got sources for remux: ", remux_src);
+                    // We must get here 1 or 2 files and save their url
                     if(remux_src.length === 0 || remux_src.length > 2) {
                         alert("Fail to get valid sources for remux");
                         this.setState({ isValidated: false });
+                        return;
+                    // It's mean we did not get HD here
+                    } else if(remux_src.length === 1) {
+                        metadata.line.nHD = remux_src[0].properties.url;
+                        metadata.line.HD = null;
+                        metadata.insert_type = "4";
+                        const wfid = metadata.send_id;
+                        wfid ? this.newUnitWF(metadata, wfid) : this.oldUnitWF(metadata, id);
+                        return
+                    // It's mean we get HD and nHD here
+                    } else {
+                        for(let i=0;i<remux_src.length;i++) {
+                            metadata.line[remux_src[i].properties.video_size] = remux_src[i].properties.url
+                        }
+                        metadata.insert_type = "4";
+                        const wfid = metadata.send_id;
+                        wfid ? this.newUnitWF(metadata, wfid) : this.oldUnitWF(metadata, id);
                         return
                     }
-                    metadata.line.remux_src = remux_src;
                 }
             });
+        } else {
+            // Check if unit was imported from old KM
+            const wfid = metadata.send_id;
+            wfid ? this.newUnitWF(metadata, wfid) : this.oldUnitWF(metadata, id);
         }
 
         // Declamation that does not has unit
@@ -156,16 +188,6 @@ class InsertApp extends Component {
             this.checkMeta(metadata);
             return
         }
-
-        // Meta from unit properties going to line
-        metadata.line.uid = uid;
-        metadata.line.content_type = CONTENT_TYPE_BY_ID[type_id];
-        metadata.line.capture_date = properties.capture_date;
-        metadata.line.film_date = properties.film_date;
-        metadata.line.original_language = MDB_LANGUAGES[properties.original_language];
-        metadata.send_id = properties.workflow_id || null;
-        const wfid = metadata.send_id;
-        wfid ? this.newUnitWF(metadata, wfid) : this.oldUnitWF(metadata, id);
     };
 
     newUnitWF = (metadata, wfid) => {

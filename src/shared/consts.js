@@ -22,7 +22,7 @@ export const upload_extensions = {
     "kitei-makor": ["doc","docx"],
     "research-material": ["doc","docx"],
     "sirtutim": ["zip"],
-    "dibuv": ["mp3","mp4","wav"],
+    "dibuv": ["wav"],
     "aricha": ["mp4"],
     "article": ["doc","docx","pdf"],
     "publication": ["zip"],
