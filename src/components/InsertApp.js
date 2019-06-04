@@ -147,7 +147,9 @@ class InsertApp extends Component {
                     // It's mean we did not get HD here
                     } else if(remux_src.length === 1) {
                         metadata.line.nHD = remux_src[0].properties.url;
+                        metadata.line.nHD_sha1 = remux_src[0].sha1;
                         metadata.line.HD = null;
+                        metadata.line.HD_sha1 = null;
                         metadata.insert_type = "4";
                         const wfid = metadata.send_id;
                         wfid ? this.newUnitWF(metadata, wfid) : this.oldUnitWF(metadata, id);
@@ -155,7 +157,8 @@ class InsertApp extends Component {
                     // It's mean we get HD and nHD here
                     } else {
                         for(let i=0;i<remux_src.length;i++) {
-                            metadata.line[remux_src[i].properties.video_size] = remux_src[i].properties.url
+                            metadata.line[remux_src[i].properties.video_size] = remux_src[i].properties.url;
+                            metadata.line[remux_src[i].properties.video_size + "_sha1"] = remux_src[i].sha1;
                         }
                         metadata.insert_type = "4";
                         const wfid = metadata.send_id;
