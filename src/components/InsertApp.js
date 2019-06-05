@@ -125,7 +125,7 @@ class InsertApp extends Component {
         if(upload_type === "dibuv") {
             fetchUnits(`${id}/files/`, (data) => {
                 console.log(" :: Fetch files: ", data);
-                let published = data.filter(p => p.published);
+                let published = data.filter(p => p.published && p.removed === null);
                 console.log(" :: Published: ", published);
                 let lchk = published.find(l => l.name.match(language+"_"));
                 console.log(" :: Check: ", lchk);
