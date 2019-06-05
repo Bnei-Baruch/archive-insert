@@ -271,6 +271,9 @@ class InsertApp extends Component {
     onComplete = () => {
         this.setState({ isValidated: false, loading: true });
         let {metadata} = this.state;
+        const {name,email} = this.props.user;
+        metadata.line.name = name;
+        metadata.line.email = email;
         delete metadata.send_uid;
         delete metadata.content_type;
         console.log(" ::: onComplete metadata ::: ", metadata);
