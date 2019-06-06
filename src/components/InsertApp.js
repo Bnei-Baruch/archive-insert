@@ -113,6 +113,25 @@ class InsertApp extends Component {
             this.setState({ isValidated: true });
         }
 
+        // Declamation that does not has unit
+        if(!unit) {
+            console.log(" - Declamation without unit -");
+            type_id = 44;
+            metadata.line.content_type = "BLOG_POST";
+            metadata.line.send_name = metadata.line.upload_filename.split('.')[0];
+            metadata.line.lecturer = "rav";
+            metadata.line.has_translation = false;
+            metadata.line.film_date = metadata.date;
+            metadata.line.language = metadata.language;
+            metadata.line.original_language = metadata.language;
+            metadata.send_id = null;
+            metadata.line.uid = null;
+            metadata.insert_name = getName(metadata);
+            metadata.line.final_name = metadata.insert_name.split('.')[0];
+            this.checkMeta(metadata);
+            return
+        }
+
         // Meta from unit properties going to line
         metadata.line.uid = uid;
         metadata.line.content_type = CONTENT_TYPE_BY_ID[type_id];
@@ -171,25 +190,6 @@ class InsertApp extends Component {
             // Check if unit was imported from old KM
             const wfid = metadata.send_id;
             wfid ? this.newUnitWF(metadata, wfid) : this.oldUnitWF(metadata, id);
-        }
-
-        // Declamation that does not has unit
-        if(!unit) {
-            console.log(" - Declamation without unit -");
-            type_id = 44;
-            metadata.line.content_type = "BLOG_POST";
-            metadata.line.send_name = metadata.line.upload_filename.split('.')[0];
-            metadata.line.lecturer = "rav";
-            metadata.line.has_translation = false;
-            metadata.line.film_date = metadata.date;
-            metadata.line.language = metadata.language;
-            metadata.line.original_language = metadata.language;
-            metadata.send_id = null;
-            metadata.line.uid = null;
-            metadata.insert_name = getName(metadata);
-            metadata.line.final_name = metadata.insert_name.split('.')[0];
-            this.checkMeta(metadata);
-            return
         }
     };
 
