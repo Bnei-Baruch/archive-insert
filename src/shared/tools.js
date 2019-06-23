@@ -114,6 +114,14 @@ export const insertName = (filename, key, cb) => fetch(`${WF_BACKEND}/insert/fin
     })
     .catch(ex => console.log(`get ${filename}`, ex));
 
+export const insertData = (value, key, cb) => fetch(`${WF_BACKEND}/insert/line?key=${key}&value=${value}`)
+    .then((response) => {
+        if (response.ok) {
+            return response.json().then(data => cb(data));
+        }
+    })
+    .catch(ex => console.log(`get ${value}`, ex));
+
 export const getData = (id, cb) =>  {
     fetch(`${WF_BACKEND}/${getEndpoint(id)}/${id}`)
     .then((response) => {
