@@ -158,9 +158,11 @@ class InsertApp extends Component {
                     insertData(uid, "uid", (data) => {
                         console.log(":: insert data - got: ",data);
                         if(data.length > 0) {
-                            //Not in all files we got original_language property so we going to check string
+                            //ARCHIVE_BUG: Not in all files we got original_language property so we going to check string
                             //let remux_src = published.filter(s => s.language === properties.original_language && s.mime_type === "video/mp4");
-                            let remux_src = published.filter(s => s.name.match("_o_") && s.mime_type === "video/mp4");
+                            //ARCHIVE_BUG: We got case where two langueags wa with _o_ name, so there is no normal way to know original language
+                            //let remux_src = published.filter(s => s.name.match("_o_") && s.mime_type === "video/mp4");
+                            let remux_src = published.filter(s => s.name.match("heb_o_") && s.mime_type === "video/mp4");
                             console.log(" :: Got sources for remux: ", remux_src);
                             // We must get here 1 or 2 files and save their url
                             if(remux_src.length === 0 || remux_src.length > 2) {
@@ -175,6 +177,7 @@ class InsertApp extends Component {
                                 metadata.line.HD = null;
                                 metadata.line.HD_sha1 = null;
                                 metadata.insert_type = "5";
+                                metadata.insert_name = language + "_t_" +remux_src[0].name.split("_").slice(2).join("_").split(".")[0]+".wav";
                                 const wfid = metadata.send_id;
                                 wfid ? this.newUnitWF(metadata, wfid) : this.oldUnitWF(metadata, id);
                                 return
@@ -183,6 +186,8 @@ class InsertApp extends Component {
                                 for(let i=0;i<remux_src.length;i++) {
                                     metadata.line[remux_src[i].properties.video_size] = remux_src[i].properties.url;
                                     metadata.line[remux_src[i].properties.video_size + "_sha1"] = remux_src[i].sha1;
+                                    if(remux_src[i].properties.video_size === "nHD")
+                                        metadata.insert_name = language + "_t_" +remux_src[i].name.split("_").slice(2).join("_").split(".")[0]+".wav";
                                 }
                                 metadata.insert_type = "5";
                                 metadata.insert_id = data[0].insert_id;
@@ -205,7 +210,9 @@ class InsertApp extends Component {
                 } else {
                     // Not in all files we got original_language property so we going to check string
                     // let remux_src = published.filter(s => s.language === properties.original_language && s.mime_type === "video/mp4");
-                    let remux_src = published.filter(s => s.name.match("_o_") && s.mime_type === "video/mp4");
+                    //ARCHIVE_BUG: We got case where two langueags wa with _o_ name, so there is no normal way to know original language
+                    //let remux_src = published.filter(s => s.name.match("_o_") && s.mime_type === "video/mp4");
+                    let remux_src = published.filter(s => s.name.match("heb_o_") && s.mime_type === "video/mp4");
                     console.log(" :: Got sources for remux: ", remux_src);
                     // We must get here 1 or 2 files and save their url
                     if(remux_src.length === 0 || remux_src.length > 2) {
@@ -219,6 +226,7 @@ class InsertApp extends Component {
                         metadata.line.HD = null;
                         metadata.line.HD_sha1 = null;
                         metadata.insert_type = "4";
+                        metadata.insert_name = language + "_t_" +remux_src[0].name.split("_").slice(2).join("_").split(".")[0]+".wav";
                         const wfid = metadata.send_id;
                         wfid ? this.newUnitWF(metadata, wfid) : this.oldUnitWF(metadata, id);
                         return
@@ -227,6 +235,8 @@ class InsertApp extends Component {
                         for(let i=0;i<remux_src.length;i++) {
                             metadata.line[remux_src[i].properties.video_size] = remux_src[i].properties.url;
                             metadata.line[remux_src[i].properties.video_size + "_sha1"] = remux_src[i].sha1;
+                            if(remux_src[i].properties.video_size === "nHD")
+                                metadata.insert_name = language + "_t_" +remux_src[i].name.split("_").slice(2).join("_").split(".")[0]+".wav";
                         }
                         metadata.insert_type = "4";
                         const wfid = metadata.send_id;
@@ -250,7 +260,8 @@ class InsertApp extends Component {
                 console.log(":: Got Workflow Data: ", wfdata);
                 metadata.line.send_name = wfdata.file_name;
                 metadata.line.lecturer = wfdata.line.lecturer;
-                metadata.insert_name = getName(metadata);
+                if(metadata.upload_type !== "dibuv")
+                    metadata.insert_name = getName(metadata);
                 console.log(":: Metadata insert_name: \n%c" + metadata.insert_name, "color:Green");
                 this.checkMeta(metadata);
             } else {
@@ -266,7 +277,8 @@ class InsertApp extends Component {
         fetchPersons(id, (data) => {
             console.log(":: Got Persons: ",data);
             metadata.line.lecturer = (data.length > 0 && data[0].person.uid === "abcdefgh") ? "rav" : "norav";
-            metadata.insert_name = getName(metadata);
+            if(metadata.upload_type !== "dibuv")
+                metadata.insert_name = getName(metadata);
             console.log(":: Metadata insert_name: \n%c"+metadata.insert_name,"color:Green");
             this.checkMeta(metadata);
         });
