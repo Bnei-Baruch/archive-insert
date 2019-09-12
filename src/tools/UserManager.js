@@ -12,14 +12,24 @@ const userManagerConfig = {
     client_id: 'workflow-insert',
     redirect_uri: `${BASE_URL}`,
     response_type: 'token id_token',
-    scope: 'profile',
+    scope: 'openid profile',
     post_logout_redirect_uri: `${BASE_URL}`,
-    automaticSilentRenew: false,
+    aautomaticSilentRenew: true,
+    silent_redirect_uri: `${BASE_URL}/silent_renew.html`,
     filterProtocolClaims: true,
     loadUserInfo: true,
 };
 
 export const client = new UserManager(userManagerConfig);
+
+client.events.addAccessTokenExpiring(() => {
+    console.log("...RENEW TOKEN...");
+});
+
+client.events.addAccessTokenExpired(() => {
+    console.log("...!TOKEN EXPIRED!...");
+    client.signoutRedirect();
+});
 
 export const getUser = (cb) => client.getUser()
     .then((user) => {
@@ -31,7 +41,7 @@ export const getUser = (cb) => client.getUser()
         }
         cb(user)
     })
-    .catch(function(error) {
+    .catch((error) => {
     console.log("Error: ",error);
 });
 

@@ -17,24 +17,27 @@ class App extends Component {
         filedata: null,
         metadata: {},
         open: false,
-        loading: true,
     };
 
     componentDidMount() {
-        // FIXME: hack solution
-        setTimeout(() => this.setState({ loading: false }), 1000);
-        getUser(cb => {
-            if(cb) {
-                this.checkPermission(cb);
+        this.appLogin();
+    };
+
+    appLogin = () => {
+        getUser(user => {
+            if(user) {
+                this.checkPermission(user);
+            } else {
+                client.signinRedirectCallback().then((user) => {
+                    if(user.state) window.location = user.state;
+                }).catch(() => {
+                    client.signinSilent().then(user => {
+                        if(user) this.appLogin();
+                    }).catch((error) => {
+                        console.log("SigninSilent error: ",error);
+                    });
+                });
             }
-        });
-        client.signinRedirectCallback().then(function(user) {
-            console.log(":: callback", user);
-            if(user.state) {
-                window.location = user.state;
-            }
-        }).catch(function(err) {
-            //console.log("callback error",err);
         });
     };
 
@@ -156,8 +159,8 @@ class App extends Component {
     };
 
   render() {
-      const {filedata,metadata,user,loading,insert,open} = this.state;
-      let login = (<LoginPage onInsert={this.setInserMode} user={user} loading={loading} />);
+      const {filedata,metadata,user,insert,open} = this.state;
+      let login = (<LoginPage onInsert={this.setInserMode} user={user} />);
       let upload = (<UploadFile onFileData={this.checkFileData} mode={insert} />);
 
     return (

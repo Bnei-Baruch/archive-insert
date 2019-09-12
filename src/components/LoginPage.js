@@ -1,24 +1,33 @@
 import React, {Component, Fragment} from 'react';
-import {client,BASE_URL} from '../tools/UserManager';
+import {client,BASE_URL,getUser} from '../tools/UserManager';
 import { Container,Message,Button,Dropdown,Icon } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import '../App.css';
 
 class LoginPage extends Component {
 
-    getUser = () => {
-        client.getUser().then(function(user) {
-            (user === null) ? client.signinRedirect({state: `${BASE_URL}`}) : console.log(":: What just happend?");
-        }).catch(function(error) {
-            console.log("Error: ",error);
+    state = {
+        disabled: true,
+        loading: true,
+    };
+
+    componentDidMount() {
+        setTimeout(() => this.setState({disabled: false, loading: false}), 1000);
+    };
+
+    userLogin = () => {
+        this.setState({disabled: true, loading: true});
+        getUser(cb => {
+            if(!cb) client.signinRedirect({state: `${BASE_URL}`});
         });
     };
 
   render() {
 
-      const {user,loading,onInsert} = this.props;
+      const {user,onInsert} = this.props;
+      const {disabled, loading} = this.state;
 
-      let login = (<Button size='massive' primary onClick={this.getUser} disabled={loading} >Login</Button>);
+      let login = (<Button size='massive' primary onClick={this.userLogin} disabled={disabled} loading={loading}>Login</Button>);
       //let logout = (<Button size='mini' primary onClick={() => client.signoutRedirect()}>LogOut</Button>);
 
       let profile = (
