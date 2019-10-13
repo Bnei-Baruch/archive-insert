@@ -32,7 +32,7 @@ export const getName = (metadata) => {
     // Lecturer
     name[2] = line.lecturer;
     // Date
-    name[3] = line.capture_date || line.film_date;
+    name[3] = line.capture_date && line.capture_date !== "0001-01-01" ? line.capture_date : line.film_date;
     // Type
     name[4] = CONTENT_TYPES_MAPPINGS[line.content_type].pattern;
     // Description
