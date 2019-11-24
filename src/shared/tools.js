@@ -1,8 +1,9 @@
 import { mime_list, CONTENT_TYPES_MAPPINGS, MDB_LANGUAGES, DCT_OPTS} from './consts';
 
-const MDB_BACKEND = 'https://insert.kbb1.com/rest';
+const MDB_BACKEND = 'https://kabbalahmedia.info/mdb-api';
 const WF_BACKEND = 'https://insert.kbb1.com';
 const SRV_BACKEND = 'https://insert.kbb1.com/workflow';
+const AUTH_URL = 'https://accounts.kbb1.com/auth/realms/main';
 
 export const toHms = (totalSec) => {
     let hours = parseInt( totalSec / 3600, 10 ) % 24;
@@ -73,7 +74,18 @@ export const getName = (metadata) => {
     return name.join("_") + '.' + mime_list[line.mime_type];
 };
 
-export const Fetcher = (path, cb) => fetch(`${MDB_BACKEND}/${path}`)
+const getToken = () => {
+    let jwt = sessionStorage.getItem(`oidc.user:${AUTH_URL}:workflow-insert`);
+    let json = JSON.parse(jwt);
+    return json.access_token;
+};
+
+export const Fetcher = (path, cb) => fetch(`${MDB_BACKEND}/${path}`, {
+    headers: {
+        'Authorization': 'bearer ' + getToken(),
+        'Content-Type': 'application/json'
+    }
+})
     .then((response) => {
         if (response.ok) {
             return response.json().then(data => cb(data));
@@ -88,7 +100,12 @@ export const fetchTags = cb => Fetcher('tags/', cb);
 
 export const fetchPublishers = cb => Fetcher('publishers/', cb);
 
-export const fetchUnits = (path, cb) => fetch(`${MDB_BACKEND}/content_units/${path}`)
+export const fetchUnits = (path, cb) => fetch(`${MDB_BACKEND}/content_units/${path}`, {
+    headers: {
+        'Authorization': 'bearer ' + getToken(),
+        'Content-Type': 'application/json'
+    }
+})
     .then((response) => {
         if (response.ok) {
             //console.log("--FetchDataWithCB--");
@@ -97,7 +114,12 @@ export const fetchUnits = (path, cb) => fetch(`${MDB_BACKEND}/content_units/${pa
     })
     .catch(ex => console.log(`get ${path}`, ex));
 
-export const fetchPersons = (id, cb) => fetch(`${MDB_BACKEND}/content_units/${id}/persons/`)
+export const fetchPersons = (id, cb) => fetch(`${MDB_BACKEND}/content_units/${id}/persons/`, {
+    headers: {
+        'Authorization': 'bearer ' + getToken(),
+        'Content-Type': 'application/json'
+    }
+})
     .then((response) => {
         if (response.ok) {
             //console.log("--FetchPersonsName--");
@@ -154,7 +176,12 @@ const getEndpoint = (id) => {
     if(id.match(/^i[\d]{10}$/)) return "insert";
 };
 
-export const insertSha = (sha, cb) => fetch(`${MDB_BACKEND}/files/?sha1=${sha}`)
+export const insertSha = (sha, cb) => fetch(`${MDB_BACKEND}/files/?sha1=${sha}`, {
+    headers: {
+        'Authorization': 'bearer ' + getToken(),
+        'Content-Type': 'application/json'
+    }
+})
     .then((response) => {
         if (response.ok) {
             //console.log("--FetchInsertSha--");
