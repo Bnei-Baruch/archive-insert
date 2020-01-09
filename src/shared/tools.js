@@ -128,7 +128,12 @@ export const fetchPersons = (id, cb) => fetch(`${MDB_BACKEND}/content_units/${id
     })
     .catch(ex => console.log(`get ${id}`, ex));
 
-export const insertName = (filename, key, cb) => fetch(`${WF_BACKEND}/insert/find?key=${key}&value=${filename}`)
+export const insertName = (filename, key, cb) => fetch(`${WF_BACKEND}/insert/find?key=${key}&value=${filename}`, {
+    headers: {
+        'Authorization': 'bearer ' + getToken(),
+        'Content-Type': 'application/json'
+    }
+})
     .then((response) => {
         if (response.ok) {
             return response.json().then(data => cb(data));
@@ -136,7 +141,12 @@ export const insertName = (filename, key, cb) => fetch(`${WF_BACKEND}/insert/fin
     })
     .catch(ex => console.log(`get ${filename}`, ex));
 
-export const insertData = (value, key, cb) => fetch(`${WF_BACKEND}/insert/line?key=${key}&value=${value}`)
+export const insertData = (value, key, cb) => fetch(`${WF_BACKEND}/insert/line?key=${key}&value=${value}`, {
+    headers: {
+        'Authorization': 'bearer ' + getToken(),
+        'Content-Type': 'application/json'
+    }
+})
     .then((response) => {
         if (response.ok) {
             return response.json().then(data => cb(data));
@@ -145,7 +155,12 @@ export const insertData = (value, key, cb) => fetch(`${WF_BACKEND}/insert/line?k
     .catch(ex => console.log(`get ${value}`, ex));
 
 export const getData = (id, cb) =>  {
-    fetch(`${WF_BACKEND}/${getEndpoint(id)}/${id}`)
+    fetch(`${WF_BACKEND}/${getEndpoint(id)}/${id}`, {
+        headers: {
+            'Authorization': 'bearer ' + getToken(),
+            'Content-Type': 'application/json'
+        }
+    })
     .then((response) => {
         if (response.ok) {
             return response.json().then(data => cb(data));
@@ -158,7 +173,10 @@ export const getData = (id, cb) =>  {
 
 export const putData = (path, data, cb) => fetch(`${SRV_BACKEND}/${path}`, {
     method: 'PUT',
-    headers: {'Content-Type': 'application/json'},
+    headers: {
+        'Authorization': 'bearer ' + getToken(),
+        'Content-Type': 'application/json'
+    },
     body:  JSON.stringify(data)
 })
     .then((response) => {
